@@ -64,8 +64,13 @@
 - [ ] 手推：LR、SVM、PCA、朴素贝叶斯、K-Means、EM（写进 `02/推导笔记/`）
 - [ ] 按 `03-深度学习/高频面试题.md` 过 DL 面经
 - [ ] 手推：反向传播、BN、LSTM 门控、优化器更新公式
-- [ ] 按 `08-优化算法/README.md` 过优化算法主线（7 本教学 notebook：SGD→动量→Adam/AdamW→调度→二阶→LLM 训练 FP16/ZeRO）
-- [ ] 手推：Momentum EMA、Adam 四条公式（偏差校正）、AdamW 解耦权重衰减、牛顿法、7B Adam 状态内存口算（84GB）
+- [ ] 按 `08-优化算法/README.md` 过优化算法主线（13 本教学 notebook：SGD→动量→Adam/AdamW→调度→二阶→LLM 训练 FP16/ZeRO + 经典优化 LP/IP/GA/SA/TS/PSO/ACO/KKT）
+- [ ] 按 `09-计算机视觉/README.md` 过 CV 主线（11 本教学 notebook：图像基础→边缘特征→CNN→检测（R-CNN·YOLO v1→v11 全系列）→分割（FCN·U-Net 全家族）→度量学习→SAM 基础模型）
+- [ ] 按 `10-自然语言处理/README.md` 过 NLP 主线（8 本教学 notebook：文本表示/TF-IDF→n-gram 语言模型→词向量（Word2Vec·GloVe）→RNN·LSTM→Attention·Transformer→预训练（mini-BERT·mini-GPT）→分类与标注→NLP 八股）
+- [ ] 按 `11-时间序列/README.md` 过时间序列主线（8 本教学 notebook：平稳性/ADF→ARMA·ARIMA→指数平滑→分解→特征工程·ML→深度学习（LSTM·递归 vs 直接）→评估与异常检测→时序八股）
+- [ ] 手推：Momentum EMA、Adam 四条公式（偏差校正）、AdamW 解耦权重衰减、牛顿法、7B Adam 状态内存口算（84GB）、Metropolis 准则、PSO 更新式、KKT 四条件、软阈值
+- [ ] 手推（NLP）：TF-IDF、n-gram 平滑与 PPL、负采样梯度、BPTT、LSTM 四门、注意力/多头、MLM 80/10/10、混淆矩阵与 macro-F1
+- [ ] 手推（时序）：ACF/PACF、ADF、AR 的 OLS、AIC、SES/Holt/HW 递推、滑窗特征、ExpandingWindow CV、σ√h 预测区间
 - [ ] 按 `07-强化学习/README.md` 过 RL 主线（8 本教学 notebook：MDP→DP→MC/TD→Q学习→DQN→PG/AC→PPO/GRPO→面试八股）
 - [ ] 手写：值迭代、Q-learning、PPO clip 目标、GRPO 优势公式（LLM 对齐岗必考）
 - [ ] 结合手头项目（如 MiniMind）讲清楚训练管线
