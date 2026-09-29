@@ -1,16 +1,16 @@
 # 🎯 Autumn-Recruit Algo Notes（秋招算法学习仓库）
 
-> **一个可执行的算法 / 机器学习 / 大模型 / 强化学习面试备战体系** —— 7 大模块 · **68 篇中文教学 Notebook** ·
+> **一个可执行的算法 / 机器学习 / 大模型 / 强化学习面试备战体系** —— 8 大模块 · **75 篇中文教学 Notebook** ·
 > 核心算法**全部手写实现**并附 sklearn / torch 数值对照，从公式推导到面试八股一站式闭环。
 
 <p align="center">
   <img src="assets/badges/license.svg" alt="license MIT"/>
   <img src="assets/badges/python.svg" alt="python 3.9+"/>
-  <img src="assets/badges/modules.svg" alt="7 modules"/>
-  <img src="assets/badges/notebooks.svg" alt="68 notebooks"/>
+  <img src="assets/badges/modules.svg" alt="8 modules"/>
+  <img src="assets/badges/notebooks.svg" alt="75 notebooks"/>
   <img src="assets/badges/numpy.svg" alt="from scratch"/>
   <img src="assets/badges/zh.svg" alt="中文教学"/>
-  <img src="assets/badges/verified.svg" alt="nbclient 68/68"/>
+  <img src="assets/badges/verified.svg" alt="nbclient 75/75"/>
 </p>
 
 ---
@@ -29,11 +29,11 @@
 
 | 指标 | 数值 |
 |---|---|
-| 模块 | 7（算法 / ML / DL / 八股工程 / 复盘 / RL + 路线） |
-| 教学 Notebook | **68 篇**（算法 14 · ML 7 · DL 7 · LLM 24 · 八股 8 · RL 8） |
+| 模块 | 8（算法 / ML / DL / LLM / 八股工程 / 复盘 / RL / 优化算法 + 路线） |
+| 教学 Notebook | **75 篇**（算法 14 · ML 7 · DL 7 · LLM 24 · 八股 8 · RL 8 · 优化 7） |
 | 背诵级手写模板 | 11 份（`01-数据结构与算法/模板代码/`） |
 | 推导过程图 | 15 张（`07-强化学习/教学/images/`）+ 16 张（`05-八股与工程/images/`） |
-| 执行验证 | **68 / 68 本 nbclient PASS（全仓）** |
+| 执行验证 | **75 / 75 本 nbclient PASS（全仓）** |
 | 依赖 | `numpy` / `matplotlib` / `sklearn` / `torch`（02-04 对照验证用；无需 GPU、无需联网） |
 
 ## 🚀 快速开始
@@ -63,6 +63,7 @@ jupyter notebook "07-强化学习/教学/00-MDP与贝尔曼方程.ipynb"
 | 05-八股与工程 | Python/OS/网络/数据库/Redis/分布式/工程工具/高频手撕 | 8 篇八股 notebook | ✅ |
 | 06-面试复盘 | 复盘方法论 + 每场面试记录模板 | — | ✅ |
 | 07-强化学习 | MDP/DP/MC-TD/Q学习/DQN/策略梯度/PPO-GRPO/面试八股 | 8 篇教学 notebook（含 15 张推导图） | ✅ |
+| 08-优化算法 | SGD/动量/Adam/AdamW/学习率调度/二阶优化/LLM 训练（FP16·BF16·ZeRO） | 7 篇优化笔记（推导+对照+自测） | ✅ |
 
 ## 📁 目录结构
 
@@ -107,10 +108,16 @@ autumn-recruit-algo/
 │   ├── README.md
 │   └── 复盘模板.md
 │
-└── 07-强化学习/               # 🤖 强化学习（含 LLM 对齐 RLHF/GRPO）
+├── 07-强化学习/               # 🤖 强化学习（含 LLM 对齐 RLHF/GRPO）
+│   ├── README.md
+│   ├── 高频面试题.md
+│   └── 教学/                  # ✅ 8 篇手写教学 notebook
+│       └── images/            # 🖼️ 15 张推导过程图
+│
+└── 08-优化算法/               # ⚙️ 优化算法（SGD→动量→Adam→LLM 训练实践）
     ├── README.md
-    └── 教学/                  # ✅ 8 篇手写教学 notebook
-        └── images/            # 🖼️ 15 张推导过程图
+    ├── 高频面试题.md
+    └── 教学/                  # ✅ 7 篇手写教学 notebook（推导+代码+对照+自测）
 ```
 
 ## 📚 教学 Notebook 索引（手写实现 · 对照验证）
@@ -177,6 +184,20 @@ Python 语言 · 操作系统 · 计算机网络 · 数据库 · Redis · 分布
 | 07 | 强化学习面试八股 | 90 连问速答 + 老虎机探索实验 + 手写模板 + 算法谱系树 |
 
 > 每篇含：**变种模型谱系表格 + 逐步推导（面试手推模板）+ matplotlib 过程图 2 张**（`教学/images/`，共 15 张；`RL 算法家族谱系树` 见下图示例）。
+
+### 08-优化算法/教学/（7 篇，已完成 ✅）
+
+| # | 主题 | 手写核心 |
+|---|------|----------|
+| 01 | 梯度下降与迭代优化入门 | 学习率三态（一步到位/发散/蜗牛爬）+ BGD·SGD·Mini-batch 噪声对比 |
+| 02 | 动量族与加速方法 | 峡谷地形轨迹 SGD vs Momentum vs NAG + EMA 推导 + 鞍点穿越 |
+| 03 | 自适应学习率与 Adam | AdaGrad 停摆 / RMSProp 修复 / Adam 偏差校正 + 手写 vs `torch.optim.Adam` 对照 |
+| 04 | Adam 变体与解耦权重衰减 | AdamW 解耦推导 + 手写 vs `torch.optim.AdamW` 对照 + LAMB/Lion/AMSGrad |
+| 05 | 学习率调度与训练策略 | warmup/cosine/step/exp 曲线 + 梯度裁剪 + 梯度累积等价性 + EMA |
+| 06 | 二阶优化方法 | 牛顿法二次收敛 vs GD 步数对比 + BFGS/L-BFGS + K-FAC 直觉 |
+| 07 | 大模型训练优化实践 | FP16/BF16/FP32 数值域 + loss scaling + Adam 状态内存（7B≈84GB）+ ZeRO 分片曲线 |
+
+> 衔接 `03-深度学习/模型笔记/03-优化器.ipynb`：基础优化器已讲，本章 01-04 加深推导、05-07 直达 LLM 训练实战。
 
 ## 💼 使用案例（真实运行输出）
 
@@ -246,7 +267,8 @@ UCB(c=2) 总奖励: 800 / 1000  (理论最优≈900)
 - [x] Phase 2：ML 推导笔记（7 篇：LR/SVM/PCA/GBDT/NB/K-Means/树）
 - [x] Phase 3：DL 模型笔记（7 篇：BP/CNN/优化器/RNN-LSTM/BN/激活/正则）
 - [x] Phase 4：RL 教学 notebook（8 篇：MDP/DP/MC-TD/Q学习/DQN/PG-AC/PPO-GRPO/面试八股，含推导与配图）
-- [ ] Phase 5：面经复盘归档（05/06/07 模块内容按自有资料持续补齐）
+- [x] Phase 5：优化算法教学 notebook（7 篇：SGD→动量→Adam/AdamW→调度→二阶→LLM 训练 FP16/ZeRO，含 torch 对照）
+- [ ] Phase 6：面经复盘归档（05/06/07/08 模块内容按自有资料持续补齐）
 
 ## 📄 License
 

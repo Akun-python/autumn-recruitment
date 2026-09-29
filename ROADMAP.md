@@ -64,6 +64,8 @@
 - [ ] 手推：LR、SVM、PCA、朴素贝叶斯、K-Means、EM（写进 `02/推导笔记/`）
 - [ ] 按 `03-深度学习/高频面试题.md` 过 DL 面经
 - [ ] 手推：反向传播、BN、LSTM 门控、优化器更新公式
+- [ ] 按 `08-优化算法/README.md` 过优化算法主线（7 本教学 notebook：SGD→动量→Adam/AdamW→调度→二阶→LLM 训练 FP16/ZeRO）
+- [ ] 手推：Momentum EMA、Adam 四条公式（偏差校正）、AdamW 解耦权重衰减、牛顿法、7B Adam 状态内存口算（84GB）
 - [ ] 按 `07-强化学习/README.md` 过 RL 主线（8 本教学 notebook：MDP→DP→MC/TD→Q学习→DQN→PG/AC→PPO/GRPO→面试八股）
 - [ ] 手写：值迭代、Q-learning、PPO clip 目标、GRPO 优势公式（LLM 对齐岗必考）
 - [ ] 结合手头项目（如 MiniMind）讲清楚训练管线
