@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+.python-version
+
+# Jupyter / Notebooks
+.ipynb_checkpoints/
+*_smoke_test.py
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 本地临时
+*.log
+tmp/
+out/
+checkpoints/
+
+# 绘图检查/上下文调试产生的临时输出
+dump_ctx.py
+dump_img_context.py
+ctx_dump.txt
+llm_stdout.txt
+llm_results.txt
+rl_results.txt
+tools/__pycache__/

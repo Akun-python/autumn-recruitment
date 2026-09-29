@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="162" height="20" role="img" aria-label="implement: from scratch">
+  <title>implement: from scratch</title>
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity="0.1"/>
+    <stop offset="1" stop-opacity="0.1"/>
+  </linearGradient>
+  <clipPath id="r"><rect width="162" height="20" rx="3" fill="#fff"/></clipPath>
+  <g clip-path="url(#r)">
+    <rect width="71" height="20" fill="#555"/>
+    <rect x="71" width="91" height="20" fill="#4ec0a5"/>
+    <rect width="162" height="20" fill="url(#s)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,DejaVu Sans,sans-serif" font-size="11">
+    <text x="35.5" y="14">implement</text>
+    <text x="116.5" y="14">from scratch</text>
+  </g>
+</svg>

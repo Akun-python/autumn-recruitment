@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="89" height="20" role="img" aria-label="python: 3.9+">
+  <title>python: 3.9+</title>
+  <linearGradient id="s" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity="0.1"/>
+    <stop offset="1" stop-opacity="0.1"/>
+  </linearGradient>
+  <clipPath id="r"><rect width="89" height="20" rx="3" fill="#fff"/></clipPath>
+  <g clip-path="url(#r)">
+    <rect width="51" height="20" fill="#555"/>
+    <rect x="51" width="38" height="20" fill="#007ec6"/>
+    <rect width="89" height="20" fill="url(#s)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,DejaVu Sans,sans-serif" font-size="11">
+    <text x="25.5" y="14">python</text>
+    <text x="70.0" y="14">3.9+</text>
+  </g>
+</svg>
