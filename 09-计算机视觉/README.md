@@ -26,7 +26,7 @@
 | 05-图像分割 | 三类分割/上采样/FCN/基础 U-Net/Dice/ROI Align/Mask R-CNN | Mini U-Net 合成分割 mIoU > 0.9、手写 vs torch 上采样 |
 | 06-度量学习与人脸识别 | 对比损失/三元组/难样本挖掘/ArcFace/检索评估 | 手写 vs torch、测试检索 Recall@1 > 0.85 |
 | 07-视觉面试八股 | 90 连问（6 组×15）+ 谱系树 + 手撕默写清单 | 手撕题目全部可执行 |
-| **08-YOLO系列目标检测详解** | **故事线**：三次思想跃迁 → v1 网格回归（损失五项/开根号）→ v2 anchor（IoU 距离聚类/BN）→ v3 多尺度 FPN（anchor 分配/BCE）→ v4/v5 训练配方（Mosaic/CIoU/PANet）→ v6/v7 解耦头/E-ELAN → v8 anchor-free（四边距离+DFL+TaskAlignedAssigner）→ v9/v10/v11（PGI/PSA/Mamba）+ 演进时间线 | 手写 v1 损失 vs 手算、v1 推理流水线（阈值+NMS）、BN 手写 vs torch、Mosaic 拼接、v8 decode+DFL、对齐度量 top-k |
+| **08-YOLO系列目标检测详解** | **故事线**：三次思想跃迁 → v1 网格回归（损失五项/开根号）→ v2 anchor（IoU 距离聚类/BN/**偏移回归编解码**）→ v3 多尺度 FPN（anchor 分配/BCE/**FPN+PANet 融合**）→ v4/v5 训练配方（Mosaic/CIoU/**Mish+CSP/Focus**）→ v6/v7 解耦头/E-ELAN/**RepConv 重参数化融合** → v8 anchor-free（四边距离+DFL+TaskAlignedAssigner）→ v9/v10/v11（**PGI 梯度模拟/PSA/C2PSA**/Mamba）+ 演进时间线，**每个版本均为「原理 + 实现」对偶** | 手写 v1 损失 vs 手算、v1 推理流水线（阈值+NMS）、anchor round-trip、BN 手写 vs torch、Mosaic 拼接、v8 decode+DFL、对齐度量 top-k、RepConv 融合数值对照、Focus 信息无损 |
 | **09-U-Net系列图像分割详解** | **故事线**：像素级之难 → FCN 遗产 → U-Net 跳连（concat 形状链）→ Residual/V-Net（Dice 梯度）→ Attention U-Net（AG 门控）→ U-Net++（稠密跳连+深监督加权）→ U-Net 3+（全尺度）→ TransUNet（Transformer 瓶颈形状链）→ Swin-UNet（patch merge/expand）→ nnU-Net（自动决策演示）+ 家族对比表 | AG 手写 vs torch < 1e-5、Dice 数值梯度、U-Net++ 形状断言、patch merge 语义验证、V-Net 3D 推演 |
 | **10-SAM与视觉基础模型** | **故事线**：分割三重困局 → promptable 思想 → 三组件（眼睛/耳朵/手）→ ViT 位置编码 → 提示编码（点/框/掩码降采样）→ 交叉注意力 → 歧义消解（3 候选+IoU 打分）→ 数据引擎飞轮（11 亿掩码）→ MAE 预训练 → SAM2 视频 → Grounding DINO+CLIP 生态 | patch embedding 与 cross-attn 手写 vs torch < 1e-5、位置编码近/远相似度、掩码降采样形状、重建基线 MSE |
 

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="400" viewBox="0 0 860 400" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <defs>
+    <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect width="860" height="400" fill="#fafbfc"/>
+  <!-- 初始概率 π -->
+  <line x1="30" y1="120" x2="95" y2="120" stroke="#8e44ad" stroke-width="2.5" marker-end="url(#ah)"/>
+  <text x="62" y="105" font-size="14" fill="#8e44ad" text-anchor="middle">π</text>
+  <!-- 状态链 q -->
+  <g>
+    <rect x="105" y="90" width="150" height="60" rx="12" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
+    <text x="180" y="118" font-size="16" font-weight="bold" fill="#1e8449" text-anchor="middle">q₁ = 晴</text>
+    <text x="180" y="140" font-size="12" fill="#555" text-anchor="middle">隐藏状态</text>
+    <rect x="355" y="90" width="150" height="60" rx="12" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
+    <text x="430" y="118" font-size="16" font-weight="bold" fill="#1e8449" text-anchor="middle">q₂ = 雨</text>
+    <text x="430" y="140" font-size="12" fill="#555" text-anchor="middle">隐藏状态</text>
+    <rect x="605" y="90" width="150" height="60" rx="12" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
+    <text x="680" y="118" font-size="16" font-weight="bold" fill="#1e8449" text-anchor="middle">q₃ = 晴</text>
+    <text x="680" y="140" font-size="12" fill="#555" text-anchor="middle">隐藏状态</text>
+  </g>
+  <!-- 状态转移 A -->
+  <line x1="255" y1="120" x2="350" y2="120" stroke="#e67e22" stroke-width="2.5" marker-end="url(#ah)"/>
+  <line x1="505" y1="120" x2="600" y2="120" stroke="#e67e22" stroke-width="2.5" marker-end="url(#ah)"/>
+  <text x="300" y="105" font-size="14" fill="#e67e22" text-anchor="middle">A₁₂</text>
+  <text x="552" y="105" font-size="14" fill="#e67e22" text-anchor="middle">A₂₃</text>
+  <text x="180" y="80" font-size="13" fill="#e67e22" text-anchor="middle">状态转移 A（齐次马尔可夫性）</text>
+  <!-- 发射 B（虚线向下） -->
+  <g stroke="#2e86de" stroke-width="2" stroke-dasharray="7,4">
+    <line x1="180" y1="150" x2="180" y2="250" marker-end="url(#ah)"/>
+    <line x1="430" y1="150" x2="430" y2="250" marker-end="url(#ah)"/>
+    <line x1="680" y1="150" x2="680" y2="250" marker-end="url(#ah)"/>
+  </g>
+  <!-- 观测链 o -->
+  <g>
+    <rect x="105" y="260" width="150" height="60" rx="12" fill="#d6eaf8" stroke="#2e86de" stroke-width="2"/>
+    <text x="180" y="288" font-size="16" font-weight="bold" fill="#1a5276" text-anchor="middle">o₁=散步</text>
+    <text x="180" y="310" font-size="12" fill="#555" text-anchor="middle">观测（可见）</text>
+    <rect x="355" y="260" width="150" height="60" rx="12" fill="#d6eaf8" stroke="#2e86de" stroke-width="2"/>
+    <text x="430" y="288" font-size="16" font-weight="bold" fill="#1a5276" text-anchor="middle">o₂=购物</text>
+    <text x="430" y="310" font-size="12" fill="#555" text-anchor="middle">观测（可见）</text>
+    <rect x="605" y="260" width="150" height="60" rx="12" fill="#d6eaf8" stroke="#2e86de" stroke-width="2"/>
+    <text x="680" y="288" font-size="16" font-weight="bold" fill="#1a5276" text-anchor="middle">o₃=清洁</text>
+    <text x="680" y="310" font-size="12" fill="#555" text-anchor="middle">观测（可见）</text>
+  </g>
+  <text x="180" y="350" font-size="13" fill="#2e86de" text-anchor="middle">发射 B（观测独立性）</text>
+  <!-- 底部说明 -->
+  <text x="430" y="380" font-size="14" fill="#666" text-anchor="middle">三要素 λ=(π, A, B)：π 初始概率 · A 状态转移 · B 发射概率——三大问题：概率/解码/学习</text>
+</svg>

@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <defs>
+    <marker id="ad" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect width="960" height="420" fill="#fafbfc"/>
+  <!-- ===== 左：HMM（生成式·有向）===== -->
+  <g>
+    <rect x="20" y="20" width="450" height="380" rx="14" fill="#fff" stroke="#d0d7de"/>
+    <text x="245" y="58" font-size="17" font-weight="bold" fill="#333" text-anchor="middle">HMM（生成式 · 有向图）</text>
+    <text x="245" y="82" font-size="13" fill="#888" text-anchor="middle">P(O, Q) = P(q₁)P(o₁|q₁) Π P(qₜ|qₜ₋₁)P(oₜ|qₜ)</text>
+    <!-- 状态链 -->
+    <g>
+      <rect x="60" y="130" width="90" height="44" rx="9" fill="#d5f5e3" stroke="#27ae60"/>
+      <text x="105" y="158" font-size="14" fill="#1e8449" text-anchor="middle">q₁</text>
+      <rect x="200" y="130" width="90" height="44" rx="9" fill="#d5f5e3" stroke="#27ae60"/>
+      <text x="245" y="158" font-size="14" fill="#1e8449" text-anchor="middle">q₂</text>
+      <rect x="340" y="130" width="90" height="44" rx="9" fill="#d5f5e3" stroke="#27ae60"/>
+      <text x="385" y="158" font-size="14" fill="#1e8449" text-anchor="middle">q₃</text>
+    </g>
+    <line x1="150" y1="152" x2="195" y2="152" stroke="#e67e22" stroke-width="2" marker-end="url(#ad)"/>
+    <line x1="290" y1="152" x2="335" y2="152" stroke="#e67e22" stroke-width="2" marker-end="url(#ad)"/>
+    <!-- 观测 -->
+    <g>
+      <rect x="60" y="290" width="90" height="44" rx="9" fill="#d6eaf8" stroke="#2e86de"/>
+      <text x="105" y="318" font-size="14" fill="#1a5276" text-anchor="middle">o₁</text>
+      <rect x="200" y="290" width="90" height="44" rx="9" fill="#d6eaf8" stroke="#2e86de"/>
+      <text x="245" y="318" font-size="14" fill="#1a5276" text-anchor="middle">o₂</text>
+      <rect x="340" y="290" width="90" height="44" rx="9" fill="#d6eaf8" stroke="#2e86de"/>
+      <text x="385" y="318" font-size="14" fill="#1a5276" text-anchor="middle">o₃</text>
+    </g>
+    <g stroke="#2e86de" stroke-width="2" stroke-dasharray="6,4">
+      <line x1="105" y1="174" x2="105" y2="285" marker-end="url(#ad)"/>
+      <line x1="245" y1="174" x2="245" y2="285" marker-end="url(#ad)"/>
+      <line x1="385" y1="174" x2="385" y2="285" marker-end="url(#ad)"/>
+    </g>
+    <text x="245" y="360" font-size="13" fill="#c0392b">⚠ 局部归一化：每步都归一化 → 出度少的状态“抢概率”（标注偏置）</text>
+    <text x="245" y="382" font-size="13" fill="#666">只能表达“转移 + 发射”两类参数，难加任意特征</text>
+  </g>
+  <!-- ===== 右：CRF（判别式·无向）===== -->
+  <g>
+    <rect x="490" y="20" width="450" height="380" rx="14" fill="#fff" stroke="#27ae60" stroke-width="2"/>
+    <text x="715" y="58" font-size="17" font-weight="bold" fill="#1e8449" text-anchor="middle">线性链 CRF（判别式 · 无向图）</text>
+    <text x="715" y="82" font-size="13" fill="#888" text-anchor="middle">P(Y|O) = exp(Σₜ Σₖ λₖ fₖ(yₜ₋₁,yₜ,O,t)) / Z(O)</text>
+    <!-- 状态链（无向双线） -->
+    <g>
+      <rect x="530" y="130" width="90" height="44" rx="9" fill="#fdebd0" stroke="#e67e22"/>
+      <text x="575" y="158" font-size="14" fill="#935116" text-anchor="middle">y₁</text>
+      <rect x="670" y="130" width="90" height="44" rx="9" fill="#fdebd0" stroke="#e67e22"/>
+      <text x="715" y="158" font-size="14" fill="#935116" text-anchor="middle">y₂</text>
+      <rect x="810" y="130" width="90" height="44" rx="9" fill="#fdebd0" stroke="#e67e22"/>
+      <text x="855" y="158" font-size="14" fill="#935116" text-anchor="middle">y₃</text>
+    </g>
+    <line x1="620" y1="141" x2="668" y2="141" stroke="#e67e22" stroke-width="2"/>
+    <line x1="620" y1="163" x2="668" y2="163" stroke="#e67e22" stroke-width="2"/>
+    <line x1="760" y1="141" x2="808" y2="141" stroke="#e67e22" stroke-width="2"/>
+    <line x1="760" y1="163" x2="808" y2="163" stroke="#e67e22" stroke-width="2"/>
+    <!-- 特征 f -->
+    <g>
+      <rect x="530" y="290" width="90" height="44" rx="9" fill="#eaf2f8" stroke="#5d6d7e"/>
+      <text x="575" y="318" font-size="14" fill="#2c3e50" text-anchor="middle">f₁</text>
+      <rect x="670" y="290" width="90" height="44" rx="9" fill="#eaf2f8" stroke="#5d6d7e"/>
+      <text x="715" y="318" font-size="14" fill="#2c3e50" text-anchor="middle">f₂</text>
+      <rect x="810" y="290" width="90" height="44" rx="9" fill="#eaf2f8" stroke="#5d6d7e"/>
+      <text x="855" y="318" font-size="14" fill="#2c3e50" text-anchor="middle">f₃</text>
+    </g>
+    <g stroke="#5d6d7e" stroke-width="2" stroke-dasharray="6,4">
+      <line x1="575" y1="174" x2="575" y2="285"/>
+      <line x1="715" y1="174" x2="715" y2="285"/>
+      <line x1="855" y1="174" x2="855" y2="285"/>
+    </g>
+    <text x="715" y="360" font-size="13" fill="#1e8449">✅ 全局归一化：Z(O) 对整条序列所有 Y 求和 → 无标注偏置</text>
+    <text x="715" y="382" font-size="13" fill="#666">特征函数任意（可重叠）：状态特征 + 转移特征</text>
+  </g>
+</svg>

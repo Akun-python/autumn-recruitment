@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <defs>
+    <marker id="at" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect width="900" height="430" fill="#fafbfc"/>
+  <!-- 根节点 -->
+  <rect x="360" y="30" width="180" height="52" rx="12" fill="#fdebd0" stroke="#e67e22" stroke-width="2"/>
+  <text x="450" y="52" font-size="16" font-weight="bold" fill="#935116" text-anchor="middle">天气 = 晴?</text>
+  <text x="450" y="72" font-size="12" fill="#935116" text-anchor="middle">信息增益最大 → 根特征</text>
+  <!-- 分支 -->
+  <line x1="450" y1="82" x2="180" y2="150" stroke="#555" stroke-width="2" marker-end="url(#at)"/>
+  <line x1="450" y1="82" x2="450" y2="150" stroke="#555" stroke-width="2" marker-end="url(#at)"/>
+  <line x1="450" y1="82" x2="720" y2="150" stroke="#555" stroke-width="2" marker-end="url(#at)"/>
+  <text x="285" y="115" font-size="13" fill="#555" text-anchor="middle">晴</text>
+  <text x="432" y="120" font-size="13" fill="#555" text-anchor="middle">阴</text>
+  <text x="610" y="115" font-size="13" fill="#555" text-anchor="middle">雨</text>
+  <!-- 第二层 -->
+  <rect x="110" y="155" width="150" height="50" rx="10" fill="#d6eaf8" stroke="#2e86de" stroke-width="2"/>
+  <text x="185" y="176" font-size="15" fill="#1a5276" text-anchor="middle">湿度 = 高?</text>
+  <text x="185" y="196" font-size="11" fill="#666" text-anchor="middle">（晴 → 再看湿度）</text>
+  <rect x="380" y="155" width="140" height="50" rx="12" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
+  <text x="450" y="176" font-size="16" font-weight="bold" fill="#1e8449" text-anchor="middle">去打球 ✓</text>
+  <text x="450" y="196" font-size="11" fill="#666" text-anchor="middle">叶子节点</text>
+  <rect x="640" y="155" width="150" height="50" rx="10" fill="#d6eaf8" stroke="#2e86de" stroke-width="2"/>
+  <text x="715" y="176" font-size="15" fill="#1a5276" text-anchor="middle">风速 = 强?</text>
+  <text x="715" y="196" font-size="11" fill="#666" text-anchor="middle">（雨 → 再看风速）</text>
+  <!-- 第三层 -->
+  <line x1="185" y1="205" x2="115" y2="270" stroke="#555" stroke-width="2" marker-end="url(#at)"/>
+  <line x1="185" y1="205" x2="255" y2="270" stroke="#555" stroke-width="2" marker-end="url(#at)"/>
+  <text x="130" y="240" font-size="12" fill="#555" text-anchor="middle">高</text>
+  <text x="232" y="240" font-size="12" fill="#555" text-anchor="middle">正常</text>
+  <line x1="715" y1="205" x2="645" y2="270" stroke="#555" stroke-width="2" marker-end="url(#at)"/>
+  <line x1="715" y1="205" x2="785" y2="270" stroke="#555" stroke-width="2" marker-end="url(#at)"/>
+  <text x="660" y="240" font-size="12" fill="#555" text-anchor="middle">强</text>
+  <text x="762" y="240" font-size="12" fill="#555" text-anchor="middle">弱</text>
+  <!-- 叶子 -->
+  <rect x="50" y="275" width="130" height="46" rx="12" fill="#fadbd8" stroke="#e74c3c" stroke-width="2"/>
+  <text x="115" y="303" font-size="15" fill="#922b21" text-anchor="middle">不去打球 ✗</text>
+  <rect x="190" y="275" width="130" height="46" rx="12" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
+  <text x="255" y="303" font-size="15" fill="#1e8449" text-anchor="middle">去打球 ✓</text>
+  <rect x="580" y="275" width="130" height="46" rx="12" fill="#fadbd8" stroke="#e74c3c" stroke-width="2"/>
+  <text x="645" y="303" font-size="15" fill="#922b21" text-anchor="middle">不去打球 ✗</text>
+  <rect x="720" y="275" width="130" height="46" rx="12" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
+  <text x="785" y="303" font-size="15" fill="#1e8449" text-anchor="middle">去打球 ✓</text>
+  <!-- 底部 -->
+  <text x="450" y="365" font-size="14" fill="#666" text-anchor="middle">ID3/C4.5：每次选信息增益（率）最大的特征切分，直到纯或满足停止条件</text>
+  <text x="450" y="390" font-size="13" fill="#888" text-anchor="middle">剪枝（预剪枝/CCP 后剪枝）防止“把噪声都记住” → 过拟合</text>
+</svg>

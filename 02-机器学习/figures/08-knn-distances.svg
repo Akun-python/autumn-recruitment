@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="320" viewBox="0 0 960 320" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <rect width="960" height="320" fill="#fafbfc"/>
+  <!-- ===== 面板 1：欧氏距离 ===== -->
+  <g>
+    <rect x="10" y="10" width="300" height="300" rx="10" fill="#fff" stroke="#d0d7de"/>
+    <g stroke="#eef1f4">
+      <line x1="60" y1="40" x2="60" y2="270"/><line x1="120" y1="40" x2="120" y2="270"/>
+      <line x1="180" y1="40" x2="180" y2="270"/><line x1="240" y1="40" x2="240" y2="270"/>
+      <line x1="40" y1="80" x2="280" y2="80"/><line x1="40" y1="140" x2="280" y2="140"/>
+      <line x1="40" y1="200" x2="280" y2="200"/><line x1="40" y1="260" x2="280" y2="260"/>
+    </g>
+    <circle cx="70" cy="70" r="7" fill="#e74c3c"/><text x="70" y="52" font-size="14" fill="#c0392b" text-anchor="middle">A</text>
+    <circle cx="240" cy="230" r="7" fill="#2980b9"/><text x="240" y="256" font-size="14" fill="#2471a3" text-anchor="middle">B</text>
+    <line x1="70" y1="70" x2="240" y2="230" stroke="#2e86de" stroke-width="3"/>
+    <text x="150" y="135" font-size="15" fill="#2e86de" text-anchor="middle" font-weight="bold">欧氏距离</text>
+    <text x="150" y="158" font-size="14" fill="#555" text-anchor="middle">d₂ = √((Δx₁)²+(Δx₂)²)</text>
+    <text x="150" y="292" font-size="13" fill="#888" text-anchor="middle">直线“飞过去”</text>
+  </g>
+  <!-- ===== 面板 2：曼哈顿距离 ===== -->
+  <g>
+    <rect x="330" y="10" width="300" height="300" rx="10" fill="#fff" stroke="#d0d7de"/>
+    <g stroke="#eef1f4">
+      <line x1="380" y1="40" x2="380" y2="270"/><line x1="440" y1="40" x2="440" y2="270"/>
+      <line x1="500" y1="40" x2="500" y2="270"/><line x1="560" y1="40" x2="560" y2="270"/>
+      <line x1="360" y1="80" x2="600" y2="80"/><line x1="360" y1="140" x2="600" y2="140"/>
+      <line x1="360" y1="200" x2="600" y2="200"/><line x1="360" y1="260" x2="600" y2="260"/>
+    </g>
+    <circle cx="390" cy="70" r="7" fill="#e74c3c"/><text x="390" y="52" font-size="14" fill="#c0392b" text-anchor="middle">A</text>
+    <circle cx="560" cy="230" r="7" fill="#2980b9"/><text x="560" y="256" font-size="14" fill="#2471a3" text-anchor="middle">B</text>
+    <path d="M390,70 L560,70 L560,230" fill="none" stroke="#e67e22" stroke-width="3" stroke-linejoin="round"/>
+    <text x="468" y="58" font-size="13" fill="#e67e22" text-anchor="middle">|Δx₁|</text>
+    <text x="578" y="152" font-size="13" fill="#e67e22" text-anchor="middle">|Δx₂|</text>
+    <text x="470" y="135" font-size="15" fill="#e67e22" text-anchor="middle" font-weight="bold">曼哈顿距离</text>
+    <text x="470" y="158" font-size="14" fill="#555" text-anchor="middle">d₁ = |Δx₁|+|Δx₂|</text>
+    <text x="470" y="292" font-size="13" fill="#888" text-anchor="middle">只能横平竖直“走街区”</text>
+  </g>
+  <!-- ===== 面板 3：切比雪夫距离 ===== -->
+  <g>
+    <rect x="650" y="10" width="300" height="300" rx="10" fill="#fff" stroke="#d0d7de"/>
+    <g stroke="#eef1f4">
+      <line x1="700" y1="40" x2="700" y2="270"/><line x1="760" y1="40" x2="760" y2="270"/>
+      <line x1="820" y1="40" x2="820" y2="270"/><line x1="880" y1="40" x2="880" y2="270"/>
+      <line x1="680" y1="80" x2="920" y2="80"/><line x1="680" y1="140" x2="920" y2="140"/>
+      <line x1="680" y1="200" x2="920" y2="200"/><line x1="680" y1="260" x2="920" y2="260"/>
+    </g>
+    <circle cx="710" cy="70" r="7" fill="#e74c3c"/><text x="710" y="52" font-size="14" fill="#c0392b" text-anchor="middle">A</text>
+    <circle cx="880" cy="230" r="7" fill="#2980b9"/><text x="880" y="256" font-size="14" fill="#2471a3" text-anchor="middle">B</text>
+    <rect x="710" y="70" width="170" height="160" fill="none" stroke="#27ae60" stroke-width="3"/>
+    <text x="840" y="100" font-size="13" fill="#27ae60" text-anchor="middle">max(|Δx₁|,|Δx₂|)</text>
+    <text x="800" y="135" font-size="15" fill="#27ae60" text-anchor="middle" font-weight="bold">切比雪夫距离</text>
+    <text x="800" y="158" font-size="14" fill="#555" text-anchor="middle">d∞ = max(|Δx₁|,|Δx₂|)</text>
+    <text x="800" y="292" font-size="13" fill="#888" text-anchor="middle">“棋盘”上最远的那步决定远近</text>
+  </g>
+</svg>

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="300" viewBox="0 0 980 300" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <defs>
+    <marker id="ap" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect width="980" height="300" fill="#fafbfc"/>
+  <!-- 7 个步骤盒 -->
+  <g>
+    <rect x="20" y="70" width="118" height="70" rx="10" fill="#d6eaf8" stroke="#2e86de" stroke-width="2"/>
+    <text x="79" y="100" font-size="14" font-weight="bold" fill="#1a5276" text-anchor="middle">原始数据</text>
+    <text x="79" y="122" font-size="12" fill="#555" text-anchor="middle">业务表/日志</text>
+    <rect x="162" y="70" width="118" height="70" rx="10" fill="#fdebd0" stroke="#e67e22" stroke-width="2"/>
+    <text x="221" y="100" font-size="14" font-weight="bold" fill="#935116" text-anchor="middle">清洗/缺失值</text>
+    <text x="221" y="122" font-size="12" fill="#555" text-anchor="middle">删除/填充/插值</text>
+    <rect x="304" y="70" width="118" height="70" rx="10" fill="#fdebd0" stroke="#e67e22" stroke-width="2"/>
+    <text x="363" y="100" font-size="14" font-weight="bold" fill="#935116" text-anchor="middle">特征编码</text>
+    <text x="363" y="122" font-size="12" fill="#555" text-anchor="middle">One-Hot/Ordinal</text>
+    <rect x="446" y="70" width="118" height="70" rx="10" fill="#fdebd0" stroke="#e67e22" stroke-width="2"/>
+    <text x="505" y="100" font-size="14" font-weight="bold" fill="#935116" text-anchor="middle">特征缩放</text>
+    <text x="505" y="122" font-size="12" fill="#555" text-anchor="middle">z-score/min-max</text>
+    <rect x="588" y="70" width="118" height="70" rx="10" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
+    <text x="647" y="100" font-size="14" font-weight="bold" fill="#1e8449" text-anchor="middle">特征选择</text>
+    <text x="647" y="122" font-size="12" fill="#555" text-anchor="middle">过滤/包裹/嵌入</text>
+    <rect x="730" y="70" width="118" height="70" rx="10" fill="#d5f5e3" stroke="#27ae60" stroke-width="2"/>
+    <text x="789" y="100" font-size="14" font-weight="bold" fill="#1e8449" text-anchor="middle">训练/调参</text>
+    <text x="789" y="122" font-size="12" fill="#555" text-anchor="middle">交叉验证+搜索</text>
+    <rect x="872" y="70" width="92" height="70" rx="10" fill="#fadbd8" stroke="#e74c3c" stroke-width="2"/>
+    <text x="918" y="100" font-size="14" font-weight="bold" fill="#922b21" text-anchor="middle">评估</text>
+    <text x="918" y="122" font-size="12" fill="#555" text-anchor="middle">AUC/PR/F1</text>
+  </g>
+  <!-- 箭头 -->
+  <g stroke="#555" stroke-width="2">
+    <line x1="140" y1="105" x2="158" y2="105" marker-end="url(#ap)"/>
+    <line x1="282" y1="105" x2="300" y2="105" marker-end="url(#ap)"/>
+    <line x1="424" y1="105" x2="442" y2="105" marker-end="url(#ap)"/>
+    <line x1="566" y1="105" x2="584" y2="105" marker-end="url(#ap)"/>
+    <line x1="708" y1="105" x2="726" y2="105" marker-end="url(#ap)"/>
+    <line x1="850" y1="105" x2="868" y2="105" marker-end="url(#ap)"/>
+  </g>
+  <!-- 迭代回路 -->
+  <path d="M918,140 C918,220 505,230 505,180" fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#ap)"/>
+  <text x="715" y="225" font-size="13" fill="#e74c3c" text-anchor="middle">评估不合格 → 回到特征工程/调参迭代（交叉验证内闭环）</text>
+  <!-- 顶部与底部 -->
+  <text x="490" y="38" font-size="16" font-weight="bold" fill="#333" text-anchor="middle">机器学习标准流水线：任何一步做错（如缩放统计量泄漏）都会让模型“看起来好、上线垮”</text>
+  <text x="490" y="280" font-size="13" fill="#888" text-anchor="middle">⚠ 训练集/验证集必须用同一套统计量（fit 只发生在训练集），测试集只能碰一次</text>
+</svg>

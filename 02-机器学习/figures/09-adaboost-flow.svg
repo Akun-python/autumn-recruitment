@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="420" viewBox="0 0 920 420" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <defs>
+    <marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect width="920" height="420" fill="#fafbfc"/>
+  <!-- ===== 左：带权重的训练数据 ===== -->
+  <rect x="20" y="40" width="230" height="330" rx="12" fill="#fff" stroke="#d0d7de"/>
+  <text x="135" y="72" font-size="16" font-weight="bold" fill="#333" text-anchor="middle">训练数据 + 样本权重 D</text>
+  <g>
+    <circle cx="60" cy="120" r="6" fill="#e74c3c"/><circle cx="110" cy="100" r="9" fill="#e74c3c"/>
+    <circle cx="170" cy="140" r="6" fill="#e74c3c"/><circle cx="90" cy="180" r="12" fill="#e74c3c"/>
+    <circle cx="150" cy="200" r="6" fill="#e74c3c"/><circle cx="60" cy="240" r="7" fill="#e74c3c"/>
+    <circle cx="120" cy="280" r="10" fill="#e74c3c"/>
+    <circle cx="200" cy="110" r="6" fill="#3498db"/><circle cx="180" cy="240" r="9" fill="#3498db"/>
+    <circle cx="210" cy="180" r="6" fill="#3498db"/><circle cx="190" cy="300" r="12" fill="#3498db"/>
+    <circle cx="140" cy="330" r="6" fill="#3498db"/><circle cx="60" cy="310" r="8" fill="#3498db"/>
+  </g>
+  <text x="120" y="360" font-size="13" fill="#888" text-anchor="middle">圆圈越大 = 权重越大</text>
+  <!-- ===== 中间：树桩序列 ===== -->
+  <g stroke="#555" stroke-width="2" fill="#fff">
+    <line x1="255" y1="160" x2="330" y2="120" marker-end="url(#ar2)"/>
+    <line x1="255" y1="210" x2="330" y2="210" marker-end="url(#ar2)"/>
+    <line x1="255" y1="260" x2="330" y2="300" marker-end="url(#ar2)"/>
+  </g>
+  <rect x="340" y="75" width="210" height="70" rx="10" fill="#fffbe6" stroke="#f0c36d"/>
+  <text x="445" y="105" font-size="15" fill="#8a6d1a" text-anchor="middle" font-weight="bold">弱分类器 h₁(树桩)</text>
+  <text x="445" y="130" font-size="14" fill="#8a6d1a" text-anchor="middle">错误率 e₁ → 权重 α₁</text>
+  <rect x="340" y="175" width="210" height="70" rx="10" fill="#fffbe6" stroke="#f0c36d"/>
+  <text x="445" y="205" font-size="15" fill="#8a6d1a" text-anchor="middle" font-weight="bold">弱分类器 h₂(树桩)</text>
+  <text x="445" y="230" font-size="14" fill="#8a6d1a" text-anchor="middle">专攻 h₁ 分错的样本</text>
+  <rect x="340" y="275" width="210" height="70" rx="10" fill="#fffbe6" stroke="#f0c36d"/>
+  <text x="445" y="305" font-size="15" fill="#8a6d1a" text-anchor="middle" font-weight="bold">… hₘ(树桩)</text>
+  <text x="445" y="330" font-size="14" fill="#8a6d1a" text-anchor="middle">每轮更新：D ← D·e^(∓α)</text>
+  <!-- ===== 右：加权投票 ===== -->
+  <line x1="555" y1="120" x2="630" y2="190" stroke="#555" stroke-width="2" marker-end="url(#ar2)"/>
+  <line x1="555" y1="210" x2="630" y2="210" stroke="#555" stroke-width="2" marker-end="url(#ar2)"/>
+  <line x1="555" y1="300" x2="630" y2="230" stroke="#555" stroke-width="2" marker-end="url(#ar2)"/>
+  <rect x="640" y="140" width="250" height="150" rx="14" fill="#e8f6ef" stroke="#27ae60" stroke-width="2"/>
+  <text x="765" y="185" font-size="17" font-weight="bold" fill="#1e8449" text-anchor="middle">F(x) = Σₘ αₘ hₘ(x)</text>
+  <text x="765" y="215" font-size="15" fill="#1e8449" text-anchor="middle">G(x) = sign(F(x))</text>
+  <text x="765" y="250" font-size="14" fill="#555" text-anchor="middle">强分类器（加权投票）</text>
+  <text x="765" y="272" font-size="12" fill="#888" text-anchor="middle">αₘ = ½ ln((1-eₘ)/eₘ)</text>
+  <!-- 底部说明 -->
+  <text x="460" y="400" font-size="14" fill="#666" text-anchor="middle">AdaBoost = 前向分步加法模型 + 指数损失：每轮放大被分错样本的权重，让下一个弱分类器“专攻难题”</text>
+</svg>
