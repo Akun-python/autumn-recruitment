@@ -6,17 +6,17 @@
 
 <p align="center">
   <b>一个可执行的算法 / 机器学习 / 大模型 / 强化学习 / 计算机视觉 / NLP / 时间序列面试备战体系</b><br/>
-  11 大模块 · 114 篇中文教学 Notebook · 核心算法全部手写实现，附 sklearn / torch 数值对照
+  11 大模块 · 122 篇中文教学 Notebook · 核心算法全部手写实现，附 sklearn / torch 数值对照
 </p>
 
 <p align="center">
   <img src="assets/badges/license.svg" alt="license MIT"/>
   <img src="assets/badges/python.svg" alt="python 3.9+"/>
   <img src="assets/badges/modules.svg" alt="11 modules"/>
-  <img src="assets/badges/notebooks.svg" alt="114 notebooks"/>
+  <img src="assets/badges/notebooks.svg" alt="122 notebooks"/>
   <img src="assets/badges/numpy.svg" alt="from scratch"/>
   <img src="assets/badges/zh.svg" alt="中文教学"/>
-  <img src="assets/badges/verified.svg" alt="nbclient 114/114"/>
+  <img src="assets/badges/verified.svg" alt="nbclient 122/122"/>
 </p>
 
 ---
@@ -27,8 +27,8 @@
 > 面向**算法 / AI 岗位秋招**的一站式备战仓库：从 **公式推导 → 手写实现 → 数值对照 → 面试八股 → 复盘闭环** 全流程覆盖，
 > 内含数据结构与算法、机器学习、深度学习、LLM 大模型、八股与工程、强化学习、优化算法、计算机视觉、NLP、时间序列等 **11 大方向**。
 
-- 🧑🏫 **教学 Notebook**：**114 篇中文教学**，每篇含公式推导、从零手写实现、可运行测试用例与自测清单；
-- ✅ **全量可验证**：**114 / 114 本通过 nbclient 执行验证**（含 sklearn / torch 数值对照断言，无需 GPU、无需联网）；
+- 🧑🏫 **教学 Notebook**：**122 篇中文教学**，每篇含公式推导、从零手写实现、可运行测试用例与自测清单；
+- ✅ **全量可验证**：**122 / 122 本通过 nbclient 执行验证**（含 sklearn / torch 数值对照断言，无需 GPU、无需联网）；
 - 🎯 **面试向闭环**：高频题单 + 90 连问速答 + **手写三件套默写** + 面试复盘模板；
 - 🗺️ **进度可追踪**：[ROADMAP.md](ROADMAP.md) 分阶段路线 + 每个模块自测清单，学一章勾一章。
 
@@ -50,7 +50,7 @@
 - 📐 **推导 + 配图**：每篇含**变种模型谱系表、逐步推导（面试手推模板）、matplotlib 过程图**，
   打开 notebook 即可直接看到推导过程与结果图；
 - 🎯 **面试向**：高频题单 + 90 连问速答 + **手写三件套默写** + 面试复盘闭环；
-- 🧪 **可验证**：全仓 **114 本 notebook 已全部通过 nbclient 全量执行验证**（含 sklearn / torch 对照断言；无需 GPU、无需联网）；
+- 🧪 **可验证**：全仓 **122 本 notebook 已全部通过 nbclient 全量执行验证**（含 sklearn / torch 对照断言；无需 GPU、无需联网）；
 - 🗺️ **进度可追踪**：ROADMAP 分阶段 + 每个模块自测清单，学一章勾一章。
 
 <a id="stats"></a>
@@ -59,10 +59,10 @@
 | 指标 | 数值 |
 |---|---|
 | 模块 | 11（算法 / ML / DL / LLM / 八股工程 / 复盘 / RL / 优化算法 / 计算机视觉 / NLP / 时间序列 + 路线） |
-| 教学 Notebook | **114 篇**（算法 14 · ML 13 · DL 7 · LLM 24 · 八股 8 · RL 8 · 优化 13 · CV 11 · NLP 8 · 时间序列 8） |
+| 教学 Notebook | **122 篇**（算法 14 · ML 13 · DL 15 · LLM 24 · 八股 8 · RL 8 · 优化 13 · CV 11 · NLP 8 · 时间序列 8） |
 | 背诵级手写模板 | 11 份（[`01-数据结构与算法/模板代码/`](01-数据结构与算法/模板代码/README.md)） |
 | 推导过程图 | 15 张（[`07-强化学习/教学/images/`](07-强化学习/教学/)）+ 16 张（[`05-八股与工程/images/`](05-八股与工程/)）+ 各章 `教学/images/` |
-| 执行验证 | **114 / 114 本 nbclient PASS（全仓）** |
+| 执行验证 | **122 / 122 本 nbclient PASS（全仓）** |
 | 依赖 | `numpy` / `matplotlib` / `sklearn` / `torch`（02-04 对照验证用；无需 GPU、无需联网） |
 
 <a id="quickstart"></a>
@@ -89,11 +89,11 @@ jupyter notebook "07-强化学习/教学/00-MDP与贝尔曼方程.ipynb"
 |---|---|---|---|
 | [01-数据结构与算法](01-数据结构与算法/README.md) | 排序/哈希/双指针/链表/二分/二叉树/回溯/DP/贪心/图/堆/位运算/字符串 | 14 篇教学 + 11 份模板 | ✅ |
 | [02-机器学习](02-机器学习/README.md) | 线性回归/逻辑回归/NB与K-Means/SVM/PCA/GBDT/决策树随机森林/KNN/AdaBoost/神经网络/HMM/CRF/特征工程 | 13 篇推导笔记 | ✅ |
-| [03-深度学习](03-深度学习/README.md) | BP/CNN/优化器/RNN-LSTM/BN/激活初始化/正则化 | 7 篇模型笔记 | ✅ |
+| [03-深度学习](03-深度学习/README.md) | BP/CNN/优化器/RNN-LSTM/BN/激活初始化/正则化/CNN架构/RNN·LSTM·GRU/Transformer/Mamba/GAN/VAE·扩散/架构八股 | 15 篇模型笔记 | ✅ |
 | [04-LLM大模型](04-LLM大模型/README.md) | Transformer 从零手推 24 讲（架构/分词/训练/推理/RL 对齐） | 24 篇教学 notebook | ✅ |
 | [05-八股与工程](05-八股与工程/README.md) | Python/OS/网络/数据库/Redis/分布式/工程工具/高频手撕 | 8 篇八股 notebook | ✅ |
 | [06-面试复盘](06-面试复盘/README.md) | 复盘方法论 + 每场面试记录模板 | — | ✅ |
-| [07-强化学习](07-强化学习/README.md) | MDP/DP/MC-TD/Q学习/DQN/策略梯度/PPO-GRPO/面试八股 | 8 篇教学 notebook（含 15 张推导图） | ✅ |
+| [07-强化学习](07-强化学习/README.md) | MDP/DP/MC-TD/Q学习/DQN/策略梯度/PPO-GRPO/**连续动作(DDPG·TD3·SAC)**/**多智能体 MARL**/**基于模型(MCTS·AlphaGo)**/**离线 RL**/**模仿学习(BC·DAgger·IRL·GAIL)**/面试八股 | 13 篇教学 notebook（含 15 张推导图） | ✅ |
 | [08-优化算法](08-优化算法/README.md) | SGD/动量/Adam/AdamW/学习率调度/二阶优化/LLM 训练（FP16·BF16·ZeRO）+ 经典优化（LP/IP/GA/SA/TS/PSO/ACO/KKT） | 13 篇优化笔记（推导+对照+自测） | ✅ |
 | [09-计算机视觉](09-计算机视觉/README.md) | 图像基础/边缘特征/CNN/经典架构/目标检测（R-CNN·**YOLO v1→v11 全系列**）/分割（FCN·**U-Net 全家族**·DeepLab）/度量学习/**SAM 基础模型** | 11 篇视觉笔记（推导+对照+自测） | ✅ |
 | [10-自然语言处理](10-自然语言处理/README.md) | 文本表示/TF-IDF/n-gram 语言模型/词向量（Word2Vec·GloVe）/RNN·LSTM/Attention·Transformer/预训练（mini-BERT·mini-GPT）/分类与标注 | 8 篇 NLP 笔记（推导+对照+自测） | ✅ |
@@ -126,7 +126,7 @@ autumn-recruit-algo/
 ├── 03-深度学习/               # 🧠 DL 模型模块
 │   ├── README.md
 │   ├── 高频面试题.md
-│   └── 模型笔记/              # ✅ 7 篇手写教学 notebook
+│   └── 模型笔记/              # ✅ 15 篇手写教学 notebook（01–07 训练视角 + 08–15 架构视角）
 │
 ├── 04-LLM大模型/              # 🚀 LLM 重点模块
 │   ├── README.md              # 知识地图（六大块）+ 复习策略
@@ -221,7 +221,7 @@ autumn-recruit-algo/
 
 📄 [模块 README](03-深度学习/README.md) · [高频面试题](03-深度学习/高频面试题.md)
 
-**模型笔记（7 篇，已完成 ✅）**
+**模型笔记（15 篇，已完成 ✅）**
 
 | # | 主题 | 手写核心 |
 |---|------|----------|
@@ -232,6 +232,14 @@ autumn-recruit-algo/
 | 5 | [批量归一化 BN](03-深度学习/模型笔记/05-批量归一化BN.ipynb) | 前向/反向三项式 + 梯度检查 + 训练/推理差异 |
 | 6 | [激活函数与初始化](03-深度学习/模型笔记/06-激活函数与初始化.ipynb) | 激活库 + 梯度消失实验 + Xavier/He 方差推导 |
 | 7 | [正则化](03-深度学习/模型笔记/07-正则化.ipynb) | L1/L2/Dropout/早停手写 + 过拟合对比实验 |
+| 8 | [神经网络架构全景图](03-深度学习/模型笔记/08-神经网络架构全景图.ipynb) | 参数量/FLOPs 手算 + 六类 mini 骨架 + O(T²) vs O(T) |
+| 9 | [CNN 经典架构与 PyTorch 实现](03-深度学习/模型笔记/09-CNN经典架构与PyTorch实现.ipynb) | 手写 2D 卷积对照 + 感受野递推 + 残差对比 + Depthwise |
+| 10 | [RNN 与 LSTM 深入（GRU/双向）](03-深度学习/模型笔记/10-RNN与LSTM深入GRU双向.ipynb) | torch 手写 RNN/LSTM/GRU cell vs nn 逐位对照 + 梯度消失实测 |
+| 11 | [Attention 与 Transformer 从零实现](03-深度学习/模型笔记/11-Attention与Transformer从零实现.ipynb) | 手写多头对照 + 正弦 PE + 因果掩码 + mini Encoder 倒序任务 |
+| 12 | [Mamba 与状态空间模型](03-深度学习/模型笔记/12-Mamba与状态空间模型.ipynb) | ZOH 离散化 + 递推≡卷积验证 + 选择性扫描 + SSM 学累计和 |
+| 13 | [GAN 生成对抗网络](03-深度学习/模型笔记/13-GAN生成对抗网络.ipynb) | minimax + 最优 D 推导 + toy GAN + 模式坍缩 + WGAN-GP |
+| 14 | [VAE 与扩散模型](03-深度学习/模型笔记/14-VAE与扩散模型.ipynb) | ELBO + 重参数化 + toy VAE + DDPM 加噪/预测噪声/反向采样 |
+| 15 | [深度学习架构面试八股](03-深度学习/模型笔记/15-深度学习架构面试八股.ipynb) | 全架构对比表 + 默写自检三连 + 40 连问 + 手撕清单 |
 
 ### 04-LLM大模型
 
@@ -268,7 +276,7 @@ autumn-recruit-algo/
 
 📄 [模块 README](07-强化学习/README.md) · [高频面试题](07-强化学习/高频面试题.md)
 
-**教学（8 篇，已完成 ✅ · 44-46 cells/篇）**
+**教学（13 篇，已完成 ✅ · 00-07 为 44-46 cells/篇，08-12 为故事版新五篇）**
 
 | # | 主题 | 手写核心 |
 |---|------|----------|
@@ -280,8 +288,14 @@ autumn-recruit-algo/
 | 05 | [策略梯度与Actor-Critic](07-强化学习/教学/05-策略梯度与Actor-Critic.ipynb) | REINFORCE/最简 AC 学习曲线 + GAE + 推导流程图/基线方差图 |
 | 06 | [PPO与GRPO](07-强化学习/教学/06-PPO与GRPO.ipynb) | clip 数值实验 + RLHF 三阶段 + R1 组内优势 + clip 曲面/KL 权衡图 |
 | 07 | [强化学习面试八股](07-强化学习/教学/07-强化学习面试八股与高频题.ipynb) | 90 连问速答 + 老虎机探索实验 + 手写模板 + 算法谱系树 |
+| 08 | [连续动作 DDPG/TD3/SAC](07-强化学习/教学/08-连续动作控制DDPG-TD3-SAC详解.ipynb)（故事版） | DPG 梯度检查 + 软更新跟随 + OU 噪声 + 双 Q min + SAC 温度自适应 |
+| 09 | [多智能体 MARL](07-强化学习/教学/09-多智能体强化学习MARL详解.ipynb)（故事版） | 纳什均衡枚举 + 非平稳震荡 + CTDE 形状 + VDN/QMIX 单调 + MADDPG + COMA 反事实 |
+| 10 | [基于模型 RL 与规划](07-强化学习/教学/10-基于模型强化学习与规划详解.ipynb)（故事版） | 最小二乘学模型 + Dyna 样本效率 + 手写 UCB/MCTS + 模型误差累积 |
+| 11 | [离线强化学习](07-强化学习/教学/11-离线强化学习详解.ipynb)（故事版） | 外推误差演示 + BCQ ε-球 + CQL 保守目标 + IQL expectile 分位数 |
+| 12 | [模仿学习与逆强化学习](07-强化学习/教学/12-模仿学习与逆强化学习详解.ipynb)（故事版） | BC 复合误差 + DAgger 聚合 + IRL 特征匹配/MaxEnt + GAIL 对抗(min-max) |
 
-> 每篇含：**变种模型谱系表格 + 逐步推导（面试手推模板）+ matplotlib 过程图 2 张**（[`教学/images/`](07-强化学习/教学/images/)，共 15 张）。
+> 每篇含：**变种模型谱系表格 + 逐步推导（面试手推模板）+ matplotlib 过程图**（[`教学/images/`](07-强化学习/教学/images/)，共 15 张；08-12 新五篇内嵌图 10 张）。
+> 新五篇均以「**完整介绍 + 0 基础通俗例子 + 公式推导 + 手写实现**」开场，面试冲刺优先 08/09/12。
 
 ### 08-优化算法
 
@@ -444,7 +458,7 @@ UCB(c=2) 总奖励: 800 / 1000  (理论最优≈900)
 
 - [x] Phase 1：算法教学 notebook（14 篇）+ 11 份手写模板
 - [x] Phase 2：ML 推导笔记（13 篇：LR/SVM/PCA/GBDT/NB/K-Means/树 + KNN/AdaBoost/MLP/HMM/CRF/特征工程）
-- [x] Phase 3：DL 模型笔记（7 篇：BP/CNN/优化器/RNN-LSTM/BN/激活/正则）
+- [x] Phase 3：DL 模型笔记（15 篇：BP/CNN/优化器/RNN-LSTM/BN/激活/正则 + 架构 08–15：CNN/RNN·LSTM·GRU/Transformer/Mamba/GAN/VAE·扩散/八股）
 - [x] Phase 4：RL 教学 notebook（8 篇：MDP/DP/MC-TD/Q学习/DQN/PG-AC/PPO-GRPO/面试八股，含推导与配图）
 - [x] Phase 5：优化算法教学 notebook（13 篇：SGD→动量→Adam/AdamW→调度→二阶→LLM 训练 FP16/ZeRO + 经典优化 LP/IP/GA/SA/TS/PSO/ACO/KKT，含 torch/scipy/sklearn 对照）
 - [x] Phase 6：计算机视觉教学 notebook（11 篇：图像基础/特征提取/CNN 深入/经典架构/目标检测（R-CNN·**YOLO v1→v11 全系列**）/分割（FCN·**U-Net 全家族**）/度量学习/**SAM 基础模型**，含 torch/sklearn 对照）

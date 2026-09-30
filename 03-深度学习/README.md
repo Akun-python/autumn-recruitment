@@ -10,7 +10,9 @@
 4. **公式会背**：激活函数、优化器更新公式、BN 训练/推理公式、LSTM 门控公式
 5. **训练经验积累**：学习率、初始化、正则化、数据增强，面试官喜欢问"你踩过哪些坑"
 
-## 模型笔记索引（`模型笔记/`，7 篇，全部含推导 + 可运行代码 + torch 对照 + 自测清单）
+## 模型笔记索引（`模型笔记/`，15 篇，全部含推导 + 可运行代码 + torch 对照 + 自测清单）
+
+### 训练视角（01–07）
 
 | 篇目 | 核心内容 | 对照验证 |
 |------|----------|----------|
@@ -22,20 +24,36 @@
 | 06-激活函数与初始化 | ReLU/LeakyReLU/Swish/GELU 对比 / 死亡 ReLU 实验 / Xavier·He 推导 / **全 0 初始化对称演示** | 梯度传播消失/爆炸对照、He 保持方差 O(1) |
 | 07-正则化 | L1·L2·Dropout·早停 / **inverted dropout 训练推理期望一致性** / 过拟合 U 形曲线 | torch.nn.Dropout 输出逐位一致 |
 
+### 架构视角（08–15）
+
+| 篇目 | 核心内容 | 对照验证 |
+|------|----------|----------|
+| 08-神经网络架构全景图 | 谱系三族 / 三视角选型 / **参数量·FLOPs 手算**（Conv·LSTM·MHA）/ 六类 mini 骨架 / O(T²) vs O(T) 量级图 | 手算 vs torch.numel() 逐项一致 |
+| 09-CNN经典架构与PyTorch实现 | LeNet→VGG→ResNet→EfficientNet 演进 / **手写 2D 卷积** / 感受野递推 / 1×1·Depthwise / 残差 vs 无残差收敛对比 | 手写卷积 vs nn.Conv2d（~1e-15） |
+| 10-RNN与LSTM深入GRU双向 | **torch 手写 RNN/LSTM/GRU cell** / 门控公式与权重排布 / 梯度消失实测 / 双向拼接 / LSTM 学周期 | 手写 vs nn.LSTM/nn.GRU 逐位一致（~1e-7） |
+| 11-Attention与Transformer从零实现 | 缩放点积推导（√d）/ **手写多头 vs nn.MultiheadAttention** / 正弦 PE / Encoder 块 / mini Encoder 倒序任务 acc>0.95 | SDPA/MHA 逐位对照 + 训练收敛断言 |
+| 12-Mamba与状态空间模型 | 连续 SSM → **ZOH 离散化推导** / **递推≡卷积数值验证** / 选择性演示 / toy Mamba 块 / SSM 学累计和 | 递推 vs 卷积输出一致（~1e-12） |
+| 13-GAN生成对抗网络 | minimax 目标 / **最优判别器 D\*=p/(p+p) 推导** / toy GAN 8 高斯环 / 模式坍缩 / **WGAN-GP** 对比 | 生成分布 vs 真实分布散点对比 |
+| 14-VAE与扩散模型 | **ELBO 两项推导** / 重参数化 / toy VAE / **DDPM 加噪→预测噪声→反向采样** | VAE/DDPM 采样覆盖环全部 mode |
+| 15-深度学习架构面试八股 | 全架构对比表 / **可执行默写自检**（参数量·门控·注意力·ZOH）/ 40 连问 / 手撕清单 10 条 / 踩坑经验 | 默写三连跑通 = 公式过关 |
+
 ## 本目录规划
 
 ```
 03-深度学习/
 ├── README.md          # 本文件
 ├── 高频面试题.md      # 分类面经清单（带 TODO 打勾）
-└── 模型笔记/          # ✅ 7 篇 Jupyter notebook（推导 + 代码 + torch 对照 + 自测）
+└── 模型笔记/          # ✅ 15 篇 Jupyter notebook（推导 + 代码 + torch 对照 + 自测）
+                       #    01–07 训练视角：BP/优化器/BN/正则化
+                       #    08–15 架构视角：CNN/RNN·LSTM·GRU/Transformer/Mamba/GAN/VAE·扩散/八股
 ```
 
 ## 验收标准
 
-- [x] `高频面试题.md` 覆盖 BP / BN / LSTM / 优化器高频考点
-- [x] 模型笔记 7 篇（BP、BN、LSTM、优化器对比必含）
-- [x] 能手推：BP、BN 前向/反向、Adam 更新公式、LSTM 门控梯度
+- [x] `高频面试题.md` 覆盖 BP / BN / LSTM / 优化器 / 注意力 / 架构对比高频考点
+- [x] 模型笔记 15 篇（BP、BN、LSTM、优化器对比、Transformer、Mamba、GAN、VAE/扩散必含）
+- [x] 能手推：BP、BN 前向/反向、Adam 更新公式、LSTM 门控梯度、注意力公式、ZOH 离散化
 - [x] 全部 notebook 代码经批量执行验证（torch 对照断言通过）
 
-> 💡 手推优先级建议：MLP BP（四组参数的梯度）→ 优化器更新公式（含偏差校正）→ BN 训练/推理公式 → LSTM 三组门 + 细胞状态反向。
+> 💡 手推优先级建议：MLP BP（四组参数的梯度）→ 优化器更新公式（含偏差校正）→ BN 训练/推理公式 → LSTM 三组门 + 细胞状态反向 → 注意力 softmax(QK^T/√d)V → ZOH 离散化。
+> 架构篇学习顺序：08 总览 → 09 CNN → 10 RNN/LSTM/GRU → 11 Transformer → 12 Mamba → 13 GAN → 14 VAE/扩散 → 15 八股总复习。

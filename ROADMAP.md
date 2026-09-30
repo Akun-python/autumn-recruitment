@@ -64,6 +64,7 @@
 - [ ] 手推：LR、SVM、PCA、朴素贝叶斯、K-Means、EM（写进 `02/推导笔记/`）
 - [ ] 按 `03-深度学习/高频面试题.md` 过 DL 面经
 - [ ] 手推：反向传播、BN、LSTM 门控、优化器更新公式
+- [ ] 按 `03-深度学习/README.md` 过架构主线（08–15 八本教学 notebook：架构全景→CNN 经典架构→RNN/LSTM/GRU 深入→Attention/Transformer 从零→Mamba/SSM→GAN→VAE/扩散→架构面试八股，均可执行默写自检）
 - [ ] 按 `08-优化算法/README.md` 过优化算法主线（13 本教学 notebook：SGD→动量→Adam/AdamW→调度→二阶→LLM 训练 FP16/ZeRO + 经典优化 LP/IP/GA/SA/TS/PSO/ACO/KKT）
 - [ ] 按 `09-计算机视觉/README.md` 过 CV 主线（11 本教学 notebook：图像基础→边缘特征→CNN→检测（R-CNN·YOLO v1→v11 全系列）→分割（FCN·U-Net 全家族）→度量学习→SAM 基础模型）
 - [ ] 按 `10-自然语言处理/README.md` 过 NLP 主线（8 本教学 notebook：文本表示/TF-IDF→n-gram 语言模型→词向量（Word2Vec·GloVe）→RNN·LSTM→Attention·Transformer→预训练（mini-BERT·mini-GPT）→分类与标注→NLP 八股）
