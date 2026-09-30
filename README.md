@@ -93,7 +93,7 @@ jupyter notebook "07-强化学习/教学/00-MDP与贝尔曼方程.ipynb"
 | [04-LLM大模型](04-LLM大模型/README.md) | Transformer 从零手推 24 讲（架构/分词/训练/推理/RL 对齐） | 24 篇教学 notebook | ✅ |
 | [05-八股与工程](05-八股与工程/README.md) | Python/OS/网络/数据库/Redis/分布式/工程工具/高频手撕 | 8 篇八股 notebook | ✅ |
 | [06-面试复盘](06-面试复盘/README.md) | 复盘方法论 + 每场面试记录模板 | — | ✅ |
-| [07-强化学习](07-强化学习/README.md) | MDP/DP/MC-TD/Q学习/DQN/策略梯度/PPO-GRPO/**连续动作(DDPG·TD3·SAC)**/**多智能体 MARL**/**基于模型(MCTS·AlphaGo)**/**离线 RL**/**模仿学习(BC·DAgger·IRL·GAIL)**/面试八股 | 13 篇教学 notebook（含 15 张推导图） | ✅ |
+| [07-强化学习](07-强化学习/README.md) | MDP/DP/MC-TD/Q学习/DQN/策略梯度/PPO-GRPO/**连续动作(DDPG·TD3·SAC)**/**多智能体 MARL**/**基于模型(MCTS·AlphaGo)**/**离线 RL**/**模仿学习(BC·DAgger·IRL·GAIL)**/面试八股 | 13 篇教学 notebook（含 15 张自绘推导图 + 13 张网络配图） | ✅ |
 | [08-优化算法](08-优化算法/README.md) | SGD/动量/Adam/AdamW/学习率调度/二阶优化/LLM 训练（FP16·BF16·ZeRO）+ 经典优化（LP/IP/GA/SA/TS/PSO/ACO/KKT） | 13 篇优化笔记（推导+对照+自测） | ✅ |
 | [09-计算机视觉](09-计算机视觉/README.md) | 图像基础/边缘特征/CNN/经典架构/目标检测（R-CNN·**YOLO v1→v11 全系列**）/分割（FCN·**U-Net 全家族**·DeepLab）/度量学习/**SAM 基础模型** | 11 篇视觉笔记（推导+对照+自测） | ✅ |
 | [10-自然语言处理](10-自然语言处理/README.md) | 文本表示/TF-IDF/n-gram 语言模型/词向量（Word2Vec·GloVe）/RNN·LSTM/Attention·Transformer/预训练（mini-BERT·mini-GPT）/分类与标注 | 8 篇 NLP 笔记（推导+对照+自测） | ✅ |
