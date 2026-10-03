@@ -14,7 +14,7 @@
 4. **冲到前沿（10）**：SAM 三组件（ViT 编码器 / 提示编码器 / 掩码解码器）、MAE 预训练、SAM2 流式记忆、Grounding DINO+SAM+CLIP 自动标注
 5. **手推优先**：灰度化公式、双线性上采样、转置卷积输出尺寸、卷积 dX/dW/db、IoU/GIoU/DIoU/CIoU、YOLOv1 损失五项、anchor 编解码、Dice/mIoU、Attention Gate、cross-attention、patch embedding、ArcFace logit
 
-## 视觉笔记索引（`教学/`，11 篇，全部含推导 + 手写实现 + 对照验证 + 自测清单）
+## 视觉笔记索引（`教学/`，12 篇，全部含推导 + 手写实现 + 对照验证 + 自测清单）
 
 | 篇目 | 核心内容 | 对照验证 |
 |------|----------|----------|
@@ -29,6 +29,7 @@
 | **08-YOLO系列目标检测详解** | **故事线**：三次思想跃迁 → v1 网格回归（损失五项/开根号）→ v2 anchor（IoU 距离聚类/BN/**偏移回归编解码**）→ v3 多尺度 FPN（anchor 分配/BCE/**FPN+PANet 融合**）→ v4/v5 训练配方（Mosaic/CIoU/**Mish+CSP/Focus**）→ v6/v7 解耦头/E-ELAN/**RepConv 重参数化融合** → v8 anchor-free（四边距离+DFL+TaskAlignedAssigner）→ v9/v10/v11（**PGI 梯度模拟/PSA/C2PSA**/Mamba）+ 演进时间线，**每个版本均为「原理 + 实现」对偶** | 手写 v1 损失 vs 手算、v1 推理流水线（阈值+NMS）、anchor round-trip、BN 手写 vs torch、Mosaic 拼接、v8 decode+DFL、对齐度量 top-k、RepConv 融合数值对照、Focus 信息无损 |
 | **09-U-Net系列图像分割详解** | **故事线**：像素级之难 → FCN 遗产 → U-Net 跳连（concat 形状链）→ Residual/V-Net（Dice 梯度）→ Attention U-Net（AG 门控）→ U-Net++（稠密跳连+深监督加权）→ U-Net 3+（全尺度）→ TransUNet（Transformer 瓶颈形状链）→ Swin-UNet（patch merge/expand）→ nnU-Net（自动决策演示）+ 家族对比表 | AG 手写 vs torch < 1e-5、Dice 数值梯度、U-Net++ 形状断言、patch merge 语义验证、V-Net 3D 推演 |
 | **10-SAM与视觉基础模型** | **故事线**：分割三重困局 → promptable 思想 → 三组件（眼睛/耳朵/手）→ ViT 位置编码 → 提示编码（点/框/掩码降采样）→ 交叉注意力 → 歧义消解（3 候选+IoU 打分）→ 数据引擎飞轮（11 亿掩码）→ MAE 预训练 → SAM2 视频 → Grounding DINO+CLIP 生态 | patch embedding 与 cross-attn 手写 vs torch < 1e-5、位置编码近/远相似度、掩码降采样形状、重建基线 MSE |
+| **11-3D视觉：点云与NeRF与3DGS** | **故事线**：2D 之壁 → 点云表示与处理（体素化/最远点采样/PointNet 对称聚合）→ 神经渲染 NeRF（体渲染积分/位置编码/分层采样）→ 3DGS（3D 高斯/投影/α 混合）→ 三大范式对比（显式 vs 隐式 vs 混合） | FPS 采样手写 vs 朴素、体渲染数值积分 vs 解析、NeRF 小样本重建 MSE、3DGS 光栅化模拟、投影梯度数值检查 |
 
 > 🧭 **知识链闭环**：04 的 IoU/NMS/anchor 是 08 的零件库；05 的上采样/Dice 是 09 的零件库；
 > 08/09 的提示驱动思想在 10 汇合到 SAM；08 的 FPN/深监督与 09 的跳连/深监督同源（多尺度信息流动）。
@@ -39,7 +40,7 @@
 09-计算机视觉/
 ├── README.md          # 本文件
 ├── 高频面试题.md      # 分类面经清单（带 TODO 打勾）
-└── 教学/              # ✅ 11 篇 Jupyter notebook（推导 + 代码 + 对照 + 自测）
+└── 教学/              # ✅ 12 篇 Jupyter notebook（推导 + 代码 + 对照 + 自测）
     └── images/        # 部分 notebook 落盘的插图
 ```
 
@@ -69,7 +70,7 @@
 ## 验收标准
 
 - [x] `高频面试题.md` 覆盖 图像基础 / CNN / 检测 / 分割 / 度量 / 基础模型 / 手撕默写
-- [x] 视觉笔记 11 篇，全部含推导 + 手写实现 + 对照验证 + 自测清单（08/09/10 为故事版深讲）
+- [x] 视觉笔记 12 篇，全部含推导 + 手写实现 + 对照验证 + 自测清单（08/09/10/11 为故事版深讲）
 - [x] 能手推：灰度化与均衡化、双线性上采样、卷积 dX/dW/db、IoU 系损失、NMS、YOLOv1 损失五项、anchor 编解码、Dice/mIoU、三元组、ArcFace
 - [x] 能口算：卷积输出尺寸、感受野递推、416 图 stride 32 → 13×13 网格（255 通道）
 - [x] 全部 notebook 代码经批量执行验证（numpy/sklearn/torch 对照断言通过）
