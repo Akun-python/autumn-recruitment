@@ -60,6 +60,7 @@
 
 **目标**：面经全覆盖，重点推导能手推。
 
+- [ ] 按 `00-数学基础/README.md` 过数学地基主线（5 本教学 notebook：高数与微积分→线性代数→概率论与统计→信息论→最优化与数值基础；每篇含大白话直觉 + 公式推导 + numpy 数值验证，数学八股速查见 05 篇）
 - [ ] 按 `02-机器学习/高频面试题.md` 逐个过，能讲清"是什么/为什么/怎么用"
 - [ ] 手推：LR、SVM、PCA、朴素贝叶斯、K-Means、EM（写进 `02/推导笔记/`）
 - [ ] 按 `03-深度学习/高频面试题.md` 过 DL 面经
@@ -74,6 +75,8 @@
 - [ ] 手推（时序）：ACF/PACF、ADF、AR 的 OLS、AIC、SES/Holt/HW 递推、滑窗特征、ExpandingWindow CV、σ√h 预测区间
 - [ ] 按 `07-强化学习/README.md` 过 RL 主线（8 本教学 notebook：MDP→DP→MC/TD→Q学习→DQN→PG/AC→PPO/GRPO→面试八股）
 - [ ] 手写：值迭代、Q-learning、PPO clip 目标、GRPO 优势公式（LLM 对齐岗必考）
+- [ ] 按 `16-语音/README.md` 过语音主线（5 本教学 notebook：信号特征→传统 GMM-HMM·DTW→端到端 CTC·Attention→TTS 合成→语音八股；语音/ASR/TTS 岗必考）
+- [ ] 按 `17-数据科学/README.md` 过数据科学主线（4 本教学 notebook：统计推断与假设检验→AB 实验设计与评估→因果推断（PSM·DID·uplift）→数据科学八股；数据科学/推荐/增长岗必考）
 - [ ] 结合手头项目（如 MiniMind）讲清楚训练管线
 
 **验收**：两份面经清单全部打勾，推导笔记 ≥ 6 篇。
@@ -89,6 +92,9 @@
 
 - [ ] 按 `04-LLM大模型/README.md` 知识地图过六大块（架构 / 分词数据 / 训练范式 / 推理优化 / 应用 / 前沿模型）
 - [ ] 精读必读论文（Transformer / InstructGPT / PPO / DPO / GRPO / RAG 等），每篇写笔记
+- [ ] 按 `12-智能体开发/README.md` 过 Agent 主线（10 本教学 notebook：Agent 边界与 ReAct→上下文 KV-Cache 与 Skill→记忆与 RAG→工具与 MCP→Coding Agent 与自举→异步/语音/Computer-Use→评估与 Pass@k→Mid-training/SFT/RL→轨迹学习与持续进化→多 Agent 协作；大模型应用/Agent 岗必考）
+- [ ] 按 `14-具身智能/README.md` 过具身智能主线（6 本教学 notebook：机器人学基础（位姿/齐次变换/正逆运动学/雅可比）→感知与环境理解→规划与控制（A*/RRT/PID/MPC）→VLA 视觉-语言-动作模型（RT-2/OpenVLA/π0）→仿真数据与 sim2real→具身八股；机器人/具身智能/自动驾驶岗必考）
+- [ ] 按 `15-AI-Infra/README.md` 过 AI 基础设施主线（10 本教学 notebook 全模块完成：手写 autograd（计算图/逆拓扑序反向）→ GEMM 算子优化（naive/tiled/寄存器分块/roofline）→ 混合精度与显存账本（FP16/BF16/loss scaling/ZeRO）→ 分布式并行（DP/FSDP/TP/PP/ZeRO）→ 集合通信与 NCCL（手写 Ring AllReduce）→ KV Cache 与推理内存（PagedAttention）→ vLLM 连续批处理与投机解码 → 量化（GPTQ/AWQ/SmoothQuant）→ 性能分析与优化（profiler/roofline/6ND成本）→ AI-Infra 面试八股 30 连问；AI Infra / 推理优化 / 训练平台 / HPC 岗必考）
 - [ ] 手推核心公式：RoPE、GQA、KV Cache、PPO/DPO/GRPO 损失（配套 04 教学 notebook 逐讲手推）
 - [ ] 结合项目讲深一层：你在 MiniMind 里做过什么（预训练/SFT/RL），踩过什么坑
 
@@ -101,6 +107,7 @@
 **目标**：补齐工程基础，适应面试节奏。
 
 - [ ] 按 `05-八股与工程/速查清单.md` 过一遍，每天 1 个主题
+- [ ] 按 `13-编程语言/README.md` 过编程语言主线（6 本教学 notebook：Python 核心→C++ 核心与 STL→ROS→Docker→Git→SQL；Python/Docker/Git 为必考，C++/ROS 按岗选学）
 - [ ] 每周 1 次真实模拟面试（找同学/朋友，或录音自测）
 - [ ] 训练表达：用"结论先行 → 展开 → 例子"结构回答
 - [ ] 简历定稿：STAR 法写项目，量化结果

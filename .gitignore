@@ -40,3 +40,6 @@ llm_stdout.txt
 llm_results.txt
 rl_results.txt
 tools/__pycache__/
+
+# 性能剖析等二进制残留
+05-八股与工程/prof.out

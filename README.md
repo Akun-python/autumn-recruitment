@@ -5,18 +5,18 @@
 <h1 align="center">🎯 Autumn-Recruit Algo Notes（秋招算法学习仓库）</h1>
 
 <p align="center">
-  <b>一个可执行的算法 / 机器学习 / 大模型 / 强化学习 / 计算机视觉 / NLP / 时间序列面试备战体系</b><br/>
-  11 大模块 · 122 篇中文教学 Notebook · 核心算法全部手写实现，附 sklearn / torch 数值对照
+  <b>一个可执行的算法 / 机器学习 / 大模型 / 强化学习 / 计算机视觉 / NLP / 时间序列 / 语音 / 数据科学 / AI-Infra 面试备战体系</b><br/>
+  18 大模块 · 183 篇中文教学 Notebook · 核心算法全部手写实现，附 sklearn / torch 数值对照（含 00-数学基础 7 篇 + 13-编程语言 10 篇 + 14-具身智能 6 篇 + 15-AI-Infra 11 篇 + 16-语音 5 篇 + 17-数据科学 4 篇）
 </p>
 
 <p align="center">
   <img src="assets/badges/license.svg" alt="license MIT"/>
   <img src="assets/badges/python.svg" alt="python 3.9+"/>
-  <img src="assets/badges/modules.svg" alt="11 modules"/>
-  <img src="assets/badges/notebooks.svg" alt="122 notebooks"/>
+  <img src="assets/badges/modules.svg" alt="18 modules"/>
+  <img src="assets/badges/notebooks.svg" alt="183 notebooks"/>
   <img src="assets/badges/numpy.svg" alt="from scratch"/>
   <img src="assets/badges/zh.svg" alt="中文教学"/>
-  <img src="assets/badges/verified.svg" alt="nbclient 122/122"/>
+  <img src="assets/badges/verified.svg" alt="nbclient 171/171 + 新增 12 篇待验证"/>
 </p>
 
 ---
@@ -25,10 +25,10 @@
 ## 📖 项目简介
 
 > 面向**算法 / AI 岗位秋招**的一站式备战仓库：从 **公式推导 → 手写实现 → 数值对照 → 面试八股 → 复盘闭环** 全流程覆盖，
-> 内含数据结构与算法、机器学习、深度学习、LLM 大模型、八股与工程、强化学习、优化算法、计算机视觉、NLP、时间序列等 **11 大方向**。
+> 内含数据结构与算法、机器学习、深度学习、LLM 大模型、八股与工程、强化学习、优化算法、计算机视觉、NLP、时间序列、编程语言、具身智能、AI-Infra 等 **13+ 大方向**。
 
-- 🧑🏫 **教学 Notebook**：**122 篇中文教学**，每篇含公式推导、从零手写实现、可运行测试用例与自测清单；
-- ✅ **全量可验证**：**122 / 122 本通过 nbclient 执行验证**（含 sklearn / torch 数值对照断言，无需 GPU、无需联网）；
+- 🧑🏫 **教学 Notebook**：**183 篇中文教学**（18 大模块全量覆盖），每篇含公式推导、从零手写实现、可运行测试用例与自测清单；
+- ✅ **全量可验证**：**既有 171 篇已全部通过 nbclient 执行验证**（含 sklearn / torch 数值对照断言，无需 GPU、无需联网），新增模块待验证；
 - 🎯 **面试向闭环**：高频题单 + 90 连问速答 + **手写三件套默写** + 面试复盘模板；
 - 🗺️ **进度可追踪**：[ROADMAP.md](ROADMAP.md) 分阶段路线 + 每个模块自测清单，学一章勾一章。
 
@@ -50,7 +50,7 @@
 - 📐 **推导 + 配图**：每篇含**变种模型谱系表、逐步推导（面试手推模板）、matplotlib 过程图**，
   打开 notebook 即可直接看到推导过程与结果图；
 - 🎯 **面试向**：高频题单 + 90 连问速答 + **手写三件套默写** + 面试复盘闭环；
-- 🧪 **可验证**：全仓 **122 本 notebook 已全部通过 nbclient 全量执行验证**（含 sklearn / torch 对照断言；无需 GPU、无需联网）；
+- 🧪 **可验证**：全仓 **既有 171 本 notebook 已通过 nbclient 全量执行验证**（含 sklearn / torch 对照断言；无需 GPU、无需联网）；
 - 🗺️ **进度可追踪**：ROADMAP 分阶段 + 每个模块自测清单，学一章勾一章。
 
 <a id="stats"></a>
@@ -58,11 +58,11 @@
 
 | 指标 | 数值 |
 |---|---|
-| 模块 | 11（算法 / ML / DL / LLM / 八股工程 / 复盘 / RL / 优化算法 / 计算机视觉 / NLP / 时间序列 + 路线） |
-| 教学 Notebook | **122 篇**（算法 14 · ML 13 · DL 15 · LLM 24 · 八股 8 · RL 8 · 优化 13 · CV 11 · NLP 8 · 时间序列 8） |
+| 模块 | **18**（数学基础 / 算法 / ML / DL / LLM / 八股工程 / 复盘 / RL / 优化算法 / 计算机视觉 / NLP / 时间序列 / 智能体开发 / 编程语言 / 具身智能 / AI-Infra / 语音 / 数据科学 + 路线） |
+| 教学 Notebook | **183+ 篇**（数学 7 · 算法 14 · ML 14 · DL 15 · LLM 25 · 八股 8 · RL 13 · 优化 13 · CV 12 · NLP 8 · 时间序列 8 · 智能体 10 · 编程语言 10 · 具身智能 6 · AI-Infra 11 · 语音 5 · 数据科学 4） |
 | 背诵级手写模板 | 11 份（[`01-数据结构与算法/模板代码/`](01-数据结构与算法/模板代码/README.md)） |
 | 推导过程图 | 15 张（[`07-强化学习/教学/images/`](07-强化学习/教学/)）+ 16 张（[`05-八股与工程/images/`](05-八股与工程/)）+ 各章 `教学/images/` |
-| 执行验证 | **122 / 122 本 nbclient PASS（全仓）** |
+| 执行验证 | **171 / 171 本 nbclient PASS（已有模块，全仓）· 新增 12 篇待验证** |
 | 依赖 | `numpy` / `matplotlib` / `sklearn` / `torch`（02-04 对照验证用；无需 GPU、无需联网） |
 
 <a id="quickstart"></a>
@@ -87,17 +87,24 @@ jupyter notebook "07-强化学习/教学/00-MDP与贝尔曼方程.ipynb"
 
 | 模块 | 内容 | 教学 Notebook | 状态 |
 |---|---|---|---|
+| [00-数学基础](00-数学基础/README.md) | 高数与微积分/线性代数/概率论与统计/信息论/最优化与数值基础 + 机器人学基础（刚体变换/正逆运动学/雅可比/动力学）+ 数学面试八股速查 | 7 篇教学 notebook（通俗详解 + 公式推导 + 数值验证） | ✅ |
 | [01-数据结构与算法](01-数据结构与算法/README.md) | 排序/哈希/双指针/链表/二分/二叉树/回溯/DP/贪心/图/堆/位运算/字符串 | 14 篇教学 + 11 份模板 | ✅ |
 | [02-机器学习](02-机器学习/README.md) | 线性回归/逻辑回归/NB与K-Means/SVM/PCA/GBDT/决策树随机森林/KNN/AdaBoost/神经网络/HMM/CRF/特征工程 | 13 篇推导笔记 | ✅ |
 | [03-深度学习](03-深度学习/README.md) | BP/CNN/优化器/RNN-LSTM/BN/激活初始化/正则化/CNN架构/RNN·LSTM·GRU/Transformer/Mamba/GAN/VAE·扩散/架构八股 | 15 篇模型笔记 | ✅ |
-| [04-LLM大模型](04-LLM大模型/README.md) | Transformer 从零手推 24 讲（架构/分词/训练/推理/RL 对齐） | 24 篇教学 notebook | ✅ |
+| [04-LLM大模型](04-LLM大模型/README.md) | Transformer 从零手推 25 讲（架构/分词/训练/推理/RL 对齐 + 前沿模型与推理时扩展） | 25 篇教学 notebook | ✅ |
 | [05-八股与工程](05-八股与工程/README.md) | Python/OS/网络/数据库/Redis/分布式/工程工具/高频手撕 | 8 篇八股 notebook | ✅ |
 | [06-面试复盘](06-面试复盘/README.md) | 复盘方法论 + 每场面试记录模板 | — | ✅ |
 | [07-强化学习](07-强化学习/README.md) | MDP/DP/MC-TD/Q学习/DQN/策略梯度/PPO-GRPO/**连续动作(DDPG·TD3·SAC)**/**多智能体 MARL**/**基于模型(MCTS·AlphaGo)**/**离线 RL**/**模仿学习(BC·DAgger·IRL·GAIL)**/面试八股 | 13 篇教学 notebook（含 15 张自绘推导图 + 13 张网络配图） | ✅ |
 | [08-优化算法](08-优化算法/README.md) | SGD/动量/Adam/AdamW/学习率调度/二阶优化/LLM 训练（FP16·BF16·ZeRO）+ 经典优化（LP/IP/GA/SA/TS/PSO/ACO/KKT） | 13 篇优化笔记（推导+对照+自测） | ✅ |
-| [09-计算机视觉](09-计算机视觉/README.md) | 图像基础/边缘特征/CNN/经典架构/目标检测（R-CNN·**YOLO v1→v11 全系列**）/分割（FCN·**U-Net 全家族**·DeepLab）/度量学习/**SAM 基础模型** | 11 篇视觉笔记（推导+对照+自测） | ✅ |
+| [09-计算机视觉](09-计算机视觉/README.md) | 图像基础/边缘特征/CNN/经典架构/目标检测（R-CNN·**YOLO v1→v11 全系列**）/分割（FCN·**U-Net 全家族**·DeepLab）/度量学习/**SAM 基础模型**/**3D 视觉（点云·NeRF·3DGS）** | 12 篇视觉笔记（推导+对照+自测） | ✅ |
 | [10-自然语言处理](10-自然语言处理/README.md) | 文本表示/TF-IDF/n-gram 语言模型/词向量（Word2Vec·GloVe）/RNN·LSTM/Attention·Transformer/预训练（mini-BERT·mini-GPT）/分类与标注 | 8 篇 NLP 笔记（推导+对照+自测） | ✅ |
 | [11-时间序列](11-时间序列/README.md) | 平稳性/ADF/ACF·PACF/ARMA·ARIMA/指数平滑/分解/特征工程·ML/深度学习（LSTM·递归 vs 直接）/评估与异常检测 | 8 篇时序笔记（推导+对照+自测） | ✅ |
+| [12-智能体开发](12-智能体开发/README.md) | Agent 边界与 ReAct/上下文·KV Cache·Skill/记忆与 RAG/工具与 MCP/Coding Agent 与自举/异步·语音·Computer Use/评估与 Pass@k/Mid-training·SFT·RL/轨迹学习与持续进化/多 Agent 协作 | 10 篇教学 notebook（故事化讲解 + mermaid 图 + 可运行 Python 示例） | ✅ |
+| [13-编程语言](13-编程语言/README.md) | Python 核心与数据模型 / C++ 核心语法与 STL / ROS 入门与话题通信 / Docker 容器化 / Git 版本控制 / SQL 数据库 / Linux 系统 / Shell 脚本 / Go 语言与并发 / Java 核心与 JVM（持续扩充） | 10 篇教学 notebook（含核心概念知识结构图） | ✅ |
+| [14-具身智能](14-具身智能/README.md) | 机器人学基础（位姿/齐次变换/正逆运动学/雅可比）/ 感知与环境理解（RGB-D/点云/SLAM）/ 规划与控制（A*/RRT/PID/MPC）/ VLA 视觉-语言-动作模型（RT-2/OpenVLA/π0）/ 仿真数据与 sim2real + 具身八股速查 | 6 篇教学 notebook（通俗详解 + 公式推导 + 数值验证） | ✅ |
+| [15-AI-Infra](15-AI-Infra/README.md) | AI 基础设施：计算图与自动微分（手写 autograd）/ GEMM 与算子优化（tiling·roofline）/ 混合精度·显存账本（FP16·BF16·loss scaling）/ 分布式并行（DP·FSDP·TP·PP·ZeRO）/ 集合通信与 NCCL（手写 Ring AllReduce）/ KV Cache·PagedAttention / vLLM 连续批处理·投机解码 / 量化（GPTQ·AWQ·SmoothQuant）/ FlashAttention·CUDA 线程模型 / 性能分析与 AI-Infra 面试八股（30 连问） | 11 篇教学 notebook（✅ 全模块完成 + FlashAttention 加深） | ✅ |
+| [16-语音](16-语音/README.md) | 语音信号基础与特征提取（STFT/MFCC·Fbank 手写）/ 传统语音识别（GMM-HMM·DTW）/ 端到端 ASR（CTC·Attention·RNN-T）/ 语音合成 TTS（Tacotron·VITS·Griffin-Lim）/ 语音面试八股 | 5 篇教学 notebook（推导+对照+自测） | ✅ |
+| [17-数据科学](17-数据科学/README.md) | 统计推断与假设检验（t/z/卡方/F·功效·多重比较）/ AB 实验设计与评估（样本量·AA·SRM·CUPED）/ 因果推断（潜在结果·PSM·DID·uplift）/ 数据科学面试八股 | 4 篇教学 notebook（推导+对照+自测） | ✅ |
 
 <a id="structure"></a>
 ## 📁 目录结构
@@ -110,6 +117,11 @@ autumn-recruit-algo/
 ├── assets/
 │   ├── logo.png               # 🖼️ 仓库 Logo
 │   └── badges/                # 📛 自绘 SVG 徽章（无外部依赖）
+│
+├── 00-数学基础/                # 🧮 数学地基（高数/线代/概率/信息论/最优化）
+│   ├── README.md              # 学习路线 + 与其他章节衔接
+│   └── 教学/                  # ✅ 5 篇通俗详解 notebook（公式推导+数值验证）
+│       └── images/            # 🖼️ 10 张过程图
 │
 ├── 01-数据结构与算法/          # ✍️ 算法刷题模块
 │   ├── README.md              # 刷题策略与顺序
@@ -132,8 +144,8 @@ autumn-recruit-algo/
 │   ├── README.md              # 知识地图（六大块）+ 复习策略
 │   ├── 高频面试题.md
 │   ├── 经典论文清单.md
-│   ├── 专题笔记.md            # 24 讲全量索引
-│   └── 教学/                  # ✅ 24 篇 Transformer 从零手推 notebook
+│   ├── 专题笔记.md            # 25 讲全量索引
+│   └── 教学/                  # ✅ 25 篇 Transformer 从零手推 notebook
 │
 ├── 05-八股与工程/             # 🏗️ 基础八股 + 工程能力
 │   ├── README.md
@@ -173,6 +185,35 @@ autumn-recruit-algo/
     ├── 高频面试题.md
     └── 教学/                  # ✅ 8 篇手写教学 notebook（推导+代码+对照+自测）
         └── images/            # 🖼️ 部分 notebook 落盘的插图
+
+└── 12-智能体开发/             # 🚀 Agent 开发（ReAct/上下文/记忆 RAG/工具 MCP/Coding/评估/训练/进化/多 Agent）
+    ├── README.md              # 章节总览 + 故事线 + 三轮学习路线
+    ├── 01~10-*.md             # 📝 10 章速查版（mermaid 原理图）
+    └── 教学/                  # ✅ 10 篇教学 notebook（与 md 一一对应，可运行示例）
+
+└── 13-编程语言/               # 🐍🔧 编程语言（Python → C++/STL → ROS → Docker → Git → SQL → Linux → Shell → Go → Java）
+    ├── README.md              # 模块总览 + 复习策略
+    └── 教学/                  # ✅ 10 篇教学 notebook（Python 核心 / C++ 核心与 STL / ROS 入门 / Docker / Git / SQL / Linux / Shell / Go / Java-JVM）
+
+└── 14-具身智能/               # 🤖 具身智能（机器人学/感知/规划控制/VLA/sim2real）
+    ├── README.md              # 学习路线 + 与其他章节衔接
+    └── 教学/                  # ✅ 6 篇教学 notebook（机器人学 / 感知 / 规划控制 / VLA / 仿真数据 / 八股）
+        └── images/            # 🖼️ 过程图
+
+└── 15-AI-Infra/               # ⚙️ AI 基础设施（计算图·autograd / GEMM·算子优化 / 并行训练 / 推理引擎 / 量化）
+    ├── README.md              # 知识地图（九大块）+ 学习路线 + 与其他章节衔接
+    ├── 高频面试题.md          # 45 题（手算/选型/手撕/排查四类）
+    └── 教学/                  # ✅ 11 篇教学 notebook（计算图与自动微分 → GEMM → 混合精度 → 并行 → NCCL → KV Cache → vLLM → 量化 → 性能分析 → 八股 → FlashAttention·CUDA）
+
+└── 16-语音/                   # 🎙️ 语音识别与合成（信号特征 / GMM-HMM·DTW / CTC·Attention·RNN-T / TTS / 八股）
+    ├── README.md              # 知识地图（五大块）+ 学习路线 + 与其他章节衔接
+    ├── 高频面试题.md          # 分节清单（特征/传统识别/端到端/TTS/评估）
+    └── 教学/                  # ✅ 5 篇教学 notebook（00 信号与特征 / 01 GMM-HMM·DTW / 02 端到端 ASR / 03 TTS / 04 八股）
+
+└── 17-数据科学/               # 📊 数据科学（统计推断 / AB 实验 / 因果推断 / 八股）
+    ├── README.md              # 知识地图 + 学习路线 + 与其他章节衔接
+    ├── 高频面试题.md          # 分节清单（统计/实验/因果/指标）
+    └── 教学/                  # ✅ 4 篇教学 notebook（00 统计推断 / 01 AB 实验 / 02 因果推断 / 03 八股）
 ```
 
 <a id="notebooks"></a>
@@ -180,6 +221,14 @@ autumn-recruit-algo/
 
 > 中文教学 + 公式推导 + **从零手写实现**（02-04 附 sklearn / torch 数值对照），含可运行测试用例与中间过程输出，附自测清单。
 > 以下所有标题均可点击直达对应 notebook 或模块文档。
+
+### 00-数学基础
+
+📄 [模块 README](00-数学基础/README.md)（学习路线 + 与其他章节衔接表）
+
+**教学（7 篇，已完成 ✅）** — 大白话直觉 → LaTeX 公式 → 关键推导 → 数值验证全流程
+
+- [00-高数与微积分](00-数学基础/教学/00-高数与微积分.ipynb) · [01-线性代数](00-数学基础/教学/01-线性代数.ipynb) · [02-概率论与统计](00-数学基础/教学/02-概率论与统计.ipynb) · [03-信息论](00-数学基础/教学/03-信息论.ipynb) · [04-最优化与数值基础](00-数学基础/教学/04-最优化与数值基础.ipynb) · [05-数学基础面试八股与高频题](00-数学基础/教学/05-数学基础面试八股与高频题.ipynb) · [06-机器人学基础](00-数学基础/教学/06-机器人学基础-正逆运动学与动力学.ipynb)
 
 ### 01-数据结构与算法
 
@@ -245,7 +294,7 @@ autumn-recruit-algo/
 
 📄 [模块 README](04-LLM大模型/README.md) · [高频面试题](04-LLM大模型/高频面试题.md) · [经典论文清单](04-LLM大模型/经典论文清单.md) · [专题笔记](04-LLM大模型/专题笔记.md)
 
-**教学（24 篇 Transformer 从零手推，已完成 ✅）**
+**教学（25 篇 Transformer 从零手推，已完成 ✅）**
 
 | 讲次 | 主题 | 讲次 | 主题 |
 |---|---|---|---|
@@ -261,6 +310,7 @@ autumn-recruit-algo/
 | 09 | [MiniMind 整体架构](04-LLM大模型/教学/09-MiniMind整体架构.ipynb) | 21 | [PPO 与 GRPO 手推](04-LLM大模型/教学/21-PPO与GRPO手推.ipynb) |
 | 10 | [BPE 分词器](04-LLM大模型/教学/10-BPE分词器.ipynb) | 22 | [深度量化 GPTQ 与 AWQ](04-LLM大模型/教学/22-深度量化GPTQ与AWQ.ipynb) |
 | 11 | [预训练循环](04-LLM大模型/教学/11-预训练循环.ipynb) | 23 | [知识蒸馏](04-LLM大模型/教学/23-知识蒸馏.ipynb) |
+| — | — | **24** | [前沿模型与推理时扩展](04-LLM大模型/教学/24-前沿模型与推理时扩展.ipynb)（LLaMA·Qwen·DeepSeek / CoT·Best-of-N·多数投票 / GRPO·推理时扩展） |
 
 > 衔接 `07-强化学习/`：RL 底座学完后，21-PPO与GRPO手推 / 13-DPO与RLHF 即为 LLM 对齐的完整推导闭环。
 
@@ -388,6 +438,94 @@ autumn-recruit-algo/
 
 > 主线：**平稳性（00）→ ARMA（01）→ 平滑/分解（02-03）→ 特征 ML（04）→ 深度学习（05）→ 评估/异常（06）→ 八股冲刺（07）**；每篇含推导 + 手写 + sklearn/torch 对照 + 自测清单。
 
+### 13-编程语言
+
+📄 [模块 README](13-编程语言/README.md)
+
+**教学（10 篇，持续扩充）** — Python / C++ / ROS / Docker / Git / SQL / Linux / Shell / Go / Java
+
+| # | 主题 | 核心内容 |
+|---|------|----------|
+| 00 | [Python 核心语法与数据模型](13-编程语言/教学/00-Python核心语法与数据模型.ipynb) | 对象模型（可变/不可变/深浅拷贝）/容器与推导式/函数式（lambda·闭包·装饰器）/迭代器生成器/类与魔术方法/GIL 并发选型/性能优化 + 自测清单 |
+| 01 | [C++ 核心语法与 STL](13-编程语言/教学/01-C++核心语法与STL.ipynb) | 左值/右值与移动语义/指针引用/栈堆与 RAII/智能指针/虚函数与 vtable/模板与 STL 容器选型/现代 C++ 11-20 + 手写模板 + 自测清单 |
+| 02 | [ROS 入门与话题通信](13-编程语言/教学/02-ROS入门与话题通信.ipynb) | 节点/话题/服务/动作/msg 定义/catkin·colcon/rospy·rclpy 发布订阅/TF·URDF·launch/ROS1 vs ROS2 + 手写最小发布订阅 + 自测清单 |
+| 03 | [Docker 容器化与部署](13-编程语言/教学/03-Docker容器化与部署.ipynb) | 容器 vs VM（Namespace/Cgroup）/镜像分层/可写层/Dockerfile/卷与网络/Compose/K8s + 镜像构建与隔离模拟 + 自测清单 |
+| 04 | [Git 版本控制与协作](13-编程语言/教学/04-Git版本控制与协作.ipynb) | 三区模型/commit 链/分支/merge vs rebase/冲突解决/reset vs revert/远端协作/分支策略 + 三路合并模拟 + 自测清单 |
+| 05 | [SQL 数据库基础](13-编程语言/教学/05-SQL数据库基础.ipynb) | 关系模型与范式/SELECT 执行顺序/JOIN 四类/聚合与窗口函数/索引（B+树）/事务 ACID 与隔离级别 + 迷你查询引擎模拟 + 自测清单 |
+| 06 | [Linux 系统基础与常用命令](13-编程语言/教学/06-Linux系统基础与常用命令.ipynb) | 体系结构/文件系统 FHS/权限（rwx·umask·SUID）/命令大全/三剑客（grep·sed·awk）/进程与信号/管道/shell 脚本 + 权限与管道模拟 + 自测清单 |
+| 07 | [Shell 脚本与自动化](13-编程语言/教学/07-Shell脚本与自动化.ipynb) | Shell 原理/变量与引号/条件循环/函数/管道与重定向/通配符 vs 正则/数组/set 健壮性 + 引号展开·管道流水线·脚本模式模拟 + 自测清单 |
+| 08 | [Go 语言基础与并发](13-编程语言/教学/08-Go语言基础与并发.ipynb) | 类型/切片陷阱/map/接口/goroutine 与 channel（CSP）/GMP/WaitGroup/Mutex/标准库 + slice 共享数组·生产者消费者·并发计数模拟 + 自测清单 |
+| 09 | [Java 核心与 JVM 入门](13-编程语言/教学/09-Java核心与JVM入门.ipynb) | 集合（HashMap）/线程同步/JVM 数据区/类加载双亲委派/GC（可达性·分代·收集器）/内存排查 + 栈帧·可达性 GC·HashMap 扩容模拟 + 自测清单 |
+
+> 面向机器人 / 自动驾驶 / 后端岗位的编程语言主线；每篇含原理 + 代码对照 + 自测。纯算法岗建议 Python 00 + C++ 01 + Docker/Git/SQL/Linux 工程四件套，后端岗加 Go 08 + Java 09。
+
+### 14-具身智能
+
+📄 [模块 README](14-具身智能/README.md)
+
+**教学（6 篇，已完成 ✅）** — 具身智能 / 机器人算法岗主线
+
+| # | 主题 | 核心内容 |
+|---|------|----------|
+| 00 | [机器人学基础](14-具身智能/教学/00-机器人学基础.ipynb) | 位姿/旋转矩阵·欧拉角·四元数/齐次变换 SE(2)·SE(3) 与复合/DH 正运动学/逆运动学/雅可比 + DH 工作空间与数值 IK 手写 + 自测清单 |
+| 01 | [感知与环境理解](14-具身智能/教学/01-感知与环境理解.ipynb) | 针孔模型（内参/外参/畸变）/RGB-D 反投影点云/相机→基座变换/2D 检测分割/点云 ICP 配准/3D 检测与占据栅格/SLAM 闭环 + 投影与 ICP 手写 + 自测清单 |
+| 02 | [规划与控制](14-具身智能/教学/02-规划与控制.ipynb) | 构型空间/A*·Dijkstra·RRT/RRT*/轨迹插值/PID/MPC 滚动优化/阻抗控制 + A*·RRT·PID·MPC 数值对照 + 自测清单 |
+| 03 | [VLA 视觉-语言-动作模型](14-具身智能/教学/03-VLA视觉语言动作模型.ipynb) | 动作表示三流派（token/扩散/流匹配）/RT-1·RT-2（动作进词表）/PaLM-E·OpenVLA（VQ-VAE）/π0·GR00T/training pipeline/RT-X + 动作量化·next-token·DDIM 去噪手写 + 自测清单 |
+| 04 | [仿真数据与 sim2real](14-具身智能/教学/04-仿真数据与sim2real.ipynb) | 仿真器生态（MuJoCo·Isaac·Genesis）/遥操作采集/三类数据对比/域随机化/系统辨识/reality gap/评估 + 域随机化策略鲁棒性演示 + 自测清单 |
+| 05 | [具身智能面试八股与高频题](14-具身智能/教学/05-具身智能面试八股与高频题.ipynb) | 全模块公式速查 + 高频追问 20 问（齐次变换/雅可比/A* vs RRT/PID 整定/MPC/VLA token/sim2real/评估）+ 数值验证 |
+
+> 主线：**机器人硬核基础（00-02）→ 大模型×机器人（03 VLA）→ 数据与迁移（04）→ 八股冲刺（05）**；与 09-CV（感知）、07-RL（控制）、04-LLM（VLA 对齐）直接衔接，每篇含 mermaid 知识结构图 + 通俗推导 + numpy 数值验证 + 自测清单。
+
+### 15-AI-Infra
+
+📄 [模块 README](15-AI-Infra/README.md) · [高频面试题](15-AI-Infra/高频面试题.md)（45 题：手算 / 选型 / 手撕 / 排查）
+
+**教学（11 篇，全模块已完成 ✅）** — AI Infra / 推理优化 / 训练平台 / HPC 岗位主线
+
+| # | 主题 | 手写核心 |
+|---|------|----------|
+| 00 | [深度学习推理引擎：计算图与自动微分](15-AI-Infra/教学/00-深度学习推理引擎-计算图与自动微分.ipynb) | 手写 mini autograd（Value 类 + 逆拓扑序反向）+ 数值梯度对照 <1e-8 + 引擎训练 XOR 100% + 7B 训练显存拆解 + 算子融合实测 |
+| 01 | [矩阵乘法与算子级优化 GEMM](15-AI-Infra/教学/01-矩阵乘法与算子级优化GEMM.ipynb) | FLOPs 手算 + naive vs 分块(tiled) vs 寄存器分块(BLAS) 实测 + 块大小扫描 + roofline 模型画图 |
+| 02 | [混合精度与显存账本](15-AI-Infra/教学/02-混合精度与显存账本.ipynb) | FP16 上溢/下溢 + BF16 模拟 + loss scaling 救回下溢梯度曲线 + 7B 显存四件套与 ZeRO 分片图 |
+| 03 | [分布式并行训练 DP/FSDP/TP/PP/ZeRO](15-AI-Infra/教学/03-分布式并行训练DP-FSDP-TP-PP与ZeRO.ipynb) | 4 卡 DP 梯度同步=串行验证 + TP 行切/列切等价 + PP bubble 曲线 + 70B 显存-通信权衡 |
+| 04 | [集合通信与 NCCL](15-AI-Infra/教学/04-集合通信与NCCL.ipynb) | 手写 Ring AllReduce 两阶段（P=4/8 数值验证）+ ring vs tree 通信量曲线 + 梯度桶化 |
+| 05 | [KV Cache 与推理内存](15-AI-Infra/教学/05-KV Cache与推理内存.ipynb) | KV 内存公式手算与曲线 + 手写带缓存解码一致验证 + PagedAttention 分页 vs 连续预分配 |
+| 06 | [推理引擎：vLLM 连续批处理与投机解码](15-AI-Infra/教学/06-推理引擎vLLM连续批处理与投机解码.ipynb) | 静态 vs 连续批处理调度模拟 + 投机解码加速比公式/模拟 + decode 吞吐-延迟曲线 |
+| 07 | [量化与模型压缩 PTQ/GPTQ/AWQ/SmoothQuant](15-AI-Infra/教学/07-量化与模型压缩PTQ-GPTQ-AWQ-SmoothQuant.ipynb) | per-tensor vs per-channel 实测 + 输出域误差补偿（最小二乘验证）+ SmoothQuant 迁移等价验证 + 位宽权衡 |
+| 08 | [性能分析与优化](15-AI-Infra/教学/08-性能分析与优化.ipynb) | 手写 profiler 时间拆解 + roofline 实测判瓶颈 + 算子融合收益实测 + 6ND 训练/推理成本估算 |
+| 09 | [AI-Infra 面试八股与高频题](15-AI-Infra/教学/09-AI-Infra面试八股与高频题.ipynb) | 八大块地图 + 30 连问 + 5 道手算题自动判分 + 一句话串联全章 |
+| 10 | [FlashAttention 与 CUDA 线程模型](15-AI-Infra/教学/10-FlashAttention与CUDA线程模型.ipynb) | 分块 tiling + 在线 softmax 手写 vs 标准注意力对照 <1e-5 + IO 复杂度 + CUDA 线程/共享内存模型图解 |
+
+> 主线：**系统怎么算（00 计算图/autograd → 01 算子/GEMM）→ 训练侧（02 混合精度·03 并行·04 NCCL）→ 推理侧（05 KV Cache·06 vLLM·07 量化）→ 工程冲刺（08 性能优化·09 八股·10 FlashAttention）**——全模块 11 篇闭环；
+> 与 04-LLM（模型结构）、08-优化算法（FP16·ZeRO）、13-编程语言（C++/Linux）、05-八股与工程（OS/网络/分布式）直接衔接；全部 numpy/torch 自包含、无需 GPU 可执行。
+
+### 16-语音
+
+📄 [模块 README](16-语音/README.md) · [高频面试题](16-语音/高频面试题.md)
+
+**教学（5 篇，已完成 ✅）** — 语音识别与合成岗位主线
+
+| # | 主题 | 手写核心 |
+|---|------|----------|
+| 00 | [语音信号基础与特征提取](16-语音/教学/00-语音信号基础与特征提取.ipynb) | 分帧加窗/STFT/语谱图/MFCC·Fbank 从零手写/VAD |
+| 01 | [传统语音识别 GMM-HMM 与 DTW](16-语音/教学/01-传统语音识别GMM-HMM与DTW.ipynb) | DTW 动态规划手写/HMM 前向·维特比手写/GMM-EM/孤立词识别实验 |
+| 02 | [端到端 ASR：CTC 与 Attention](16-语音/教学/02-端到端ASR-CTC与Attention.ipynb) | CTC 前向-后向推导+手写/贪心·beam 解码/seq2seq+注意力/CER·WER |
+| 03 | [语音合成 TTS：Tacotron 与 VITS](16-语音/教学/03-语音合成TTS-Tacotron与VITS.ipynb) | 注意力 TTS/Griffin-Lim 相位重建手写/flow·VAE 直觉/MOS 评估 |
+| 04 | [语音面试八股与高频题](16-语音/教学/04-语音面试八股与高频题.ipynb) | 70 连问速答 + 手撕（MFCC/CTC/DTW/Griffin-Lim）+ 谱系图 |
+
+### 17-数据科学
+
+📄 [模块 README](17-数据科学/README.md) · [高频面试题](17-数据科学/高频面试题.md)
+
+**教学（4 篇，已完成 ✅）** — 数据科学 / 推荐搜索 / 增长岗位主线
+
+| # | 主题 | 手写核心 |
+|---|------|----------|
+| 00 | [统计推断与假设检验](17-数据科学/教学/00-统计推断与假设检验.ipynb) | t/z/卡方/F 检验手写 vs scipy、功效与样本量、多重比较（Bonferroni/BH-FDR）|
+| 01 | [AB 实验设计与评估](17-数据科学/教学/01-AB实验设计与评估.ipynb) | 样本量公式推导、分流模拟、AA 检验与 SRM、CUPED 手写、GAUC |
+| 02 | [因果推断入门](17-数据科学/教学/02-因果推断入门.ipynb) | 潜在结果框架、PSM/IPTW/DID 手写、RDD/IV 直觉、uplift（S/T-Learner）|
+| 03 | [数据科学面试八股与高频题](17-数据科学/教学/03-数据科学面试八股与高频题.ipynb) | 70 连问速答 + 手撕（t 检验/样本量/DID/PSM/CUPED/FDR）|
+
 <a id="examples"></a>
 ## 💼 使用案例（真实运行输出）
 
@@ -465,6 +603,11 @@ UCB(c=2) 总奖励: 800 / 1000  (理论最优≈900)
 - [x] Phase 7：自然语言处理教学 notebook（8 篇：文本表示/TF-IDF/n-gram 语言模型/词向量/RNN·LSTM/Attention·Transformer/预训练（mini-BERT·mini-GPT）/分类与标注/NLP 八股，含 sklearn/torch 对照）
 - [x] Phase 8：时间序列教学 notebook（8 篇：平稳性/ARMA·ARIMA/指数平滑/分解/特征工程·ML/LSTM 深度学习/评估与异常检测/时序八股，含 sklearn/torch 对照）
 - [ ] Phase 9：面经复盘归档（05/06/07/08/09/10/11 模块内容按自有资料持续补齐）
+- [x] Phase 10：编程语言教学模块（13-编程语言 10 篇：Python 核心 · C++ 核心与 STL · ROS 入门 · Docker · Git · SQL · Linux · Shell · Go · Java-JVM，持续扩充）
+- [x] Phase 11：AI-Infra 教学模块（15-AI-Infra：10 篇全模块已完成——计算图与自动微分 / GEMM 与算子级优化 / 混合精度与显存 / 分布式并行 / 集合通信与 NCCL / KV Cache 与推理内存 / vLLM 连续批处理与投机解码 / 量化与压缩 / 性能分析与优化 / 面试八股，均已 nbclient 验证）
+- [x] Phase 12：语音教学模块（16-语音：信号与特征 / 传统 GMM-HMM 与 DTW / 端到端 ASR（CTC·Attention）/ TTS 合成（Tacotron·VITS）/ 语音八股，5 篇）
+- [x] Phase 13：数据科学教学模块（17-数据科学：统计推断与假设检验 / AB 实验设计与评估 / 因果推断入门 / 数据科学八股，4 篇）
+- [x] Phase 14：既有模块加深（15-AI-Infra +FlashAttention·CUDA 线程模型、04-LLM +前沿模型与推理时扩展、09-CV +3D 视觉点云·NeRF·3DGS）
 
 <a id="license"></a>
 ## 📄 License
