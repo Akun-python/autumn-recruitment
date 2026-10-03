@@ -60,14 +60,14 @@
 
 **目标**：面经全覆盖，重点推导能手推。
 
-- [ ] 按 `00-数学基础/README.md` 过数学地基主线（5 本教学 notebook：高数与微积分→线性代数→概率论与统计→信息论→最优化与数值基础；每篇含大白话直觉 + 公式推导 + numpy 数值验证，数学八股速查见 05 篇）
+- [ ] 按 `00-数学基础/README.md` 过数学地基主线（7 本教学 notebook：高数与微积分→线性代数→概率论与统计→信息论→最优化与数值基础→机器人学基础→数学面试八股；每篇含大白话直觉 + 公式推导 + numpy 数值验证，数学八股速查见 05 篇）
 - [ ] 按 `02-机器学习/高频面试题.md` 逐个过，能讲清"是什么/为什么/怎么用"
 - [ ] 手推：LR、SVM、PCA、朴素贝叶斯、K-Means、EM（写进 `02/推导笔记/`）
 - [ ] 按 `03-深度学习/高频面试题.md` 过 DL 面经
 - [ ] 手推：反向传播、BN、LSTM 门控、优化器更新公式
 - [ ] 按 `03-深度学习/README.md` 过架构主线（08–15 八本教学 notebook：架构全景→CNN 经典架构→RNN/LSTM/GRU 深入→Attention/Transformer 从零→Mamba/SSM→GAN→VAE/扩散→架构面试八股，均可执行默写自检）
 - [ ] 按 `08-优化算法/README.md` 过优化算法主线（13 本教学 notebook：SGD→动量→Adam/AdamW→调度→二阶→LLM 训练 FP16/ZeRO + 经典优化 LP/IP/GA/SA/TS/PSO/ACO/KKT）
-- [ ] 按 `09-计算机视觉/README.md` 过 CV 主线（11 本教学 notebook：图像基础→边缘特征→CNN→检测（R-CNN·YOLO v1→v11 全系列）→分割（FCN·U-Net 全家族）→度量学习→SAM 基础模型）
+- [ ] 按 `09-计算机视觉/README.md` 过 CV 主线（12 本教学 notebook：图像基础→边缘特征→CNN→检测（R-CNN·YOLO v1→v11 全系列）→分割（FCN·U-Net 全家族）→度量学习→SAM 基础模型→3D 视觉与 NeRF/3DGS）
 - [ ] 按 `10-自然语言处理/README.md` 过 NLP 主线（8 本教学 notebook：文本表示/TF-IDF→n-gram 语言模型→词向量（Word2Vec·GloVe）→RNN·LSTM→Attention·Transformer→预训练（mini-BERT·mini-GPT）→分类与标注→NLP 八股）
 - [ ] 按 `11-时间序列/README.md` 过时间序列主线（8 本教学 notebook：平稳性/ADF→ARMA·ARIMA→指数平滑→分解→特征工程·ML→深度学习（LSTM·递归 vs 直接）→评估与异常检测→时序八股）
 - [ ] 手推：Momentum EMA、Adam 四条公式（偏差校正）、AdamW 解耦权重衰减、牛顿法、7B Adam 状态内存口算（84GB）、Metropolis 准则、PSO 更新式、KKT 四条件、软阈值
@@ -75,7 +75,7 @@
 - [ ] 手推（时序）：ACF/PACF、ADF、AR 的 OLS、AIC、SES/Holt/HW 递推、滑窗特征、ExpandingWindow CV、σ√h 预测区间
 - [ ] 按 `07-强化学习/README.md` 过 RL 主线（8 本教学 notebook：MDP→DP→MC/TD→Q学习→DQN→PG/AC→PPO/GRPO→面试八股）
 - [ ] 手写：值迭代、Q-learning、PPO clip 目标、GRPO 优势公式（LLM 对齐岗必考）
-- [ ] 按 `16-语音/README.md` 过语音主线（5 本教学 notebook：信号特征→传统 GMM-HMM·DTW→端到端 CTC·Attention→TTS 合成→语音八股；语音/ASR/TTS 岗必考）
+- [ ] 按 `16-语音/README.md` 过语音主线（9 本教学 notebook：信号特征→传统 GMM-HMM·DTW→端到端 CTC·Attention→TTS 合成→语音八股→语音增强→声纹识别→语音转换→语音大模型；语音/ASR/TTS 岗必考）
 - [ ] 按 `17-数据科学/README.md` 过数据科学主线（4 本教学 notebook：统计推断与假设检验→AB 实验设计与评估→因果推断（PSM·DID·uplift）→数据科学八股；数据科学/推荐/增长岗必考）
 - [ ] 结合手头项目（如 MiniMind）讲清楚训练管线
 
@@ -94,7 +94,7 @@
 - [ ] 精读必读论文（Transformer / InstructGPT / PPO / DPO / GRPO / RAG 等），每篇写笔记
 - [ ] 按 `12-智能体开发/README.md` 过 Agent 主线（10 本教学 notebook：Agent 边界与 ReAct→上下文 KV-Cache 与 Skill→记忆与 RAG→工具与 MCP→Coding Agent 与自举→异步/语音/Computer-Use→评估与 Pass@k→Mid-training/SFT/RL→轨迹学习与持续进化→多 Agent 协作；大模型应用/Agent 岗必考）
 - [ ] 按 `14-具身智能/README.md` 过具身智能主线（6 本教学 notebook：机器人学基础（位姿/齐次变换/正逆运动学/雅可比）→感知与环境理解→规划与控制（A*/RRT/PID/MPC）→VLA 视觉-语言-动作模型（RT-2/OpenVLA/π0）→仿真数据与 sim2real→具身八股；机器人/具身智能/自动驾驶岗必考）
-- [ ] 按 `15-AI-Infra/README.md` 过 AI 基础设施主线（10 本教学 notebook 全模块完成：手写 autograd（计算图/逆拓扑序反向）→ GEMM 算子优化（naive/tiled/寄存器分块/roofline）→ 混合精度与显存账本（FP16/BF16/loss scaling/ZeRO）→ 分布式并行（DP/FSDP/TP/PP/ZeRO）→ 集合通信与 NCCL（手写 Ring AllReduce）→ KV Cache 与推理内存（PagedAttention）→ vLLM 连续批处理与投机解码 → 量化（GPTQ/AWQ/SmoothQuant）→ 性能分析与优化（profiler/roofline/6ND成本）→ AI-Infra 面试八股 30 连问；AI Infra / 推理优化 / 训练平台 / HPC 岗必考）
+- [ ] 按 `15-AI-Infra/README.md` 过 AI 基础设施主线（11 本教学 notebook 全模块完成：手写 autograd（计算图/逆拓扑序反向）→ GEMM 算子优化（naive/tiled/寄存器分块/roofline）→ 混合精度与显存账本（FP16/BF16/loss scaling/ZeRO）→ 分布式并行（DP/FSDP/TP/PP/ZeRO）→ 集合通信与 NCCL（手写 Ring AllReduce）→ KV Cache 与推理内存（PagedAttention）→ vLLM 连续批处理与投机解码 → 量化（GPTQ/AWQ/SmoothQuant）→ 性能分析与优化（profiler/roofline/6ND成本）→ AI-Infra 面试八股 30 连问；AI Infra / 推理优化 / 训练平台 / HPC 岗必考）
 - [ ] 手推核心公式：RoPE、GQA、KV Cache、PPO/DPO/GRPO 损失（配套 04 教学 notebook 逐讲手推）
 - [ ] 结合项目讲深一层：你在 MiniMind 里做过什么（预训练/SFT/RL），踩过什么坑
 
