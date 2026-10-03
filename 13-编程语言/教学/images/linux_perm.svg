@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',sans-serif">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <marker id="arr-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arr-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#059669"/>
+    </marker>
+    <marker id="arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1400" height="800" fill="#f6f8fb"/>
+
+  <!-- ================= 标题 ================= -->
+  <text x="700" y="52" font-size="30" font-weight="bold" fill="#0f172a" text-anchor="middle">Linux 文件权限：rwx / ugo 与 chmod</text>
+  <text x="700" y="86" font-size="16" fill="#64748b" text-anchor="middle">九个权限位 = 属主 / 属组 / 其他 三组 × rwx 三位；数字法：r=4、w=2、x=1</text>
+
+  <!-- ================= 图例 ================= -->
+  <rect x="60" y="108" width="16" height="16" rx="4" fill="#dbeafe" stroke="#93c5fd"/>
+  <text x="84" y="121" font-size="13" fill="#334155">属主 u（owner）</text>
+  <rect x="230" y="108" width="16" height="16" rx="4" fill="#dcfce7" stroke="#86efac"/>
+  <text x="254" y="121" font-size="13" fill="#334155">属组 g（group）</text>
+  <rect x="390" y="108" width="16" height="16" rx="4" fill="#ffedd5" stroke="#fdba74"/>
+  <text x="414" y="121" font-size="13" fill="#334155">其他 o（other）</text>
+  <rect x="560" y="108" width="16" height="16" rx="4" fill="#e2e8f0" stroke="#94a3b8"/>
+  <text x="584" y="121" font-size="12" fill="#334155">特殊位 s / t</text>
+  <text x="760" y="121" font-size="13" fill="#64748b">数字 = 三位之和：7=rwx　6=rw-　5=r-x　4=r--</text>
+
+  <!-- ================= 左侧：读懂 ls -l ================= -->
+  <text x="60" y="172" font-size="18" font-weight="bold" fill="#0f172a">① 看懂 ls -l 的权限位</text>
+
+  <rect x="60" y="210" width="640" height="52" rx="10" fill="#0f172a"/>
+  <text x="76" y="244" font-size="20" fill="#94a3b8" font-family="Consolas,'Courier New',monospace">-</text>
+  <text x="88" y="244" font-size="20" fill="#93c5fd" font-family="Consolas,'Courier New',monospace">rwx</text>
+  <text x="124" y="244" font-size="20" fill="#86efac" font-family="Consolas,'Courier New',monospace">r-x</text>
+  <text x="160" y="244" font-size="20" fill="#fcd34d" font-family="Consolas,'Courier New',monospace">r--</text>
+  <text x="196" y="244" font-size="20" fill="#e2e8f0" font-family="Consolas,'Courier New',monospace"> 1 alice dev 4096 Jan 1 12:00 </text>
+  <text x="556" y="244" font-size="20" fill="#e2e8f0" font-family="Consolas,'Courier New',monospace">script.sh</text>
+
+  <!-- 扇出箭头：三个字符簇 → 三张卡片 -->
+  <line x1="106" y1="264" x2="155" y2="296" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arr-blue)"/>
+  <line x1="142" y1="264" x2="375" y2="296" stroke="#059669" stroke-width="2.5" marker-end="url(#arr-green)"/>
+  <line x1="178" y1="264" x2="595" y2="296" stroke="#d97706" stroke-width="2.5" marker-end="url(#arr-amber)"/>
+
+  <!-- 属主卡 -->
+  <rect x="60" y="300" width="190" height="140" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="155" y="326" font-size="15" font-weight="bold" fill="#1d4ed8" text-anchor="middle">属主 u（owner）</text>
+  <text x="155" y="367" font-size="30" font-weight="bold" fill="#2563eb" text-anchor="middle">rwx</text>
+  <text x="155" y="397" font-size="14" font-weight="bold" fill="#1e40af" text-anchor="middle">= 4+2+1 = 7</text>
+  <text x="155" y="423" font-size="12.5" fill="#64748b" text-anchor="middle">读 · 写 · 执行</text>
+
+  <!-- 属组卡 -->
+  <rect x="280" y="300" width="190" height="140" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="375" y="326" font-size="15" font-weight="bold" fill="#047857" text-anchor="middle">属组 g（group）</text>
+  <text x="375" y="367" font-size="30" font-weight="bold" fill="#059669" text-anchor="middle">r-x</text>
+  <text x="375" y="397" font-size="14" font-weight="bold" fill="#065f46" text-anchor="middle">= 4+1 = 5</text>
+  <text x="375" y="423" font-size="12.5" fill="#64748b" text-anchor="middle">读 · 执行</text>
+
+  <!-- 其他卡 -->
+  <rect x="500" y="300" width="190" height="140" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="595" y="326" font-size="15" font-weight="bold" fill="#b45309" text-anchor="middle">其他 o（other）</text>
+  <text x="595" y="367" font-size="30" font-weight="bold" fill="#d97706" text-anchor="middle">r--</text>
+  <text x="595" y="397" font-size="14" font-weight="bold" fill="#92400e" text-anchor="middle">= 4 = 4</text>
+  <text x="595" y="423" font-size="12.5" fill="#64748b" text-anchor="middle">只读</text>
+
+  <text x="375" y="470" font-size="13.5" fill="#334155" text-anchor="middle">按 u/g/o 顺序拼接成 chmod 数字：754 ≡ rwxr-xr--（7 属主 / 5 属组 / 4 其他）</text>
+
+  <!-- 特殊权限 -->
+  <rect x="60" y="500" width="630" height="112" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="80" y="530" font-size="13.5" font-weight="bold" fill="#334155">特殊权限位（显示在对应 rwx 位：s / t）</text>
+  <text x="80" y="556" font-size="12.5" fill="#475569">SUID = 4 → 属主位 s：以属主身份执行（/usr/bin/passwd）</text>
+  <text x="80" y="580" font-size="12.5" fill="#475569">SGID = 2 → 属组位 s：目录内新建文件继承属组</text>
+  <text x="80" y="604" font-size="12.5" fill="#475569">Sticky = 1 → 其他位 t：仅属主可删（/tmp 权限 1777）</text>
+
+  <!-- 常用命令 -->
+  <rect x="60" y="618" width="630" height="164" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="80" y="646" font-size="14" font-weight="bold" fill="#334155">常用命令</text>
+  <rect x="80" y="660" width="290" height="30" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="225" y="679" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">ls -l　查看权限</text>
+  <rect x="390" y="660" width="290" height="30" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="535" y="679" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">chmod 755 f　数字法</text>
+  <rect x="80" y="704" width="290" height="30" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="225" y="723" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">chmod u+x f　符号法</text>
+  <rect x="390" y="704" width="290" height="30" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="535" y="723" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">chmod -R　递归应用</text>
+  <rect x="80" y="748" width="290" height="30" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="225" y="767" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">chown u:g f　改属主属组</text>
+  <rect x="390" y="748" width="290" height="30" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="535" y="767" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">umask　查看默认掩码</text>
+
+  <!-- ================= 右侧：chmod 修改权限 ================= -->
+  <text x="800" y="172" font-size="18" font-weight="bold" fill="#0f172a">② chmod 修改权限</text>
+
+  <!-- 数字法 -->
+  <rect x="800" y="196" width="270" height="300" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="935" y="226" font-size="15" font-weight="bold" fill="#1d4ed8" text-anchor="middle">数字法：chmod 755</text>
+  <rect x="830" y="246" width="58" height="34" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="859" y="268" font-size="13.5" fill="#1e40af" text-anchor="middle" font-family="Consolas,'Courier New',monospace">r=4</text>
+  <rect x="898" y="246" width="58" height="34" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="927" y="268" font-size="13.5" fill="#1e40af" text-anchor="middle" font-family="Consolas,'Courier New',monospace">w=2</text>
+  <rect x="966" y="246" width="58" height="34" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="995" y="268" font-size="13.5" fill="#1e40af" text-anchor="middle" font-family="Consolas,'Courier New',monospace">x=1</text>
+  <text x="820" y="300" font-size="13" fill="#334155" font-family="Consolas,'Courier New',monospace">7 = rwx → 读+写+执行</text>
+  <text x="820" y="330" font-size="13" fill="#334155" font-family="Consolas,'Courier New',monospace">6 = rw- → 读+写</text>
+  <text x="820" y="360" font-size="13" fill="#334155" font-family="Consolas,'Courier New',monospace">5 = r-x → 读+执行</text>
+  <text x="820" y="390" font-size="13" fill="#334155" font-family="Consolas,'Courier New',monospace">4 = r-- → 只读</text>
+  <rect x="820" y="414" width="230" height="40" rx="8" fill="#0f172a"/>
+  <text x="935" y="440" font-size="14" fill="#e2e8f0" text-anchor="middle" font-family="Consolas,'Courier New',monospace">chmod 755 script.sh</text>
+  <text x="935" y="478" font-size="12" fill="#64748b" text-anchor="middle">= rwxr-xr-x（7 / 5 / 5）</text>
+
+  <!-- 符号法 -->
+  <rect x="1090" y="196" width="270" height="300" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="1225" y="226" font-size="15" font-weight="bold" fill="#b45309" text-anchor="middle">符号法：chmod u+x</text>
+  <rect x="1110" y="246" width="52" height="34" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="1136" y="268" font-size="14" font-weight="bold" fill="#b45309" text-anchor="middle" font-family="Consolas,'Courier New',monospace">u</text>
+  <rect x="1174" y="246" width="52" height="34" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="1200" y="268" font-size="14" font-weight="bold" fill="#b45309" text-anchor="middle" font-family="Consolas,'Courier New',monospace">g</text>
+  <rect x="1238" y="246" width="52" height="34" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="1264" y="268" font-size="14" font-weight="bold" fill="#b45309" text-anchor="middle" font-family="Consolas,'Courier New',monospace">o</text>
+  <rect x="1302" y="246" width="52" height="34" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="1328" y="268" font-size="14" font-weight="bold" fill="#b45309" text-anchor="middle" font-family="Consolas,'Courier New',monospace">a</text>
+  <text x="1225" y="300" font-size="12.5" fill="#64748b" text-anchor="middle">u 属主 · g 属组 · o 其他 · a 全部</text>
+  <text x="1225" y="326" font-size="13" fill="#334155" text-anchor="middle">＋ 增加　－ 移除　＝ 设定</text>
+  <rect x="1110" y="348" width="230" height="30" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="1225" y="367" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">chmod u+x run.sh　属主+x</text>
+  <rect x="1110" y="400" width="230" height="30" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="1225" y="419" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">chmod g-w conf　属组-w</text>
+  <rect x="1110" y="452" width="230" height="30" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="1225" y="471" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">chmod o+r report　其他+r</text>
+
+  <!-- umask -->
+  <rect x="800" y="516" width="560" height="160" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="1080" y="544" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle">umask：新建文件的默认权限</text>
+  <text x="1080" y="570" font-size="13" fill="#334155" text-anchor="middle">文件 666 &amp; ~022 → 644；目录 777 &amp; ~022 → 755</text>
+  <rect x="840" y="588" width="520" height="36" rx="8" fill="#0f172a"/>
+  <text x="1100" y="612" font-size="13.5" fill="#e2e8f0" text-anchor="middle" font-family="Consolas,'Courier New',monospace">umask 022; touch f.txt; mkdir d</text>
+  <text x="1080" y="650" font-size="12" fill="#64748b" text-anchor="middle">→ f.txt = rw-r--r--（644），目录 d = rwxr-xr-x（755）</text>
+
+  <!-- 权限速查 -->
+  <rect x="800" y="690" width="560" height="76" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="820" y="714" font-size="13" font-weight="bold" fill="#334155">权限速查</text>
+  <rect x="820" y="722" width="104" height="44" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="872" y="740" font-size="12" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">644 rw-r--r--</text>
+  <text x="872" y="757" font-size="10.5" fill="#64748b" text-anchor="middle">普通文件</text>
+  <rect x="928" y="722" width="104" height="44" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="980" y="740" font-size="12" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">755 rwxr-xr-x</text>
+  <text x="980" y="757" font-size="10.5" fill="#64748b" text-anchor="middle">脚本·目录</text>
+  <rect x="1036" y="722" width="104" height="44" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="1088" y="740" font-size="12" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">600 rw-------</text>
+  <text x="1088" y="757" font-size="10.5" fill="#64748b" text-anchor="middle">私密文件</text>
+  <rect x="1144" y="722" width="104" height="44" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="1196" y="740" font-size="12" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">700 rwx------</text>
+  <text x="1196" y="757" font-size="10.5" fill="#64748b" text-anchor="middle">密钥目录</text>
+  <rect x="1252" y="722" width="104" height="44" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="1304" y="740" font-size="12" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">1777 rwxrwxrwt</text>
+  <text x="1304" y="757" font-size="10.5" fill="#64748b" text-anchor="middle">/tmp 共享</text>
+</svg>

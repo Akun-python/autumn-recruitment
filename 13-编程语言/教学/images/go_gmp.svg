@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7fbff"/><stop offset="1" stop-color="#eef4fb"/></linearGradient>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e4f7ec"/><stop offset="1" stop-color="#cfeede"/></linearGradient>
+    <linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e4f0ff"/><stop offset="1" stop-color="#d4e6fa"/></linearGradient>
+    <linearGradient id="m" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0df"/><stop offset="1" stop-color="#ffe1bd"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#183b56" flood-opacity=".12"/></filter>
+    <marker id="aBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#3b6ea8"/></marker>
+    <marker id="aGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#2f9b68"/></marker>
+    <marker id="aOrange" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#cb7925"/></marker>
+    <style>
+      text{font-family:"Noto Sans SC","Microsoft YaHei","PingFang SC",Arial,sans-serif;fill:#1f2d3d}.title{font-size:34px;font-weight:800}.subtitle{font-size:17px;fill:#64748b}.section{font-size:20px;font-weight:700}.label{font-size:15px;fill:#60758b}.small{font-size:14px;fill:#61748a}.value{font-size:21px;font-weight:700}.code{font-family:ui-monospace,SFMono-Regular,Consolas,"Microsoft YaHei",monospace;font-size:18px}.pill{font-size:15px;font-weight:700}
+    </style>
+  </defs>
+  <rect width="1400" height="800" fill="url(#bg)"/><circle cx="1300" cy="90" r="100" fill="#dbeafe" opacity=".6"/><circle cx="70" cy="740" r="130" fill="#dcfce7" opacity=".45"/>
+  <text x="70" y="68" class="title">Go GMP 调度模型</text><text x="70" y="101" class="subtitle">G（goroutine）由 P（逻辑处理器）承载，再绑定 M（OS 线程）执行</text>
+  <rect x="70" y="132" width="1260" height="300" rx="20" fill="#fff" filter="url(#shadow)"/><text x="98" y="169" class="section">一条可运行链路：G → P → M → CPU</text>
+  <g transform="translate(100,205)"><rect width="215" height="174" rx="18" fill="url(#g)" stroke="#79c995" stroke-width="2"/><text x="25" y="35" class="label">G · goroutine</text><text x="25" y="73" class="value">轻量任务</text><rect x="25" y="96" width="165" height="28" rx="14" fill="#fff" opacity=".75"/><text x="107" y="116" text-anchor="middle" class="pill" fill="#278256">G1  G2  G3 …</text><text x="25" y="151" class="small">百万级、KB 级栈</text></g>
+  <path d="M330,292 H390" stroke="#2f9b68" stroke-width="4" marker-end="url(#aGreen)"/><text x="360" y="272" text-anchor="middle" class="small">放入队列</text>
+  <g transform="translate(410,205)"><rect width="290" height="174" rx="18" fill="url(#p)" stroke="#8db7e7" stroke-width="2"/><text x="25" y="35" class="label">P · 逻辑处理器</text><text x="25" y="73" class="value">拥有本地 runq</text><rect x="25" y="96" width="240" height="38" rx="10" fill="#fff" opacity=".8"/><text x="38" y="121" class="code">G7  →  G8  →  G9</text><text x="25" y="155" class="small">P 决定“下一个跑谁”</text></g>
+  <path d="M715,292 H775" stroke="#3b6ea8" stroke-width="4" marker-end="url(#aBlue)"/><text x="745" y="272" text-anchor="middle" class="small">绑定执行</text>
+  <g transform="translate(795,205)"><rect width="220" height="174" rx="18" fill="url(#m)" stroke="#e6aa61" stroke-width="2"/><text x="25" y="35" class="label">M · OS 线程</text><text x="25" y="73" class="value">真正占 CPU</text><rect x="25" y="96" width="170" height="38" rx="10" fill="#fff" opacity=".8"/><text x="110" y="121" text-anchor="middle" class="code">M0</text><text x="25" y="155" class="small">阻塞时可让出 P</text></g>
+  <path d="M1030,292 H1090" stroke="#cb7925" stroke-width="4" marker-end="url(#aOrange)"/><text x="1060" y="272" text-anchor="middle" class="small">系统调用</text>
+  <g transform="translate(1110,205)"><rect width="170" height="174" rx="18" fill="#f1f5f9" stroke="#b8c4d1" stroke-width="2"/><text x="25" y="35" class="label">CPU · 核心</text><text x="25" y="82" class="value">CPU0</text><text x="25" y="120" class="small">执行指令</text><text x="25" y="148" class="small">时间片轮转</text></g>
+  <rect x="70" y="462" width="600" height="278" rx="20" fill="#fff" filter="url(#shadow)"/><text x="98" y="500" class="section">本地 run queue：优先就近调度</text><text x="98" y="532" class="small">每个 P 都有自己的队列，减少全局锁竞争</text>
+  <g transform="translate(100,560)"><rect width="500" height="62" rx="14" fill="#edf5ff" stroke="#aac8e9"/><text x="22" y="39" class="code">P0 · runq</text><rect x="175" y="17" width="65" height="28" rx="8" fill="#c7ddf5"/><text x="207" y="36" text-anchor="middle" class="pill">G7</text><rect x="250" y="17" width="65" height="28" rx="8" fill="#c7ddf5"/><text x="282" y="36" text-anchor="middle" class="pill">G8</text><rect x="325" y="17" width="65" height="28" rx="8" fill="#c7ddf5"/><text x="357" y="36" text-anchor="middle" class="pill">G9</text><rect x="400" y="17" width="75" height="28" rx="8" fill="#eaf0f7"/><text x="437" y="36" text-anchor="middle" class="small">…</text></g>
+  <path d="M600,592 C650,592 662,592 700,592" stroke="#3b6ea8" stroke-width="3" stroke-dasharray="8 7" marker-end="url(#aBlue)"/><text x="650" y="574" text-anchor="middle" class="small">队列为空？</text>
+  <rect x="98" y="654" width="520" height="56" rx="12" fill="#f6fafc" stroke="#d9e5ef"/><text x="118" y="678" class="small">全局队列（global runq）</text><text x="118" y="699" class="small">本地没有任务时，再从这里取</text>
+
+  <rect x="730" y="462" width="600" height="278" rx="20" fill="#fff" filter="url(#shadow)"/><text x="758" y="500" class="section">work stealing：让空闲 P 找活干</text><text x="758" y="532" class="small">P0 空闲 → 随机“偷”走 P1 队列的一半</text>
+  <g transform="translate(760,560)"><rect width="208" height="66" rx="14" fill="#edf5ff" stroke="#aac8e9"/><text x="18" y="27" class="label">P0 · 空闲</text><text x="18" y="52" class="value">runq = ∅</text><rect x="280" width="208" height="66" rx="14" fill="#e7f7ee" stroke="#a4ddc1"/><text x="298" y="27" class="label">P1 · 繁忙</text><text x="298" y="52" class="value">G1 G2 G3 G4</text><path d="M220,33 H270" stroke="#2f9b68" stroke-width="3" marker-end="url(#aGreen)"/><text x="245" y="20" text-anchor="middle" class="small">steal</text></g>
+  <rect x="760" y="654" width="500" height="56" rx="12" fill="#fff4df" stroke="#f1c77e"/><text x="780" y="678" class="small">结果：负载均衡</text><text x="780" y="699" class="small">G 不必绑定固定线程，M 阻塞也能换线程继续跑</text>
+</svg>

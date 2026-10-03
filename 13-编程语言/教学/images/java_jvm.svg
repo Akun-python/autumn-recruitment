@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7f9fc"/><stop offset="1" stop-color="#eef4fb"/></linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dceeff"/><stop offset="1" stop-color="#c7e3ff"/></linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e0f7ee"/><stop offset="1" stop-color="#c8eedf"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0d6"/><stop offset="1" stop-color="#ffe1ab"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#28415d" flood-opacity=".13"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#54708f"/></marker>
+    <style>
+      text{font-family:"Noto Sans CJK SC","Microsoft YaHei","PingFang SC",sans-serif;fill:#24364b} .title{font-size:34px;font-weight:700}.sub{font-size:17px;fill:#6b7b8d}.h{font-size:24px;font-weight:700}.body{font-size:18px}.small{font-size:15px;fill:#60758a}.mono{font-family:"JetBrains Mono","Consolas",monospace;font-size:16px}
+    </style>
+  </defs>
+  <rect width="1400" height="800" fill="url(#bg)"/>
+  <text x="70" y="64" class="title">JVM 如何把 .class 跑起来</text><text x="70" y="96" class="sub">一条主线：类加载 → 运行时数据区 → 执行引擎（解释器 + JIT）</text>
+  <rect x="70" y="132" width="1260" height="102" rx="20" fill="#ffffff" stroke="#d8e2ee" filter="url(#shadow)"/>
+  <text x="100" y="169" class="small">输入</text><text x="100" y="204" class="mono">Hello.java  →  javac  →  Hello.class（字节码）</text>
+  <path d="M560 183 H635" stroke="#54708f" stroke-width="3" marker-end="url(#arrow)"/><text x="674" y="174" class="body">跨平台的中间表示</text><text x="674" y="204" class="small">Write Once, Run Anywhere</text>
+  <rect x="70" y="274" width="370" height="392" rx="22" fill="url(#blue)" stroke="#9bc8ef" stroke-width="2" filter="url(#shadow)"/>
+  <text x="100" y="320" class="h">① 类加载子系统</text><text x="100" y="353" class="small">Class Loader Subsystem</text>
+  <g fill="#fff" stroke="#b7d8f2"><rect x="100" y="380" width="310" height="52" rx="12"/><rect x="100" y="448" width="310" height="52" rx="12"/><rect x="100" y="516" width="310" height="52" rx="12"/><rect x="100" y="584" width="310" height="52" rx="12"/></g>
+  <text x="125" y="413" class="body">加载 Load</text><text x="125" y="481" class="body">验证 Verify</text><text x="125" y="549" class="body">准备 / 解析</text><text x="125" y="617" class="body">初始化 Init</text>
+  <text x="250" y="694" text-anchor="middle" class="small">双亲委派：先问父加载器，避免核心类被冒充</text>
+  <path d="M440 470 H500" stroke="#54708f" stroke-width="4" marker-end="url(#arrow)"/><text x="470" y="450" text-anchor="middle" class="small">装入</text>
+  <rect x="530" y="274" width="430" height="392" rx="22" fill="url(#green)" stroke="#a7ddc7" stroke-width="2" filter="url(#shadow)"/>
+  <text x="560" y="320" class="h">② 运行时数据区</text><text x="560" y="353" class="small">Runtime Data Areas</text>
+  <rect x="560" y="380" width="370" height="92" rx="14" fill="#fff" stroke="#b9dfcf"/><text x="585" y="414" class="body">线程共享</text><text x="585" y="445" class="small">堆 Heap：对象、数组（GC 主战场）</text>
+  <rect x="560" y="490" width="370" height="70" rx="14" fill="#fff" stroke="#b9dfcf"/><text x="585" y="520" class="body">线程私有</text><text x="585" y="546" class="small">虚拟机栈：栈帧 = 局部变量 + 操作数栈</text>
+  <rect x="560" y="578" width="370" height="58" rx="14" fill="#fff" stroke="#b9dfcf"/><text x="585" y="613" class="small">PC 程序计数器 · 本地方法栈 · 方法区/元空间</text>
+  <path d="M960 470 H1020" stroke="#54708f" stroke-width="4" marker-end="url(#arrow)"/><text x="990" y="450" text-anchor="middle" class="small">取指</text>
+  <rect x="1050" y="274" width="280" height="392" rx="22" fill="url(#orange)" stroke="#efc779" stroke-width="2" filter="url(#shadow)"/>
+  <text x="1080" y="320" class="h">③ 执行引擎</text><text x="1080" y="353" class="small">Execution Engine</text>
+  <rect x="1080" y="386" width="220" height="66" rx="13" fill="#fff" stroke="#f0d293"/><text x="1190" y="414" text-anchor="middle" class="body">解释器</text><text x="1190" y="438" text-anchor="middle" class="small">逐条执行字节码</text>
+  <rect x="1080" y="470" width="220" height="66" rx="13" fill="#fff" stroke="#f0d293"/><text x="1190" y="498" text-anchor="middle" class="body">JIT 编译器</text><text x="1190" y="522" text-anchor="middle" class="small">热点代码 → 机器码</text>
+  <rect x="1080" y="554" width="220" height="62" rx="13" fill="#fff" stroke="#f0d293"/><text x="1190" y="582" text-anchor="middle" class="body">本地方法接口</text><text x="1190" y="604" text-anchor="middle" class="small">调用 OS / C 库</text>
+  <rect x="70" y="710" width="1260" height="54" rx="16" fill="#253b52"/><text x="100" y="745" fill="#fff" font-size="17" font-family="Microsoft YaHei">关键记忆：对象通常在堆；方法调用压入栈帧；热点代码被 JIT 编译后执行更快。</text>
+</svg>

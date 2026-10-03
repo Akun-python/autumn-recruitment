@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',sans-serif">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <marker id="arr-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#059669"/>
+    </marker>
+    <marker id="arr-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arr-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1400" height="800" fill="#f6f8fb"/>
+
+  <!-- ================= 标题 ================= -->
+  <text x="700" y="52" font-size="30" font-weight="bold" fill="#0f172a" text-anchor="middle">Shell 管道流水线：command1 | command2 | command3</text>
+  <text x="700" y="86" font-size="16" fill="#64748b" text-anchor="middle">前一个命令的 stdout(1) 经管道接入后一个命令的 stdin(0)：逐条流动、并发执行；stderr(2) 默认不进管道</text>
+
+  <!-- ================= 图例 ================= -->
+  <line x1="60" y1="117" x2="96" y2="117" stroke="#059669" stroke-width="4"/>
+  <text x="104" y="121" font-size="13" fill="#334155">stdout(1) → 管道</text>
+  <line x1="250" y1="117" x2="286" y2="117" stroke="#2563eb" stroke-width="4"/>
+  <text x="294" y="121" font-size="13" fill="#334155">stdin(0) ← 管道</text>
+  <line x1="428" y1="117" x2="464" y2="117" stroke="#dc2626" stroke-width="4" stroke-dasharray="6,4"/>
+  <text x="472" y="121" font-size="13" fill="#334155">stderr(2) 不进管道</text>
+  <text x="700" y="121" font-size="13" fill="#64748b">A | B 等价：A.stdout → B.stdin（内存字节流，无需落盘）</text>
+
+  <!-- ================= 主流程：三命令 + 两管道 ================= -->
+
+  <!-- command 1 -->
+  <rect x="60" y="190" width="290" height="150" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="80" y="214" font-size="12" font-weight="bold" fill="#0f172a">COMMAND 1</text>
+  <text x="80" y="250" font-size="18" font-weight="bold" fill="#1d4ed8" font-family="Consolas,'Courier New',monospace">tail -f app.log</text>
+  <text x="80" y="274" font-size="12.5" fill="#64748b">持续输出日志（可实时）</text>
+  <text x="80" y="318" font-size="11" fill="#2563eb">stdin(0) ← 键盘/文件</text>
+  <text x="330" y="318" font-size="11" fill="#059669" text-anchor="end">stdout(1) →</text>
+  <circle cx="350" cy="265" r="6" fill="#059669"/>
+
+  <!-- 管道 1 -->
+  <line x1="356" y1="265" x2="444" y2="265" stroke="#059669" stroke-width="4" marker-end="url(#arr-green)"/>
+  <rect x="366" y="224" width="64" height="24" rx="12" fill="#d1fae5" stroke="#6ee7b7"/>
+  <text x="398" y="240" font-size="10.5" fill="#065f46" text-anchor="middle">pipe</text>
+  <text x="400" y="297" font-size="10.5" fill="#475569" text-anchor="middle">stdout → stdin</text>
+
+  <!-- command 2 -->
+  <rect x="450" y="190" width="290" height="150" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="470" y="214" font-size="12" font-weight="bold" fill="#0f172a">COMMAND 2</text>
+  <text x="470" y="250" font-size="18" font-weight="bold" fill="#047857" font-family="Consolas,'Courier New',monospace">grep ERROR</text>
+  <text x="470" y="274" font-size="12.5" fill="#64748b">逐条过滤，命中即输出</text>
+  <text x="470" y="318" font-size="11" fill="#2563eb">← stdin(0)</text>
+  <text x="720" y="318" font-size="11" fill="#059669" text-anchor="end">stdout(1) →</text>
+  <circle cx="452" cy="265" r="7" fill="#2563eb"/>
+  <circle cx="738" cy="265" r="6" fill="#059669"/>
+
+  <!-- 管道 2 -->
+  <line x1="746" y1="265" x2="824" y2="265" stroke="#059669" stroke-width="4" marker-end="url(#arr-green)"/>
+  <rect x="762" y="224" width="64" height="24" rx="12" fill="#d1fae5" stroke="#6ee7b7"/>
+  <text x="794" y="240" font-size="10.5" fill="#065f46" text-anchor="middle">pipe</text>
+  <text x="785" y="297" font-size="10.5" fill="#475569" text-anchor="middle">stdout → stdin</text>
+
+  <!-- command 3 -->
+  <rect x="830" y="190" width="290" height="150" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="850" y="214" font-size="12" font-weight="bold" fill="#0f172a">COMMAND 3</text>
+  <text x="850" y="250" font-size="18" font-weight="bold" fill="#92400e" font-family="Consolas,'Courier New',monospace">wc -l</text>
+  <text x="850" y="274" font-size="12.5" fill="#64748b">统计行数并输出结果</text>
+  <text x="850" y="318" font-size="11" fill="#2563eb">← stdin(0)</text>
+  <text x="1100" y="318" font-size="11" fill="#059669" text-anchor="end">stdout(1) → 终端</text>
+  <circle cx="832" cy="265" r="7" fill="#2563eb"/>
+
+  <!-- stderr：不进入管道，直接上屏 -->
+  <path d="M150,340 L150,430 L434,430" fill="none" stroke="#dc2626" stroke-width="3" stroke-dasharray="7,5" marker-end="url(#arr-red)"/>
+  <path d="M590,346 L590,426" fill="none" stroke="#dc2626" stroke-width="3" stroke-dasharray="7,5" marker-end="url(#arr-red)"/>
+  <text x="210" y="420" font-size="11.5" fill="#dc2626">错误信息直接上屏幕，不进管道</text>
+  <rect x="430" y="430" width="620" height="64" rx="12" fill="#fff1f2" stroke="#fecaca"/>
+  <text x="740" y="458" font-size="14" font-weight="bold" fill="#b91c1c" text-anchor="middle">stderr(2) ≠ 管道：错误信息默认直接显示，不进 | 链</text>
+  <text x="740" y="482" font-size="12.5" fill="#9f1239" text-anchor="middle">合并：cmd 2&gt;&amp;1 | next　或　cmd |&amp; next；单独落盘：cmd 2&gt; err.log</text>
+
+  <!-- ================= 标准流三卡 ================= -->
+  <rect x="60" y="520" width="320" height="120" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="75" y="548" font-size="15" font-weight="bold" fill="#1d4ed8">0 · stdin　标准输入</text>
+  <text x="75" y="574" font-size="12.5" fill="#475569">数据来源：键盘 / 文件重定向 &lt;</text>
+  <text x="75" y="598" font-size="12.5" fill="#475569">管道中：上一个命令的 stdout</text>
+  <text x="75" y="624" font-size="12" fill="#64748b" font-family="Consolas,'Courier New',monospace">command &lt; file</text>
+
+  <rect x="400" y="520" width="320" height="120" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="415" y="548" font-size="15" font-weight="bold" fill="#047857">1 · stdout　标准输出</text>
+  <text x="415" y="574" font-size="12.5" fill="#475569">数据去向：屏幕 / 文件重定向 &gt;</text>
+  <text x="415" y="598" font-size="12.5" fill="#475569">管道中：下一个命令的 stdin</text>
+  <text x="415" y="624" font-size="12" fill="#64748b" font-family="Consolas,'Courier New',monospace">command &gt; file</text>
+
+  <rect x="740" y="520" width="320" height="120" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="755" y="548" font-size="15" font-weight="bold" fill="#b91c1c">2 · stderr　标准错误</text>
+  <text x="755" y="574" font-size="12.5" fill="#475569">数据去向：屏幕（默认）</text>
+  <text x="755" y="598" font-size="12.5" fill="#475569">不进管道：需 2&gt;&amp;1 / |&amp; 显式合并</text>
+  <text x="755" y="624" font-size="12" fill="#64748b" font-family="Consolas,'Courier New',monospace">command 2&gt; err.log</text>
+
+  <!-- ================= 管道机制 ================= -->
+  <rect x="60" y="670" width="1000" height="100" rx="14" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="80" y="700" font-size="15" font-weight="bold" fill="#0f172a">管道机制 · 考点</text>
+  <rect x="80" y="714" width="300" height="46" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="230" y="738" font-size="14" font-weight="bold" fill="#334155" text-anchor="middle">并发执行</text>
+  <text x="230" y="756" font-size="11.5" fill="#64748b" text-anchor="middle">两端同时运行，速度取慢者</text>
+  <rect x="400" y="714" width="300" height="46" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="550" y="738" font-size="14" font-weight="bold" fill="#334155" text-anchor="middle">逐条流动</text>
+  <text x="550" y="756" font-size="11.5" fill="#64748b" text-anchor="middle">不攒满再传，tail -f 可实时过滤</text>
+  <rect x="720" y="714" width="300" height="46" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="870" y="738" font-size="14" font-weight="bold" fill="#334155" text-anchor="middle">退出码 = 最后命令</text>
+  <text x="870" y="756" font-size="11.5" fill="#64748b" text-anchor="middle">配合 set -o pipefail 全局生效</text>
+
+  <!-- ================= 右侧：关键命令 ================= -->
+  <rect x="1170" y="190" width="230" height="560" rx="16" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="1285" y="222" font-size="17" font-weight="bold" fill="#0f172a" text-anchor="middle">关键命令</text>
+  <line x1="1180" y1="240" x2="1390" y2="240" stroke="#e2e8f0" stroke-width="2"/>
+  <rect x="1182" y="254" width="206" height="34" rx="8" fill="#0f172a"/>
+  <text x="1190" y="275" font-size="13.5" fill="#e2e8f0" font-family="Consolas,'Courier New',monospace">A | B</text>
+  <text x="1190" y="306" font-size="11.5" fill="#64748b">stdout → stdin（并发）</text>
+  <rect x="1182" y="324" width="206" height="34" rx="8" fill="#0f172a"/>
+  <text x="1190" y="345" font-size="13.5" fill="#e2e8f0" font-family="Consolas,'Courier New',monospace">2&gt; err.log</text>
+  <text x="1190" y="376" font-size="11.5" fill="#64748b">只重定向错误流</text>
+  <rect x="1182" y="394" width="206" height="34" rx="8" fill="#0f172a"/>
+  <text x="1190" y="415" font-size="13.5" fill="#e2e8f0" font-family="Consolas,'Courier New',monospace">2&gt;&amp;1</text>
+  <text x="1190" y="446" font-size="11.5" fill="#64748b">stderr 并入 stdout</text>
+  <rect x="1182" y="464" width="206" height="34" rx="8" fill="#0f172a"/>
+  <text x="1190" y="485" font-size="13.5" fill="#e2e8f0" font-family="Consolas,'Courier New',monospace">|&amp;</text>
+  <text x="1190" y="516" font-size="11.5" fill="#64748b">bash：两流一起进管道</text>
+  <rect x="1182" y="534" width="206" height="34" rx="8" fill="#0f172a"/>
+  <text x="1190" y="555" font-size="13.5" fill="#e2e8f0" font-family="Consolas,'Courier New',monospace">&gt; log 2&gt;&amp;1</text>
+  <text x="1190" y="586" font-size="11.5" fill="#64748b">全部输出落盘</text>
+  <rect x="1182" y="604" width="206" height="34" rx="8" fill="#0f172a"/>
+  <text x="1190" y="625" font-size="13.5" fill="#e2e8f0" font-family="Consolas,'Courier New',monospace">set -o pipefail</text>
+  <text x="1190" y="656" font-size="11.5" fill="#64748b">管道任一失败 → 整体失败</text>
+  <rect x="1170" y="668" width="230" height="66" rx="12" fill="#fefce8" stroke="#fde047"/>
+  <text x="1285" y="692" font-size="12.5" font-weight="bold" fill="#854d0e" text-anchor="middle">⚠️ 最容易错</text>
+  <text x="1190" y="712" font-size="11.5" fill="#854d0e">stderr 不走管道，报错会</text>
+  <text x="1190" y="730" font-size="11.5" fill="#854d0e">直接显示在终端</text>
+</svg>

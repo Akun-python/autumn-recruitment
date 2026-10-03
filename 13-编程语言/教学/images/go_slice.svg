@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7fbff"/><stop offset="1" stop-color="#eef4fb"/></linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e7f1ff"/><stop offset="1" stop-color="#d5e8ff"/></linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e6f8ef"/><stop offset="1" stop-color="#d4f0e2"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff3df"/><stop offset="1" stop-color="#ffe7bf"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#183b56" flood-opacity=".12"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#3b6ea8"/></marker>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#2c9b6a"/></marker>
+    <style>
+      text{font-family:"Noto Sans SC","Microsoft YaHei","PingFang SC",Arial,sans-serif;fill:#1f2d3d}
+      .title{font-size:34px;font-weight:800;letter-spacing:1px}.subtitle{font-size:17px;fill:#64748b}
+      .section{font-size:20px;font-weight:700}.label{font-size:16px;fill:#617083}.code{font-family:ui-monospace,SFMono-Regular,Consolas,"Microsoft YaHei",monospace;font-size:18px}
+      .small{font-size:14px;fill:#62748a}.value{font-size:21px;font-weight:700}.pill{font-size:15px;font-weight:700}
+    </style>
+  </defs>
+  <rect width="1400" height="800" fill="url(#bg)"/>
+  <circle cx="1300" cy="85" r="95" fill="#dbeafe" opacity=".55"/><circle cx="90" cy="730" r="120" fill="#dcfce7" opacity=".45"/>
+  <text x="70" y="68" class="title">Go slice：三元组视图与扩容</text><text x="70" y="101" class="subtitle">切片不是数组，而是指向底层数组的一段窗口：ptr · len · cap</text>
+  <rect x="70" y="132" width="1260" height="110" rx="18" fill="#ffffff" filter="url(#shadow)"/>
+  <rect x="92" y="153" width="116" height="66" rx="12" fill="#183b56"/><text x="150" y="181" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">核心结构</text><text x="150" y="204" text-anchor="middle" fill="#bde3ff" font-size="13">slice header</text>
+  <g transform="translate(245,153)"><rect width="300" height="66" rx="12" fill="url(#blue)" stroke="#a9c9ee"/><text x="20" y="27" class="label">ptr</text><text x="20" y="52" class="value">→ 底层数组起点</text></g>
+  <g transform="translate(570,153)"><rect width="300" height="66" rx="12" fill="url(#green)" stroke="#a4ddc1"/><text x="20" y="27" class="label">len</text><text x="20" y="52" class="value">→ 当前可见元素数</text></g>
+  <g transform="translate(895,153)"><rect width="390" height="66" rx="12" fill="url(#orange)" stroke="#f2cb8f"/><text x="20" y="27" class="label">cap</text><text x="20" y="52" class="value">→ 从 ptr 起可用容量</text></g>
+
+  <rect x="70" y="272" width="600" height="238" rx="20" fill="#fff" filter="url(#shadow)"/><text x="98" y="309" class="section">① 两个 slice，共享同一数组</text>
+  <rect x="98" y="334" width="544" height="52" rx="10" fill="#f2f6fb" stroke="#d7e2ee"/><text x="118" y="367" class="code">a := []int{10, 20, 30, 40, 50, 60}</text>
+  <rect x="98" y="406" width="544" height="76" rx="12" fill="#edf6ff" stroke="#b8d5f5"/>
+  <text x="118" y="433" class="code" fill="#2563eb">a</text><text x="180" y="433" class="small">ptr → [0]</text><text x="300" y="433" class="small">len = 6</text><text x="430" y="433" class="small">cap = 6</text>
+  <text x="118" y="464" class="code" fill="#15803d">b := a[1:3]</text><text x="300" y="464" class="small">ptr → [1]</text><text x="430" y="464" class="small">len = 2 · cap = 5</text>
+
+  <rect x="730" y="272" width="600" height="238" rx="20" fill="#fff" filter="url(#shadow)"/><text x="758" y="309" class="section">底层数组（只有一份数据）</text>
+  <g transform="translate(760,342)"><text x="0" y="-10" class="small">index</text><g font-size="15" fill="#64748b"><text x="54" y="-10">0</text><text x="130" y="-10">1</text><text x="206" y="-10">2</text><text x="282" y="-10">3</text><text x="358" y="-10">4</text><text x="434" y="-10">5</text></g>
+    <g stroke="#9eb4ca"><rect x="25" y="0" width="72" height="54" rx="8" fill="#e8f2ff"/><rect x="101" y="0" width="72" height="54" rx="8" fill="#cce6d9"/><rect x="177" y="0" width="72" height="54" rx="8" fill="#cce6d9"/><rect x="253" y="0" width="72" height="54" rx="8" fill="#e8f2ff"/><rect x="329" y="0" width="72" height="54" rx="8" fill="#e8f2ff"/><rect x="405" y="0" width="72" height="54" rx="8" fill="#e8f2ff"/></g>
+    <g class="value" text-anchor="middle"><text x="61" y="35">10</text><text x="137" y="35">20</text><text x="213" y="35">30</text><text x="289" y="35">40</text><text x="365" y="35">50</text><text x="441" y="35">60</text></g>
+    <path d="M137,75 v24" stroke="#2c9b6a" stroke-width="3" marker-end="url(#arrowGreen)"/><text x="137" y="122" text-anchor="middle" class="pill" fill="#23835a">b 的 ptr</text><path d="M61,75 v24" stroke="#3b6ea8" stroke-width="3" marker-end="url(#arrow)"/><text x="61" y="148" text-anchor="middle" class="pill" fill="#2f5e91">a 的 ptr</text>
+  </g>
+  <rect x="760" y="474" width="530" height="20" rx="10" fill="#cce6d9"/><text x="1025" y="490" text-anchor="middle" class="small" fill="#217a54">b[0] = 99 ⇒ a[1] 也变成 99（共享内存）</text>
+
+  <path d="M370,525 C370,550 370,552 370,574" fill="none" stroke="#3b6ea8" stroke-width="3" marker-end="url(#arrow)"/><path d="M1030,525 C1030,550 1030,552 1030,574" fill="none" stroke="#d18b2d" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="70" y="590" width="1260" height="154" rx="20" fill="#fff" filter="url(#shadow)"/><text x="98" y="626" class="section">② append 超过 cap：分配新数组，复制可见元素</text>
+  <g transform="translate(100,650)"><rect width="348" height="62" rx="12" fill="#f2f6fb" stroke="#d7e2ee"/><text x="18" y="27" class="code">b = append(b, 70, 80, 90)</text><text x="18" y="50" class="small">len 2 → 5，但 cap 只有 5：刚好填满</text></g>
+  <path d="M472,681 h92" stroke="#3b6ea8" stroke-width="3" marker-end="url(#arrow)"/><text x="518" y="665" text-anchor="middle" class="small">需要更多空间</text>
+  <g transform="translate(594,650)"><rect width="300" height="62" rx="12" fill="#fff4df" stroke="#f1c77e"/><text x="18" y="27" class="value" fill="#a35d00">new backing array</text><text x="18" y="50" class="small">通常扩容为更大容量</text></g>
+  <path d="M918,681 h92" stroke="#2c9b6a" stroke-width="3" marker-end="url(#arrowGreen)"/><text x="964" y="665" text-anchor="middle" class="small">复制 + 追加</text>
+  <g transform="translate(1040,650)"><rect width="250" height="62" rx="12" fill="#e7f7ee" stroke="#a4ddc1"/><text x="18" y="27" class="value" fill="#177245">旧数组仍可被 a 使用</text><text x="18" y="50" class="small">b 已指向新数组</text></g>
+</svg>

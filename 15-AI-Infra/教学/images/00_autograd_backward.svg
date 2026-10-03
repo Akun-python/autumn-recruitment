@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760">
+<rect width="1400" height="760" fill="#f8fafc"/>
+<text x="700" y="48" text-anchor="middle" font-size="30" font-weight="bold" fill="#0f172a">自动微分：前向保存中间值，反向按逆拓扑累加梯度</text>
+<text x="700" y="88" text-anchor="middle" font-size="20" fill="#475569">例：L = ReLU(x·w + b)，局部导数 × 上游梯度</text>
+<defs><marker id="arr" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#2563eb"/></marker><marker id="back" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#ef4444"/></marker></defs>
+<g font-family="Arial, sans-serif">
+<rect x="80" y="210" width="170" height="90" rx="16" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/><text x="165" y="250" text-anchor="middle" font-size="24">x</text><text x="165" y="280" text-anchor="middle" font-size="18">叶子节点</text>
+<rect x="330" y="210" width="170" height="90" rx="16" fill="#fef3c7" stroke="#d97706" stroke-width="3"/><text x="415" y="250" text-anchor="middle" font-size="24">u = x·w</text><text x="415" y="280" text-anchor="middle" font-size="18">乘法</text>
+<rect x="580" y="210" width="170" height="90" rx="16" fill="#fef3c7" stroke="#d97706" stroke-width="3"/><text x="665" y="250" text-anchor="middle" font-size="24">v = u+b</text><text x="665" y="280" text-anchor="middle" font-size="18">加法</text>
+<rect x="830" y="210" width="170" height="90" rx="16" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/><text x="915" y="250" text-anchor="middle" font-size="24">L=ReLU(v)</text><text x="915" y="280" text-anchor="middle" font-size="18">损失/输出</text>
+<rect x="330" y="410" width="170" height="90" rx="16" fill="#fee2e2" stroke="#ef4444" stroke-width="3"/><text x="415" y="450" text-anchor="middle" font-size="24">∂L/∂x</text><text x="415" y="480" text-anchor="middle" font-size="18">反向累加</text>
+<rect x="580" y="410" width="170" height="90" rx="16" fill="#fee2e2" stroke="#ef4444" stroke-width="3"/><text x="665" y="450" text-anchor="middle" font-size="24">∂L/∂u</text><text x="665" y="480" text-anchor="middle" font-size="18">上游梯度</text>
+<rect x="830" y="410" width="170" height="90" rx="16" fill="#fee2e2" stroke="#ef4444" stroke-width="3"/><text x="915" y="450" text-anchor="middle" font-size="24">∂L/∂v=1[v&gt;0]</text><text x="915" y="480" text-anchor="middle" font-size="18">局部导数</text>
+<path d="M250 255 L330 255" stroke="#2563eb" stroke-width="4" marker-end="url(#arr)"/><path d="M500 255 L580 255" stroke="#2563eb" stroke-width="4" marker-end="url(#arr)"/><path d="M750 255 L830 255" stroke="#2563eb" stroke-width="4" marker-end="url(#arr)"/>
+<path d="M830 320 C830 370 750 400 750 430" fill="none" stroke="#ef4444" stroke-width="4" marker-end="url(#back)"/><path d="M580 455 L500 455" stroke="#ef4444" stroke-width="4" marker-end="url(#back)"/><path d="M330 455 L250 455" stroke="#ef4444" stroke-width="4" marker-end="url(#back)"/>
+<text x="700" y="590" text-anchor="middle" font-size="24" fill="#0f172a">反向公式：g_v = g_L·1[v&gt;0]；g_u = g_v·1；g_x = g_u·w；g_w = g_u·x</text>
+<text x="700" y="640" text-anchor="middle" font-size="22" fill="#64748b">为什么逆拓扑？因为节点的所有下游梯度必须先累加完，才能得到完整的上游梯度。</text>
+</g></svg>

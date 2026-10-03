@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Source Han Sans SC',sans-serif">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="10" flood-color="#0F172A" flood-opacity="0.07"/>
+    </filter>
+    <linearGradient id="bgTop" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#EEF4FF"/>
+      <stop offset="1" stop-color="#F6F8FC"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1400" height="800" fill="url(#bgTop)"/>
+  <ellipse cx="1280" cy="64" rx="250" ry="130" fill="#DBEAFE" opacity="0.45"/>
+
+  <!-- ===== 标题 ===== -->
+  <rect x="41" y="46" width="10" height="44" rx="5" fill="#2563EB"/>
+  <text x="65" y="80" font-size="36" font-weight="700" fill="#0F172A">通配符 Glob vs 正则 Regex —— 匹配对象完全不同</text>
+  <text x="65" y="112" font-size="17" fill="#64748B">通配符：Shell 展开阶段匹配「文件名」（ls / rm / find -name）；正则：grep / sed / awk 匹配「文本内容」—— 符号相似，语义天差地别</text>
+
+  <!-- ===== 左列：通配符 Glob ===== -->
+  <rect x="41" y="140" width="640" height="415" rx="18" fill="#FFFFFF" stroke="#E2E8F0" filter="url(#shadow)"/>
+  <rect x="61" y="162" width="160" height="36" rx="18" fill="#DBEAFE"/>
+  <text x="141" y="186" font-size="16" font-weight="700" fill="#1D4ED8" text-anchor="middle">通配符 Glob</text>
+  <text x="61" y="222" font-size="14.5" fill="#64748B">Shell 展开阶段 · 匹配文件名（ls / rm / find -name）</text>
+  <text x="61" y="250" font-size="14" fill="#334155">例：ls *.py → 展开为目录中所有 .py 文件名</text>
+  <line x1="61" y1="268" x2="661" y2="268" stroke="#EEF2F7" stroke-width="2"/>
+  <text x="65" y="292" font-size="13" font-weight="700" fill="#94A3B8">符号</text>
+  <text x="205" y="292" font-size="13" font-weight="700" fill="#94A3B8">含义</text>
+  <text x="385" y="292" font-size="13" font-weight="700" fill="#94A3B8">示例</text>
+  <line x1="61" y1="334" x2="661" y2="334" stroke="#EEF2F7" stroke-width="1"/>
+  <line x1="61" y1="378" x2="661" y2="378" stroke="#EEF2F7" stroke-width="1"/>
+  <line x1="61" y1="422" x2="661" y2="422" stroke="#EEF2F7" stroke-width="1"/>
+  <line x1="61" y1="466" x2="661" y2="466" stroke="#EEF2F7" stroke-width="1"/>
+  <line x1="61" y1="510" x2="661" y2="510" stroke="#EEF2F7" stroke-width="1"/>
+
+  <text x="65" y="320" font-family="Consolas,'JetBrains Mono',monospace" font-size="16" font-weight="700" fill="#2563EB">*</text>
+  <text x="205" y="320" font-size="14.5" fill="#334155">任意长度、任意字符的串</text>
+  <text x="385" y="320" font-size="13.5" fill="#64748B" font-family="Consolas,'JetBrains Mono',monospace">*.py → main.py、util.py</text>
+
+  <text x="65" y="364" font-family="Consolas,'JetBrains Mono',monospace" font-size="16" font-weight="700" fill="#2563EB">?</text>
+  <text x="205" y="364" font-size="14.5" fill="#334155">恰好 1 个任意字符</text>
+  <text x="385" y="364" font-size="13.5" fill="#64748B" font-family="Consolas,'JetBrains Mono',monospace">file?.txt → file1.txt</text>
+
+  <text x="65" y="408" font-family="Consolas,'JetBrains Mono',monospace" font-size="16" font-weight="700" fill="#2563EB">[abc]</text>
+  <text x="205" y="408" font-size="14.5" fill="#334155">集合内 1 个字符</text>
+  <text x="385" y="408" font-size="13.5" fill="#64748B" font-family="Consolas,'JetBrains Mono',monospace">[ab]*.log → a.log、b.log</text>
+
+  <text x="65" y="452" font-family="Consolas,'JetBrains Mono',monospace" font-size="16" font-weight="700" fill="#2563EB">[!a]</text>
+  <text x="205" y="452" font-size="14.5" fill="#334155">排除集合内字符</text>
+  <text x="385" y="452" font-size="13.5" fill="#64748B" font-family="Consolas,'JetBrains Mono',monospace">[!0]* → 非 0 开头</text>
+
+  <text x="65" y="496" font-family="Consolas,'JetBrains Mono',monospace" font-size="16" font-weight="700" fill="#2563EB">[a-z]</text>
+  <text x="205" y="496" font-size="14.5" fill="#334155">范围写法：一个字符在区间内</text>
+  <text x="385" y="496" font-size="13.5" fill="#64748B" font-family="Consolas,'JetBrains Mono',monospace">img[0-9].png → img1.png</text>
+
+  <text x="61" y="532" font-size="13.5" fill="#B45309">⚠ 通配符不匹配隐藏文件（. 开头）与路径分隔符 /</text>
+
+  <!-- ===== 右列：正则 Regex ===== -->
+  <rect x="719" y="140" width="640" height="415" rx="18" fill="#FFFFFF" stroke="#E2E8F0" filter="url(#shadow)"/>
+  <rect x="739" y="162" width="160" height="36" rx="18" fill="#EDE9FE"/>
+  <text x="819" y="186" font-size="16" font-weight="700" fill="#6D28D9" text-anchor="middle">正则 Regex</text>
+  <text x="739" y="222" font-size="14.5" fill="#64748B">grep / sed / awk · 匹配文本内容（行内搜索）</text>
+  <text x="739" y="250" font-size="14" fill="#334155">例：grep -E '^import' f.py → 匹配以 import 开头的行</text>
+  <line x1="739" y1="268" x2="1339" y2="268" stroke="#EEF2F7" stroke-width="2"/>
+  <text x="743" y="292" font-size="13" font-weight="700" fill="#94A3B8">符号</text>
+  <text x="883" y="292" font-size="13" font-weight="700" fill="#94A3B8">含义</text>
+  <text x="1063" y="292" font-size="13" font-weight="700" fill="#94A3B8">示例</text>
+  <line x1="739" y1="334" x2="1339" y2="334" stroke="#EEF2F7" stroke-width="1"/>
+  <line x1="739" y1="378" x2="1339" y2="378" stroke="#EEF2F7" stroke-width="1"/>
+  <line x1="739" y1="422" x2="1339" y2="422" stroke="#EEF2F7" stroke-width="1"/>
+  <line x1="739" y1="466" x2="1339" y2="466" stroke="#EEF2F7" stroke-width="1"/>
+  <line x1="739" y1="510" x2="1339" y2="510" stroke="#EEF2F7" stroke-width="1"/>
+
+  <text x="743" y="320" font-family="Consolas,'JetBrains Mono',monospace" font-size="16" font-weight="700" fill="#7C3AED">.</text>
+  <text x="883" y="320" font-size="14.5" fill="#334155">任意 1 个字符（通配符没有）</text>
+  <text x="1063" y="320" font-size="13.5" fill="#64748B" font-family="Consolas,'JetBrains Mono',monospace">a.c → a1c、axc</text>
+
+  <text x="743" y="364" font-family="Consolas,'JetBrains Mono',monospace" font-size="16" font-weight="700" fill="#7C3AED">*</text>
+  <text x="883" y="364" font-size="14.5" fill="#334155">前一项重复 ≥ 0 次（≠ 任意串）</text>
+  <text x="1063" y="364" font-size="13.5" fill="#64748B" font-family="Consolas,'JetBrains Mono',monospace">ab*c → ac、abc、abbc</text>
+
+  <text x="743" y="408" font-family="Consolas,'JetBrains Mono',monospace" font-size="16" font-weight="700" fill="#7C3AED">^ / $</text>
+  <text x="883" y="408" font-size="14.5" fill="#334155">行首 / 行尾 锚点</text>
+  <text x="1063" y="408" font-size="13.5" fill="#64748B" font-family="Consolas,'JetBrains Mono',monospace">^import、\.txt$</text>
+
+  <text x="743" y="452" font-family="Consolas,'JetBrains Mono',monospace" font-size="16" font-weight="700" fill="#7C3AED">+</text>
+  <text x="883" y="452" font-size="14.5" fill="#334155">前一项 ≥ 1 次</text>
+  <text x="1063" y="452" font-size="13.5" fill="#64748B" font-family="Consolas,'JetBrains Mono',monospace">a+ → a、aa、aaa</text>
+
+  <text x="743" y="496" font-family="Consolas,'JetBrains Mono',monospace" font-size="16" font-weight="700" fill="#7C3AED">[abc]</text>
+  <text x="883" y="496" font-size="14.5" fill="#334155">字符类（两边一致）</text>
+  <text x="1063" y="496" font-size="13.5" fill="#64748B" font-family="Consolas,'JetBrains Mono',monospace">grep -E '[0-9]+'</text>
+
+  <text x="739" y="532" font-size="13.5" fill="#B45309">⚠ 正则的 * 是「重复前一个字符」；想匹配任意串要写 .*</text>
+
+  <!-- ===== 正例 ===== -->
+  <rect x="41" y="575" width="650" height="205" rx="18" fill="#F0FDF4" stroke="#BBF7D0" filter="url(#shadow)"/>
+  <text x="61" y="611" font-size="20" font-weight="700" fill="#15803D">✅ 正例 · 各用各的语法</text>
+  <text x="61" y="645" font-size="15" fill="#14532D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">rm *.tmp</tspan> —— 通配符先展开成文件名列表再删除</text>
+  <text x="61" y="675" font-size="15" fill="#14532D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">find . -name "*.py"</tspan> —— find 里用通配符匹配文件名</text>
+  <text x="61" y="705" font-size="15" fill="#14532D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">grep -E '^import .*' f.py</tspan> —— 正则匹配「行内容」</text>
+  <text x="61" y="735" font-size="15" fill="#14532D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">grep -E '\.log$' log.txt</tspan> —— 正则匹配行尾的 .log</text>
+
+  <!-- ===== 反例 ===== -->
+  <rect x="709" y="575" width="650" height="205" rx="18" fill="#FEF2F2" stroke="#FECACA" filter="url(#shadow)"/>
+  <text x="729" y="611" font-size="20" font-weight="700" fill="#B91C1C">❌ 反例 · 常见混淆</text>
+  <text x="729" y="645" font-size="15" fill="#7F1D1D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">grep "*.txt"</tspan> —— 正则里 * 是量词，匹配不到文件名 → 应写 \.txt$</text>
+  <text x="729" y="675" font-size="15" fill="#7F1D1D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">find . -name "^a"</tspan> —— 通配符不认 ^ 锚点，^ 只是普通字符</text>
+  <text x="729" y="705" font-size="15" fill="#7F1D1D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">[[ "$x" == ".*" ]]</tspan> —— == 是通配匹配；正则要用 =~</text>
+  <text x="729" y="735" font-size="15" fill="#7F1D1D">以为正则 * = 任意串 —— 任意串应写作 <tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">.*</tspan></text>
+</svg>

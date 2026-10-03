@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="'Microsoft YaHei','PingFang SC','Noto Sans CJK SC',sans-serif">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <marker id="arr-down" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1400" height="800" fill="#f6f8fb"/>
+
+  <!-- ================= 标题 ================= -->
+  <text x="700" y="52" font-size="30" font-weight="bold" fill="#0f172a" text-anchor="middle">Linux 分层架构：用户态 → libc/syscall → 内核态 → 硬件</text>
+  <text x="700" y="86" font-size="16" fill="#64748b" text-anchor="middle">应用程序无法直接访问硬件，只能通过系统调用（syscall）向内核申请，由内核核实权限后代为执行</text>
+
+  <!-- ================= 图例 ================= -->
+  <rect x="60" y="106" width="20" height="20" rx="4" fill="#dbeafe" stroke="#93c5fd"/>
+  <text x="90" y="121" font-size="13" fill="#334155">用户态</text>
+  <rect x="160" y="106" width="20" height="20" rx="4" fill="#ede9fe" stroke="#c4b5fd"/>
+  <text x="190" y="121" font-size="13" fill="#334155">libc/syscall</text>
+  <rect x="290" y="106" width="20" height="20" rx="4" fill="#dcfce7" stroke="#86efac"/>
+  <text x="320" y="121" font-size="13" fill="#334155">内核态</text>
+  <rect x="390" y="106" width="20" height="20" rx="4" fill="#ffedd5" stroke="#fdba74"/>
+  <text x="420" y="121" font-size="13" fill="#334155">硬件</text>
+  <text x="600" y="121" font-size="13" fill="#64748b">调用链：应用 → libc → syscall → 内核 → 硬件（返回结果逆向上传）</text>
+
+  <!-- ================= 主图：四层堆叠 ================= -->
+
+  <!-- ① 用户态 -->
+  <rect x="40" y="150" width="940" height="136" rx="16" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <rect x="60" y="172" width="130" height="50" rx="10" fill="#dbeafe" stroke="#93c5fd"/>
+  <text x="125" y="193" font-size="17" font-weight="bold" fill="#1e40af" text-anchor="middle">用户态</text>
+  <text x="125" y="213" font-size="11" fill="#3b82f6" text-anchor="middle">userspace</text>
+  <rect x="230" y="170" width="170" height="46" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="315" y="198" font-size="14" fill="#334155" text-anchor="middle">应用进程（你的代码）</text>
+  <rect x="420" y="170" width="170" height="46" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="505" y="198" font-size="14" fill="#334155" text-anchor="middle">Shell：bash / zsh</text>
+  <rect x="610" y="170" width="180" height="46" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="700" y="198" font-size="14" fill="#334155" text-anchor="middle">命令工具：ls / grep</text>
+  <rect x="810" y="170" width="150" height="46" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="885" y="198" font-size="14" fill="#334155" text-anchor="middle">编辑器 vim</text>
+  <rect x="230" y="230" width="210" height="46" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="335" y="258" font-size="14" fill="#334155" text-anchor="middle">Python / Node 运行时</text>
+  <rect x="460" y="230" width="190" height="46" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="555" y="258" font-size="14" fill="#334155" text-anchor="middle">后台服务 / daemon</text>
+  <text x="720" y="258" font-size="12" fill="#b45309">❌ 无权直接访问硬件 I/O</text>
+
+  <!-- 间隙 1 -->
+  <line x1="510" y1="288" x2="510" y2="316" stroke="#64748b" stroke-width="3" marker-end="url(#arr-down)"/>
+  <text x="560" y="308" font-size="13" fill="#475569">① 发起 syscall（read / write / fork…）</text>
+
+  <!-- ② libc / 系统调用层 -->
+  <rect x="40" y="322" width="940" height="110" rx="16" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <rect x="60" y="344" width="150" height="50" rx="10" fill="#ede9fe" stroke="#c4b5fd"/>
+  <text x="135" y="365" font-size="16" font-weight="bold" fill="#5b21b6" text-anchor="middle">系统调用层</text>
+  <text x="135" y="385" font-size="11" fill="#7c3aed" text-anchor="middle">libc + syscall</text>
+  <rect x="240" y="336" width="250" height="66" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="365" y="360" font-size="14" font-weight="bold" fill="#4c1d95" text-anchor="middle">libc 库封装</text>
+  <text x="365" y="384" font-size="11.5" fill="#64748b" text-anchor="middle">printf→write、malloc→mmap</text>
+  <rect x="520" y="336" width="290" height="66" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="665" y="360" font-size="14" font-weight="bold" fill="#4c1d95" text-anchor="middle">系统调用 syscall 入口</text>
+  <text x="665" y="384" font-size="11.5" fill="#64748b" text-anchor="middle">read write fork exec mmap socket</text>
+  <text x="845" y="372" font-size="12" fill="#7c3aed">进入内核的唯一入口</text>
+
+  <!-- 间隙 2 -->
+  <line x1="510" y1="434" x2="510" y2="462" stroke="#64748b" stroke-width="3" marker-end="url(#arr-down)"/>
+  <text x="560" y="454" font-size="13" fill="#475569">② 内核核实权限并执行</text>
+
+  <!-- ③ 内核态 -->
+  <rect x="40" y="468" width="940" height="150" rx="16" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <rect x="60" y="490" width="130" height="50" rx="10" fill="#dcfce7" stroke="#86efac"/>
+  <text x="125" y="511" font-size="17" font-weight="bold" fill="#14532d" text-anchor="middle">内核态</text>
+  <text x="125" y="531" font-size="11" fill="#16a34a" text-anchor="middle">kernel</text>
+  <rect x="230" y="490" width="150" height="48" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="305" y="519" font-size="14" fill="#334155" text-anchor="middle">进程调度</text>
+  <rect x="400" y="490" width="150" height="48" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="475" y="519" font-size="14" fill="#334155" text-anchor="middle">内存管理</text>
+  <rect x="570" y="490" width="170" height="48" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="655" y="519" font-size="14" fill="#334155" text-anchor="middle">文件系统 VFS</text>
+  <rect x="760" y="490" width="160" height="48" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="840" y="519" font-size="14" fill="#334155" text-anchor="middle">网络协议栈</text>
+  <rect x="230" y="558" width="150" height="48" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="305" y="587" font-size="14" fill="#334155" text-anchor="middle">设备驱动</text>
+  <rect x="400" y="558" width="160" height="48" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="480" y="587" font-size="14" fill="#334155" text-anchor="middle">权限检查</text>
+  <rect x="580" y="558" width="150" height="48" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="655" y="587" font-size="14" fill="#334155" text-anchor="middle">中断处理</text>
+  <text x="760" y="587" font-size="12" fill="#059669">特权模式，直接管理硬件</text>
+
+  <!-- 间隙 3 -->
+  <line x1="510" y1="622" x2="510" y2="650" stroke="#64748b" stroke-width="3" marker-end="url(#arr-down)"/>
+  <text x="560" y="642" font-size="13" fill="#475569">③ 中断 / 驱动操作硬件</text>
+
+  <!-- ④ 硬件 -->
+  <rect x="40" y="654" width="940" height="96" rx="16" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <rect x="60" y="676" width="120" height="44" rx="10" fill="#ffedd5" stroke="#fdba74"/>
+  <text x="120" y="697" font-size="17" font-weight="bold" fill="#7c2d12" text-anchor="middle">硬件</text>
+  <text x="120" y="714" font-size="11" fill="#ea580c" text-anchor="middle">hardware</text>
+  <rect x="220" y="674" width="110" height="52" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="275" y="705" font-size="15" fill="#334155" text-anchor="middle">CPU</text>
+  <rect x="350" y="674" width="130" height="52" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="415" y="705" font-size="14" fill="#334155" text-anchor="middle">内存 RAM</text>
+  <rect x="500" y="674" width="140" height="52" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="570" y="705" font-size="14" fill="#334155" text-anchor="middle">磁盘 SSD</text>
+  <rect x="660" y="674" width="130" height="52" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="725" y="705" font-size="14" fill="#334155" text-anchor="middle">网卡 NIC</text>
+  <rect x="810" y="674" width="140" height="52" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="880" y="705" font-size="14" fill="#334155" text-anchor="middle">中断控制器</text>
+  <text x="495" y="744" font-size="12" fill="#64748b" text-anchor="middle">中断 / 异常向内核上报事件；一切皆文件：/dev、/proc、/sys</text>
+
+  <text x="700" y="778" font-size="12.5" fill="#94a3b8" text-anchor="middle">教学 06 · Linux 系统基础：三层视图 + 系统调用</text>
+
+  <!-- ================= 右侧：关键命令 ================= -->
+  <rect x="1010" y="150" width="380" height="600" rx="16" fill="#ffffff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="1200" y="188" font-size="19" font-weight="bold" fill="#0f172a" text-anchor="middle">📟 关键命令与速记</text>
+  <line x1="1030" y1="206" x2="1370" y2="206" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="1040" y="232" font-size="14" font-weight="bold" fill="#334155">关键命令</text>
+  <rect x="1040" y="246" width="330" height="38" rx="8" fill="#0f172a"/>
+  <text x="1205" y="271" font-size="14" fill="#e2e8f0" text-anchor="middle" font-family="Consolas,'Courier New',monospace">strace -c ls</text>
+  <text x="1040" y="300" font-size="12" fill="#64748b"># 统计进程发起的系统调用</text>
+  <rect x="1040" y="316" width="330" height="38" rx="8" fill="#0f172a"/>
+  <text x="1205" y="341" font-size="14" fill="#e2e8f0" text-anchor="middle" font-family="Consolas,'Courier New',monospace">cat /proc/cpuinfo</text>
+  <text x="1040" y="370" font-size="12" fill="#64748b"># 读取 /proc 虚拟文件</text>
+  <rect x="1040" y="386" width="330" height="38" rx="8" fill="#0f172a"/>
+  <text x="1205" y="411" font-size="14" fill="#e2e8f0" text-anchor="middle" font-family="Consolas,'Courier New',monospace">uname -a</text>
+  <text x="1040" y="440" font-size="12" fill="#64748b"># 查看内核版本 / 架构</text>
+  <rect x="1040" y="456" width="330" height="38" rx="8" fill="#0f172a"/>
+  <text x="1205" y="481" font-size="14" fill="#e2e8f0" text-anchor="middle" font-family="Consolas,'Courier New',monospace">sysctl -a</text>
+  <text x="1040" y="510" font-size="12" fill="#64748b"># 查看 / 设置内核参数</text>
+  <rect x="1040" y="526" width="330" height="38" rx="8" fill="#0f172a"/>
+  <text x="1205" y="551" font-size="14" fill="#e2e8f0" text-anchor="middle" font-family="Consolas,'Courier New',monospace">dmesg | tail</text>
+  <text x="1040" y="580" font-size="12" fill="#64748b"># 查看内核环形日志</text>
+  <text x="1040" y="612" font-size="14" font-weight="bold" fill="#334155">常见系统调用</text>
+  <rect x="1040" y="622" width="76" height="32" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="1078" y="643" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">read</text>
+  <rect x="1124" y="622" width="76" height="32" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="1162" y="643" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">write</text>
+  <rect x="1208" y="622" width="76" height="32" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="1246" y="643" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">open</text>
+  <rect x="1292" y="622" width="76" height="32" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="1330" y="643" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">close</text>
+  <rect x="1040" y="664" width="76" height="32" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="1078" y="685" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">fork</text>
+  <rect x="1124" y="664" width="76" height="32" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="1162" y="685" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">exec</text>
+  <rect x="1208" y="664" width="76" height="32" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="1246" y="685" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">mmap</text>
+  <rect x="1292" y="664" width="76" height="32" rx="8" fill="#eef2f7" stroke="#cbd5e1"/>
+  <text x="1330" y="685" font-size="13" fill="#334155" text-anchor="middle" font-family="Consolas,'Courier New',monospace">socket</text>
+  <text x="1040" y="716" font-size="11.5" fill="#94a3b8">应用 → libc → syscall → 内核，不可越级</text>
+</svg>

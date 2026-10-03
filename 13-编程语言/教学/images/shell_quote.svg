@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="'PingFang SC','Microsoft YaHei','Noto Sans CJK SC','Source Han Sans SC',sans-serif">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="10" flood-color="#0F172A" flood-opacity="0.07"/>
+    </filter>
+    <linearGradient id="bgTop" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#EEF4FF"/>
+      <stop offset="1" stop-color="#F6F8FC"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1400" height="800" fill="url(#bgTop)"/>
+  <ellipse cx="1280" cy="64" rx="250" ry="130" fill="#DBEAFE" opacity="0.45"/>
+
+  <!-- ===== 标题 ===== -->
+  <rect x="41" y="46" width="10" height="44" rx="5" fill="#2563EB"/>
+  <text x="65" y="80" font-size="36" font-weight="700" fill="#0F172A">Shell 引号与命令替换 · 展开规则</text>
+  <text x="65" y="112" font-size="17" fill="#64748B">引号是「展开开关」：双引号展开变量并保留空格，单引号一切原样，$( ) 先执行命令再把输出填入</text>
+
+  <!-- ===== 卡片 1：单引号 ===== -->
+  <rect x="41" y="150" width="316" height="420" rx="18" fill="#FFFFFF" stroke="#E2E8F0" filter="url(#shadow)"/>
+  <rect x="59" y="172" width="112" height="34" rx="17" fill="#DBEAFE"/>
+  <text x="76" y="195" font-size="16" font-weight="700" fill="#1D4ED8">单引号 '…'</text>
+  <text x="59" y="242" font-size="17" font-weight="600" fill="#1F2937">完全字面量 · 一切都不展开</text>
+  <line x1="59" y1="260" x2="339" y2="260" stroke="#EEF2F7" stroke-width="2"/>
+  <rect x="59" y="274" width="280" height="92" rx="10" fill="#0F172A"/>
+  <text x="75" y="306" font-family="Consolas,'JetBrains Mono',monospace" font-size="14" fill="#E2E8F0">echo '<tspan fill="#7DD3FC">$name</tspan>'</text>
+  <text x="75" y="336" font-family="Consolas,'JetBrains Mono',monospace" font-size="14" fill="#E2E8F0">echo '<tspan fill="#7DD3FC">$(date)</tspan>'</text>
+  <text x="59" y="392" font-size="13" fill="#94A3B8">输出 →</text>
+  <text x="59" y="416" font-size="15" font-weight="600" fill="#0F172A">$name、$(date) 原样输出，一字不差</text>
+  <text x="59" y="450" font-size="13.5" fill="#B45309">⚠ 想展开变量却用单引号 → 永远拿不到值</text>
+
+  <!-- ===== 卡片 2：双引号 ===== -->
+  <rect x="375" y="150" width="316" height="420" rx="18" fill="#FFFFFF" stroke="#E2E8F0" filter="url(#shadow)"/>
+  <rect x="393" y="172" width="112" height="34" rx="17" fill="#DCFCE7"/>
+  <text x="410" y="195" font-size="16" font-weight="700" fill="#15803D">双引号 "…"</text>
+  <text x="393" y="242" font-size="17" font-weight="600" fill="#1F2937">变量展开 · 空格仍是一个参数</text>
+  <line x1="393" y1="260" x2="673" y2="260" stroke="#EEF2F7" stroke-width="2"/>
+  <rect x="393" y="274" width="280" height="92" rx="10" fill="#0F172A"/>
+  <text x="409" y="306" font-family="Consolas,'JetBrains Mono',monospace" font-size="14" fill="#E2E8F0">x=<tspan fill="#FDE68A">"a b"</tspan></text>
+  <text x="409" y="336" font-family="Consolas,'JetBrains Mono',monospace" font-size="14" fill="#E2E8F0">echo "<tspan fill="#7DD3FC">$x</tspan>"</text>
+  <text x="393" y="392" font-size="13" fill="#94A3B8">输出 →</text>
+  <text x="393" y="416" font-size="15" font-weight="600" fill="#0F172A"><tspan font-family="Consolas,'JetBrains Mono',monospace">a b</tspan> —— 仍然是一个参数</text>
+  <text x="393" y="450" font-size="13.5" fill="#B45309">⚠ 双引号内通配符 * 不展开（被禁用）</text>
+
+  <!-- ===== 卡片 3：无引号 ===== -->
+  <rect x="709" y="150" width="316" height="420" rx="18" fill="#FFFFFF" stroke="#E2E8F0" filter="url(#shadow)"/>
+  <rect x="727" y="172" width="126" height="34" rx="17" fill="#FEF3C7"/>
+  <text x="744" y="195" font-size="16" font-weight="700" fill="#B45309">无引号 $var</text>
+  <text x="727" y="242" font-size="17" font-weight="600" fill="#1F2937">展开 + 单词分割 + 通配展开</text>
+  <line x1="727" y1="260" x2="1007" y2="260" stroke="#EEF2F7" stroke-width="2"/>
+  <rect x="727" y="274" width="280" height="92" rx="10" fill="#0F172A"/>
+  <text x="743" y="306" font-family="Consolas,'JetBrains Mono',monospace" font-size="14" fill="#E2E8F0">x=<tspan fill="#FDE68A">"a b"</tspan></text>
+  <text x="743" y="336" font-family="Consolas,'JetBrains Mono',monospace" font-size="14" fill="#E2E8F0">echo <tspan fill="#7DD3FC">$x</tspan></text>
+  <text x="727" y="392" font-size="13" fill="#94A3B8">输出 →</text>
+  <text x="727" y="416" font-size="15" font-weight="600" fill="#0F172A"><tspan font-family="Consolas,'JetBrains Mono',monospace">a</tspan> 和 <tspan font-family="Consolas,'JetBrains Mono',monospace">b</tspan> —— 被拆成两个参数</text>
+  <text x="727" y="450" font-size="13.5" fill="#B45309">⚠ rm $file：文件名含空格会被拆分误删</text>
+
+  <!-- ===== 卡片 4：命令替换 ===== -->
+  <rect x="1043" y="150" width="316" height="420" rx="18" fill="#FFFFFF" stroke="#E2E8F0" filter="url(#shadow)"/>
+  <rect x="1061" y="172" width="200" height="34" rx="17" fill="#EDE9FE"/>
+  <text x="1078" y="195" font-size="16" font-weight="700" fill="#6D28D9">命令替换 $() / 反引号</text>
+  <text x="1061" y="242" font-size="17" font-weight="600" fill="#1F2937">先执行子命令，用输出替换文本</text>
+  <line x1="1061" y1="260" x2="1341" y2="260" stroke="#EEF2F7" stroke-width="2"/>
+  <rect x="1061" y="274" width="280" height="92" rx="10" fill="#0F172A"/>
+  <text x="1077" y="306" font-family="Consolas,'JetBrains Mono',monospace" font-size="14" fill="#E2E8F0">now=<tspan fill="#7DD3FC">$(date +%s)</tspan></text>
+  <text x="1077" y="336" font-family="Consolas,'JetBrains Mono',monospace" font-size="14" fill="#E2E8F0">echo "今天: <tspan fill="#7DD3FC">$(date +%F)</tspan>"</text>
+  <text x="1061" y="392" font-size="13" fill="#94A3B8">输出 →</text>
+  <text x="1061" y="416" font-size="15" font-weight="600" fill="#0F172A">今天: 2026-01-05（实际日期）</text>
+  <text x="1061" y="450" font-size="13.5" fill="#B45309">⚠ 反引号嵌套需转义 `；$() 可嵌套更推荐</text>
+
+  <!-- ===== 正例 ===== -->
+  <rect x="41" y="600" width="650" height="180" rx="18" fill="#F0FDF4" stroke="#BBF7D0" filter="url(#shadow)"/>
+  <text x="61" y="634" font-size="20" font-weight="700" fill="#15803D">✅ 正例 · 正确姿势</text>
+  <text x="61" y="672" font-size="15" fill="#14532D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">echo "$name"</tspan> —— 展开且保持为单个参数</text>
+  <text x="61" y="704" font-size="15" fill="#14532D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">echo '$PATH'</tspan> —— 想打印字面 $PATH 就加单引号</text>
+  <text x="61" y="736" font-size="15" fill="#14532D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">now=$(date +%s)</tspan> —— 用 $() 拿命令结果，可嵌套</text>
+  <text x="61" y="768" font-size="15" fill="#14532D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">rm "$file"</tspan> —— 文件名含空格时务必加引号</text>
+
+  <!-- ===== 反例 ===== -->
+  <rect x="709" y="600" width="650" height="180" rx="18" fill="#FEF2F2" stroke="#FECACA" filter="url(#shadow)"/>
+  <text x="729" y="634" font-size="20" font-weight="700" fill="#B91C1C">❌ 反例 · 常见坑</text>
+  <text x="729" y="672" font-size="15" fill="#7F1D1D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">echo $name</tspan> —— 不加引号：含空格的值被拆开</text>
+  <text x="729" y="704" font-size="15" fill="#7F1D1D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">echo '$name'</tspan> —— 用错引号：想展开却原样输出</text>
+  <text x="729" y="736" font-size="15" fill="#7F1D1D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">now=`date`</tspan> —— 反引号嵌套混乱，难读难维护</text>
+  <text x="729" y="768" font-size="15" fill="#7F1D1D"><tspan font-family="Consolas,'JetBrains Mono',monospace" font-weight="600">rm $file</tspan> —— 空格文件名会被拆分 → 误删多个文件</text>
+</svg>
