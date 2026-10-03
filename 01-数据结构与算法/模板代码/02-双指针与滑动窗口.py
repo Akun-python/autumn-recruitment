@@ -2,135 +2,308 @@
 """02-双指针与滑动窗口模板.py —— P0 必背
 配套教学：../教学/02-双指针与滑动窗口.ipynb
 三大题型：①快慢指针（环/链） ②左右夹逼（有序数组） ③滑动窗口（连续子数组/串）。
+
+本文件还附带三个高频贪心模板（区间类），面试常与双指针一起考。
+共同点：用两个指针维护一个"窗口/区间"，把 O(n²) 的暴力枚举降到 O(n)。
 """
 
 
 # ============ 1. 左右夹逼（对撞指针）：有序数组两数之和 ============
 def two_sum_sorted(nums, target):
-    l, r = 0, len(nums) - 1
-    while l < r:
-        s = nums[l] + nums[r]
-        if s == target:
+    """在升序数组 nums 中找两数之和等于 target，返回两下标，无解返回 [-1,-1]。
+
+    变量说明：
+      - nums: 升序数组
+      - target: 目标和
+      - l: 左指针（指向当前最小元素），r: 右指针（指向当前最大元素）
+      - s: nums[l] + nums[r] 的当前和
+
+    过程拆解：
+      1. 初始 l=0, r=n-1，此时 s 是"最小+最大"；
+      2. 比较 s 与 target：
+         - s == target → 命中；
+         - s <  target → 和太小：只能把 l 右移（增大加数）才能接近 target；
+         - s >  target → 和太大：只能把 r 左移（减小加数）；
+      3. 利用数组有序性，每次移动一步就排除一个元素，不会漏解。
+
+    循环终止条件：
+      - 命中返回；或 l >= r（两指针相遇，元素耗尽）返回 [-1,-1]。
+
+    复杂度：
+      - 时间 O(n)，空间 O(1)。
+    """
+    l, r = 0, len(nums) - 1           # 对撞指针：左小右大
+    while l < r:                      # 指针未相遇就继续
+        s = nums[l] + nums[r]         # 当前两数之和
+        if s == target:               # 恰好等于目标
             return [l, r]
-        elif s < target:
-            l += 1                        # 和太小 → 左移大
-        else:
-            r -= 1                        # 和太大 → 右移小
-    return [-1, -1]
+        elif s < target:              # 和太小 → 左移"大"指针让和变大
+            l += 1
+        else:                         # 和太大 → 右移"小"指针让和变小
+            r -= 1
+    return [-1, -1]                   # 无解
 
 
 # ============ 2. 快慢指针：链表中点 / 环检测（见 03 链表模板） ============
 # ============ 3. 滑动窗口通用框架（求最短/最小窗口） ============
-# 模板要点：右扩（加入窗口）+ 左缩（满足条件时收缩），维护窗口统计
+# 模板要点：右扩（加入窗口）+ 左缩（满足条件时收缩），维护窗口统计。
 def min_window(s, t):
-    """最小覆盖子串：s 中最短的包含 t 全部字符的子串（LeetCode 76）
-    返回子串（无则空串）。窗口扩展 → 满足时收缩找最小。"""
+    """最小覆盖子串（LeetCode 76）：在 s 中找最短的、包含 t 全部字符的子串。
+
+    变量说明：
+      - s: 母串；t: 目标串
+      - need: Counter，记录 t 中每个字符"还差多少个"（可为负，表示富余）
+      - missing: 还缺几个字符（缺 0 个 = 窗口已完整覆盖 t）
+      - l: 窗口左边界；r: 窗口右边界（随 for 循环前进）
+      - ch: 右边界刚进入窗口的字符
+      - best: 当前最优窗口的 (左端点, 右端点)，初始 (0, +inf) 表示"还没找到"
+
+    过程拆解：
+      1. 右指针 r 逐个把字符 ch 拉进窗口：
+         - 若 ch 是需要的（need[ch] > 0），missing 减 1；
+         - need[ch] 减 1（可以是负数：多余字符记为"富余"）；
+      2. 一旦 missing == 0（窗口覆盖 t），进入收缩循环：
+         - 先更新最优解 best（更短的窗口）；
+         - 尝试把左端点 l 的字符 c 移出窗口：
+           * 若 need[c] == 0，说明 c 是"正好够用"的关键字符，移出后不再覆盖，
+             missing 加 1 → 收缩结束，继续右扩；
+           * need[c] 加 1；
+      3. 循环结束后按 best 切片返回；best 未被更新过则返回空串。
+
+    循环终止条件：
+      - 外层 for：r 遍历完整个 s；
+      - 内层 while：missing 从 0 重新变成 >0（窗口失去覆盖）时停止收缩。
+
+    复杂度：
+      - 时间 O(|s|+|t|)（左右指针各移动不超过 |s| 次）；空间 O(|t|)。
+    """
     from collections import Counter
-    need = Counter(t)
-    missing = len(t)                      # 还缺几个字符
-    l = 0
-    best = (0, float('inf'))
-    for r, ch in enumerate(s):
-        if need[ch] > 0:
-            missing -= 1                  # 新增了需要的字符
-        need[ch] -= 1
-        while missing == 0:               # 窗口已覆盖 t → 尝试收缩
-            if r - l < best[1] - best[0]:
+    need = Counter(t)                 # t 中每个字符的"需求量"
+    missing = len(t)                  # 还缺几个字符（初始全缺）
+    l = 0                             # 窗口左边界
+    best = (0, float('inf'))          # (左,右) 记录最优窗口，inf 表示无解
+    for r, ch in enumerate(s):        # 右指针逐个扩展窗口
+        if need[ch] > 0:              # 这个字符正是窗口还缺的
+            missing -= 1              # 缺的字符数减 1
+        need[ch] -= 1                 # 记录该字符需求被满足/富余（可为负）
+        while missing == 0:           # 窗口已覆盖 t → 尝试收缩找更短窗口
+            if r - l < best[1] - best[0]:   # 当前窗口更短 → 更新最优
                 best = (l, r)
-            c = s[l]
-            if need[c] == 0:
-                missing += 1              # 移除一个关键字符 → 不再覆盖
-            need[c] += 1
-            l += 1
-    return s[best[0]:best[1] + 1] if best[1] != float('inf') else ''
+            c = s[l]                  # 准备移出左端字符
+            if need[c] == 0:          # c 恰好"刚够"（移出就不覆盖了）
+                missing += 1          # 缺的字符数加 1，收缩停止
+            need[c] += 1              # 需求恢复
+            l += 1                    # 左边界右移，窗口缩小
+    return s[best[0]:best[1] + 1] if best[1] != float('inf') else ''  # 按最优切片
 
 
 # ============ 4. 滑动窗口求最大值（单调队列版见 04 模板） ============
 def max_sliding_window(nums, k):
-    """每个长度为 k 的窗口最大值；单调递减队列维护候选（O(n)）"""
+    """每个长度为 k 的滑动窗口的最大值（LeetCode 239），O(n)。
+
+    思路：用双端队列 dq 保存"有希望当最大值"的下标，且对应值单调递减。
+    - 队尾弹出：新元素更大时，队尾元素永远没机会 → 提前淘汰；
+    - 队首弹出：队首下标滑出窗口（<= i-k）时移除。
+
+    变量说明：
+      - dq: 存下标的双端队列，nums[dq[0]] 是当前窗口最大值
+      - out: 每个窗口最大值的输出列表
+      - i: 当前元素下标；x: 当前元素值
+
+    过程拆解：
+      1. 新元素 x 入队前，把队尾所有 <= x 的下标弹出（它们不可能是最大值）；
+      2. x 的下标入队（即使 x 很小也可能在队首大值出窗后当最大值）；
+      3. 若队首下标已滑出窗口（dq[0] <= i-k），弹出队首；
+      4. i >= k-1 时窗口已满，队首对应的值就是该窗口最大值。
+
+    循环终止条件：
+      - i 遍历完所有元素。
+
+    复杂度：
+      - 时间 O(n)（每个元素最多入队/出队一次）；空间 O(k)（队列大小）。
+    """
     from collections import deque
-    dq = deque()
-    out = []
-    for i, x in enumerate(nums):
-        while dq and nums[dq[-1]] <= x:   # 队尾小的没机会当最大值
-            dq.pop()
-        dq.append(i)
-        if dq[0] <= i - k:                # 队首滑出窗口
-            dq.popleft()
-        if i >= k - 1:
-            out.append(nums[dq[0]])
+    dq = deque()                      # 存下标；队首到队尾对应值单调递减
+    out = []                          # 结果
+    for i, x in enumerate(nums):      # 遍历每个元素
+        while dq and nums[dq[-1]] <= x:  # 队尾值 <= 新值 → 永远当不了最大
+            dq.pop()                  # 淘汰队尾
+        dq.append(i)                  # 新元素下标入队
+        if dq[0] <= i - k:            # 队首下标已滑出窗口左边界
+            dq.popleft()              # 移除队首
+        if i >= k - 1:                # 窗口长度达到 k → 可以输出
+            out.append(nums[dq[0]])   # 队首即当前窗口最大值
     return out
 
 
 # ============ 5. 双指针 + 原地操作：移除指定值 / 去重 ============
 def remove_element(nums, val):
-    """原地移除 val，返回新长度（快慢指针：慢指针写位置）"""
-    i = 0
-    for j, x in enumerate(nums):
-        if x != val:
-            nums[i] = x
-            i += 1
-    return i
+    """原地移除数组中所有等于 val 的元素，返回新长度（LeetCode 27）。
+
+    快慢指针思路：j（快指针）扫描所有元素，i（慢指针）指向"下一个写入位置"。
+    - j 扫到的元素 != val → 写入 nums[i]，i 前进；
+    - j 扫到的元素 == val → 跳过（覆盖即删除）。
+    前 i 个位置最终就是不包含 val 的新数组。
+
+    变量说明：
+      - i: 慢指针，新数组的写入位置（也是最终长度）
+      - j / x: 快指针遍历的当前下标 / 当前值
+
+    循环终止条件：
+      - for 遍历完整个数组。
+
+    复杂度：
+      - 时间 O(n)，空间 O(1)（原地）。
+    """
+    i = 0                             # 慢指针：新数组写入位置
+    for j, x in enumerate(nums):      # 快指针扫描全部元素
+        if x != val:                  # 不是要删除的值 → 保留
+            nums[i] = x               # 写到前面去（覆盖已处理完的位置）
+            i += 1                    # 写入位置后移
+    return i                          # i 就是新数组长度
 
 
 # ============ 6. 贪心高频模板（区间类 / 覆盖类；配套教学 09-贪心） ============
 def erase_overlap_intervals(intervals):
-    """435 无重叠区间：按**右端点**排序，贪心保留最早结束的
-    证明：最早结束的区间给后续留最大空间（交换论证）。"""
-    if not intervals:
+    """无重叠区间（LeetCode 435）：删除最少数量的区间使剩余区间互不重叠。
+
+    贪心策略：按**右端点**升序排序，优先保留"最早结束"的区间——
+    因为结束得越早，给后面的区间留下的空间越大（交换论证可证明最优）。
+
+    变量说明：
+      - intervals: 区间列表，每个元素是 [起点, 终点]
+      - end: 当前已保留区间的最后结束点
+      - keep: 保留的区间数量
+      - s / e: 当前考察区间的起点 / 终点
+
+    过程拆解：
+      1. 按右端点排序；
+      2. 第一个区间必然保留，end 记为它的终点；
+      3. 依次考察后续区间：
+         - 起点 >= end → 与已保留区间不重叠，保留并更新 end；
+         - 起点 <  end → 重叠，跳过（删除）；
+      4. 删除数量 = 总数 - 保留数量。
+
+    循环终止条件：
+      - 遍历完所有区间。
+
+    复杂度：
+      - 时间 O(n log n)（排序主导），空间 O(1)。
+    """
+    if not intervals:                 # 空输入直接返回 0
         return 0
-    intervals.sort(key=lambda x: x[1])    # 关键：按右端点排序
-    end = intervals[0][1]
-    keep = 1
-    for s, e in intervals[1:]:
-        if s >= end:                      # 不重叠 → 保留
-            keep += 1
-            end = e
-    return len(intervals) - keep          # 需要删除的数量
+    intervals.sort(key=lambda x: x[1])   # 关键：按右端点升序排序
+    end = intervals[0][1]             # 第一个区间的结束点
+    keep = 1                          # 第一个区间默认保留
+    for s, e in intervals[1:]:        # 依次看后面的区间
+        if s >= end:                  # 起点不早于当前结束点 → 不重叠
+            keep += 1                 # 保留该区间
+            end = e                   # 更新结束点
+    return len(intervals) - keep      # 需要删除的数量
 
 
 def merge_intervals(intervals):
-    """56 合并区间：按左端点排序，能合并就合并"""
-    if not intervals:
+    """合并区间（LeetCode 56）：把所有重叠区间合并成一个。
+
+    贪心策略：按**左端点**升序排序后，只要新区间起点 <= 上一个合并区间的
+    终点就说明重叠，把终点扩展到两者较大者；否则新开一个合并区间。
+
+    变量说明：
+      - intervals: 区间列表
+      - out: 合并结果（已按起点有序）
+      - s / e: 当前考察区间的起点 / 终点
+
+    过程拆解：
+      1. 按左端点排序（保证后出现的区间起点只会更大）；
+      2. 第一个区间直接放入 out；
+      3. 依次考察：
+         - s <= out[-1][1] → 与 out 最后一个区间重叠，把它的右端扩展为
+           max(out[-1][1], e)；
+         - s >  out[-1][1] → 不重叠，直接追加新区间。
+
+    循环终止条件：
+      - 遍历完所有区间。
+
+    复杂度：
+      - 时间 O(n log n)（排序主导），空间 O(n)（存结果）。
+    """
+    if not intervals:                 # 空输入
         return []
-    intervals.sort(key=lambda x: x[0])
-    out = [intervals[0]]
-    for s, e in intervals[1:]:
-        if s <= out[-1][1]:               # 重叠 → 融合右端
-            out[-1][1] = max(out[-1][1], e)
-        else:
-            out.append([s, e])
+    intervals.sort(key=lambda x: x[0])   # 按左端点排序
+    out = [intervals[0]]              # 第一个区间作为初始合并结果
+    for s, e in intervals[1:]:        # 依次合并
+        if s <= out[-1][1]:           # 起点落在上一个区间内 → 重叠
+            out[-1][1] = max(out[-1][1], e)   # 右端取较大者
+        else:                         # 不重叠
+            out.append([s, e])        # 新开一个区间
     return out
 
 
 def jump_game(nums):
-    """55 跳跃游戏：维护最远可达位置，遍历中实时更新"""
-    far = 0
-    for i, step in enumerate(nums):
-        if i > far:
-            return False                  # 够不到 i → 失败
-        far = max(far, i + step)
-    return True
+    """跳跃游戏（LeetCode 55）：能否从下标 0 跳到末尾。
+
+    思路：维护"当前能到达的最远下标" far，从左到右实时更新——
+    - 若某个下标 i 已经超过 far（够不到），说明中途卡死，返回 False；
+    - 否则 far = max(far, i + nums[i])。
+
+    变量说明：
+      - far: 当前能到达的最远下标
+      - i: 当前下标；step: 该位置最多能跳的步数
+
+    循环终止条件：
+      - 出现 i > far 提前返回 False；或遍历完所有元素返回 True。
+
+    复杂度：
+      - 时间 O(n)，空间 O(1)。
+    """
+    far = 0                           # 最远可达下标
+    for i, step in enumerate(nums):   # 从左到右遍历
+        if i > far:                   # 当前位置都够不到 → 中途失败
+            return False
+        far = max(far, i + step)      # 用当前位置的跳力扩展最远可达
+    return True                       # 全部位置可达
 
 
 def jump_min(nums):
-    """45 跳跃游戏 II：最少跳跃次数（BFS 层思想，O(n)）"""
-    jumps = cur_end = cur_far = 0
-    for i in range(len(nums) - 1):
-        cur_far = max(cur_far, i + nums[i])
-        if i == cur_end:                  # 到达当前层的边界 → 必须跳一次
-            jumps += 1
-            cur_end = cur_far
+    """跳跃游戏 II（LeetCode 45）：最少跳跃次数到达末尾，输入保证可到达。
+
+    BFS 分层思想：把"一次跳跃能到的所有位置"看成一层，每到达当前层的
+    边界就必然要跳一次。cur_end 是当前层的右边界，cur_far 是下一层的最右端。
+
+    变量说明：
+      - jumps: 已跳跃次数
+      - cur_end: 当前这一"跳"能到达的最远下标（本层边界）
+      - cur_far: 目前已探明的、下一跳最远能到的下标
+      - i: 当前下标
+
+    过程拆解：
+      1. 遍历每个位置（最后一个位置不用跳，所以只到 len(nums)-2）；
+      2. 随时更新 cur_far = max(cur_far, i + nums[i])；
+      3. 当 i 到达 cur_end（本层边界）→ 必须再跳一次：jumps+1，
+         并把下一层边界设为 cur_far。
+
+    循环终止条件：
+      - 遍历完 [0, len(nums)-2]。
+
+    复杂度：
+      - 时间 O(n)，空间 O(1)。
+    """
+    jumps = cur_end = cur_far = 0     # 跳跃次数、当前层边界、最远可达
+    for i in range(len(nums) - 1):    # 最后一个位置无需处理
+        cur_far = max(cur_far, i + nums[i])  # 实时扩展最远可达
+        if i == cur_end:              # 到达本层边界 → 必须跳一次
+            jumps += 1                # 跳跃次数加 1
+            cur_end = cur_far         # 下一层边界 = 已探明的最远位置
     return jumps
 
 
 # ============ 测试 ============
 if __name__ == '__main__':
-    assert two_sum_sorted([1, 2, 3, 6], 8) == [1, 3]
-    assert min_window('ADOBECODEBANC', 'ABC') == 'BANC'
+    assert two_sum_sorted([1, 2, 3, 6], 8) == [1, 3]           # 2+6=8
+    assert min_window('ADOBECODEBANC', 'ABC') == 'BANC'        # 76 官方示例
     assert max_sliding_window([1, 3, -1, -3, 5, 3, 6, 7], 3) == [3, 3, 5, 5, 6, 7]
-    a = [3, 2, 2, 3]
-    assert remove_element(a, 3) == 2
+    a = [3, 2, 2, 3]                                            # 原地删除测试
+    assert remove_element(a, 3) == 2                            # 剩余 [2,2]
     assert erase_overlap_intervals([[1, 2], [2, 3], [3, 4], [1, 3]]) == 1
     assert merge_intervals([[1, 3], [2, 6], [8, 10], [15, 18]]) == [[1, 6], [8, 10], [15, 18]]
     assert jump_game([2, 3, 1, 1, 4]) and not jump_game([3, 2, 1, 0, 4])

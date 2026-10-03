@@ -71,7 +71,7 @@
 ## 验收标准
 
 - [x] `高频面试题.md` 覆盖 LR / SVM / GBDT / PCA / BP / HMM / CRF / AUC 高频手推
-- [x] 推导笔记 13 篇（LR / SVM / PCA / GBDT / 决策树 / KNN / AdaBoost / MLP / HMM / CRF / 特征工程必含）
+- [x] 推导笔记 14 篇（00-总览 + LR / SVM / PCA / GBDT / 决策树 / KNN / AdaBoost / MLP / HMM / CRF / 特征工程等 13 章）
 - [x] 书式结构：`00-总览` 搭框架 + 每章含「本章导读 → 原理 → 推导 → 实验 → 自测 → 本章小结」
 - [x] 任意模型能用"公式 + 流程 + 场景 + 局限"讲 3 分钟
 - [x] 全部 notebook 为合法 JSON（nbformat=4），代码经手写 + sklearn 双路对照设计

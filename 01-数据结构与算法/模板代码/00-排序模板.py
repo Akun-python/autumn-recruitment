@@ -1,102 +1,257 @@
 # -*- coding: utf-8 -*-
 """00-排序模板.py —— 背诵级手写排序（P0 必背：快排/归并/堆排/插入）
 配套教学：../教学/00-排序算法.ipynb
-全部手写，不调用内置排序（测试行除外）。"""
+全部手写，不调用内置排序（测试行除外）。
+
+本文件包含四类经典排序的手写实现，是面试手撕排序题的标准模板：
+  1. 插入排序（Insertion Sort）—— 思想最简单，稳定，适合"近乎有序"的小数组
+  2. 归并排序（Merge Sort）    —— 分治思想，稳定，空间 O(n)，可扩展求逆序对
+  3. 快速排序（Quick Sort）    —— 期望 O(n log n)，原地，但最坏 O(n²)，不稳定
+  4. 堆排序（Heap Sort）       —— 原地 O(1) 空间，O(n log n)，但不稳定
+
+  每种排序都标注了：
+    - 时间复杂度（最好/平均/最坏）
+    - 空间复杂度
+    - 稳定性（相等元素的相对顺序是否保持不变）
+"""
 
 
 # ============ 1. 插入排序 O(n²) 稳定 原地 ============
-# 思想：像抓扑克，当前元素插入前面有序区
-# 对近乎有序数组 O(n)；稳定（用 > 不用 >=）
+# 思想：像抓扑克牌一样，把"当前牌"插入到前面已经排好序的区间中。
+# 对近乎有序的数组性能接近 O(n)；使用 >（而非 >=）保证稳定性。
 def insertion_sort(a):
-    n = len(a)
-    for i in range(1, n):
-        cur = a[i]
-        j = i - 1
-        while j >= 0 and a[j] > cur:      # 只移严格大于的 → 稳定
-            a[j + 1] = a[j]
-            j -= 1
-        a[j + 1] = cur
+    """插入排序（原地、稳定）。
+
+    变量说明：
+      - a: 待排序数组（原地修改后返回）
+      - n: 数组长度
+      - i: 当前待插入元素的下标，从 1 开始（第 0 个元素天然构成有序区）
+      - cur: 当前要插入的值（先暂存，防止被后面的移动覆盖）
+      - j: 从 i-1 开始向左扫描的游标，用来寻找 cur 的插入位置
+
+    过程拆解：
+      1. 外层循环 i 从 1 到 n-1：认为 a[0..i-1] 已经有序，准备把 a[i] 插进去；
+      2. 内层 while：只要 j 还在数组内 且 a[j] > cur，就把 a[j] 右移一位
+         （为 cur 腾出空位），然后 j 再往左走一步；
+      3. 内层循环退出时，j+1 就是 cur 应待的位置，把 cur 写回。
+
+    循环终止条件：
+      - 外层 for：i 遍历完 [1, n-1] 后自然结束；
+      - 内层 while：j 走到 -1（到达数组头，cur 最小）或 a[j] <= cur
+        （找到第一个不大于 cur 的元素，插入点就在它右边）时停止。
+
+    复杂度：
+      - 时间：最好 O(n)（数组已有序，内层几乎不执行）；
+              平均/最坏 O(n²)（逆序时每趟都要把元素移到最前面）
+      - 空间：O(1)，只用常数个临时变量，属于原地排序
+      - 稳定性：稳定（只有严格大于 cur 的元素才被移动，相等元素保持原相对顺序）
+    """
+    n = len(a)                       # 数组长度
+    for i in range(1, n):            # 从第 2 个元素开始，逐个向前插入
+        cur = a[i]                   # 取出当前元素暂存，避免被覆盖
+        j = i - 1                    # 从有序区最后一个位置开始向左比较
+        while j >= 0 and a[j] > cur: # 只移动"严格大于"cur 的元素 → 保证稳定
+            a[j + 1] = a[j]          # 把比 cur 大的元素整体右移一位
+            j -= 1                   # 游标左移，继续往前比较
+        a[j + 1] = cur               # 找到插入位置，把 cur 写回
     return a
 
 
 # ============ 2. 归并排序 O(n log n) 稳定 空间 O(n) ============
-# 思想：分治 —— 分成两半分别排好，再合并两个有序数组
-# 面试点：合并用 <= 保稳定；可扩展求逆序对（右先出时 cnt += len(L)-i）
+# 思想：分治 —— 把数组一分为二，各自递归排好序，再把两个有序数组合并。
+# 面试点：合并时用 <= 保证稳定；把"右半先出"的次数累加即可求逆序对。
 def merge_sort(a):
-    if len(a) <= 1:
-        return a[:]
-    mid = len(a) // 2
-    L = merge_sort(a[:mid])
-    R = merge_sort(a[mid:])
-    i = j = 0
-    out = []
-    while i < len(L) and j < len(R):
-        if L[i] <= R[j]:                  # <= 保证稳定
-            out.append(L[i]); i += 1
+    """归并排序（稳定，需要额外 O(n) 空间）。
+
+    变量说明：
+      - a: 待排序数组（原数组不会被修改，始终返回新的有序列表）
+      - mid: 中点下标，把数组切成 [0, mid) 和 [mid, n) 两半
+      - L / R: 左半、右半递归排序后的结果（都是有序列表）
+      - i / j: 分别指向 L、R 中"下一个待比较元素"的游标
+      - out: 合并结果数组
+
+    过程拆解：
+      1. 递归基：数组长度 <= 1 时天然有序，直接返回副本；
+      2. 取中点 mid，递归对左半、右半分别调用 merge_sort；
+      3. 合并：每次比较 L[i] 与 R[j]，把较小者放入 out；
+         - 用 <= 表示"相等时取左半"，这样相等元素的相对顺序不变 → 稳定；
+      4. 某个半区先取完（while 退出）后，把另一半剩余元素整体追加到 out。
+
+    递归/循环终止条件：
+      - 递归终止：len(a) <= 1 时不再分裂；
+      - 合并 while 终止：i 越界（左半取完）或 j 越界（右半取完）。
+
+    复杂度：
+      - 时间：O(n log n)（每层合并总代价 O(n)，共 log n 层）
+      - 空间：O(n)（每层递归都新建 out 列表；若用全局辅助数组可降到 O(n)）
+      - 稳定性：稳定（合并时相等取左半）
+    """
+    if len(a) <= 1:                  # 递归基：长度 0 或 1 已经有序
+        return a[:]                  # 返回副本，避免与外部共享同一对象
+    mid = len(a) // 2                # 中点：把数组平分成两半
+    L = merge_sort(a[:mid])          # 递归排序左半 [0, mid)
+    R = merge_sort(a[mid:])          # 递归排序右半 [mid, n)
+    i = j = 0                        # 双指针：i 指向 L，j 指向 R
+    out = []                         # 合并后的有序结果
+    while i < len(L) and j < len(R): # 两个半区都还有元素时才比较
+        if L[i] <= R[j]:             # <= 保证稳定：相等时优先取左半
+            out.append(L[i]); i += 1 # 取左半当前元素，左游标前进
         else:
-            out.append(R[j]); j += 1
-    out.extend(L[i:]); out.extend(R[j:])
+            out.append(R[j]); j += 1 # 取右半当前元素，右游标前进
+    out.extend(L[i:]); out.extend(R[j:])  # 把剩下没取完的半区整体接上
     return out
 
 
 # ============ 3. 快速排序 O(n log n) 期望 不稳定 原地 ============
-# 思想：partition（Lomuto，单指针）选 pivot 就位，两侧递归
-# 面试点：随机化 pivot 防最坏 O(n²)；partition 返回 pivot 最终位置
+# 思想：partition（Lomuto 单指针法）让 pivot 就位，再对两侧递归排序。
+# 面试点：随机化 pivot 可防已排序数组的最坏 O(n²)；partition 返回 pivot 最终位置。
 def partition(a, lo, hi):
-    pivot = a[hi]                          # Lomuto: 取末尾为 pivot
-    i = lo                                 # i 指向"大于区"起点
-    for j in range(lo, hi):
-        if a[j] < pivot:
-            a[i], a[j] = a[j], a[i]
-            i += 1
-    a[i], a[hi] = a[hi], a[i]              # pivot 就位
-    return i
+    """Lomuto 单指针分区：把 a[hi] 作为 pivot，让 <= pivot 的都到左边。
+
+    变量说明：
+      - a: 待分区数组（原地修改）
+      - lo / hi: 当前分区的左右边界（含）
+      - pivot: 取最后一个元素 a[hi] 作为基准值
+      - i: "左区（<= pivot）"的边界游标，即下一个比 pivot 小的元素应放的位置
+      - j: 扫描游标，从 lo 一路扫到 hi-1
+
+    过程拆解：
+      1. i 初始化为 lo，表示"小于 pivot 的区域"目前为空；
+      2. j 从 lo 扫到 hi-1：凡是 a[j] < pivot，就把它换到 i 位置，i 前进一格；
+         —— 扫描结束后，[lo, i-1] 全是 < pivot 的元素；
+      3. 最后把 pivot（在 hi）换到 i 处，pivot 就位，左侧都小、右侧都大。
+
+    循环终止条件：
+      - for 循环 j 扫完 [lo, hi-1] 后结束。
+
+    复杂度：
+      - 单次 partition：O(hi-lo+1)，即 O(n) 时间，O(1) 额外空间。
+    """
+    pivot = a[hi]                    # Lomuto 写法：取末尾元素为基准
+    i = lo                           # i 指向"小于 pivot 区"的写入位置
+    for j in range(lo, hi):          # j 扫描除 pivot 外的所有元素
+        if a[j] < pivot:             # 发现比 pivot 小的 → 送入左侧区
+            a[i], a[j] = a[j], a[i]  # 交换：把小元素换到 i，i 处原值换到 j
+            i += 1                   # 左区边界右移
+    a[i], a[hi] = a[hi], a[i]        # pivot 换到 i → 就位（左边小右边大）
+    return i                         # 返回 pivot 的最终位置
 
 
 def quick_sort(a, lo=0, hi=None):
-    if hi is None:
+    """快速排序（原地，不稳定；期望 O(n log n)，最坏 O(n²)）。
+
+    变量说明：
+      - a: 待排序数组；首次调用 (lo=0, hi=None) 时会先复制一份（不污染外部）
+      - lo / hi: 当前要排序的区间 [lo, hi]
+      - p: partition 后 pivot 的最终位置，它已就位不再参与排序
+
+    过程拆解：
+      1. hi 为 None 时初始化：hi = len(a)-1，并复制 a，避免修改外部数组；
+      2. 递归基：lo >= hi（区间为空或只剩一个元素）→ 不需要再排；
+      3. partition 把区间按 pivot 分成左右两半，返回 pivot 位置 p；
+      4. 对左半 [lo, p-1]、右半 [p+1, hi] 递归快排；
+      5. 仅在"最外层那次调用"（lo==0 且 hi==len(a)-1）才返回排序后的数组，
+         内部递归调用返回 None，避免中途反复返回数组。
+
+    递归终止条件：
+      - 区间退化到 lo >= hi 时停止递归（每个元素最终都当过 pivot 即排完）。
+
+    复杂度：
+      - 时间：期望 O(n log n)；最坏 O(n²)（每次 pivot 都取到极值，
+        可随机选 pivot 规避，见函数体内注释掉的随机化写法）
+      - 空间：O(log n)（递归调用栈深度），原地排序
+      - 稳定性：不稳定（分区交换会打乱相等元素的相对顺序）
+    """
+    if hi is None:                   # 首次调用：初始化右边界
         hi = len(a) - 1
-        a = a[:]
-    if lo >= hi:
+        a = a[:]                     # 复制数组，保持外部数据不被修改
+    if lo >= hi:                     # 递归基：空区间或单元素区间
         return a if (lo == 0 and hi == len(a) - 1) else None
-    # 随机化：交换随机位置到末尾再 partition（防已排序最坏）
+    # 随机化优化（防已排序数组的最坏情况）：随机选一个位置换到末尾再 partition
     # import random; r = random.randint(lo, hi); a[r], a[hi] = a[hi], a[r]
-    p = partition(a, lo, hi)
-    quick_sort(a, lo, p - 1)
-    quick_sort(a, p + 1, hi)
-    return a if lo == 0 and hi == len(a) - 1 else None
+    p = partition(a, lo, hi)         # 分区，pivot 就位，返回其位置
+    quick_sort(a, lo, p - 1)         # 递归排序 pivot 左侧
+    quick_sort(a, p + 1, hi)         # 递归排序 pivot 右侧
+    return a if lo == 0 and hi == len(a) - 1 else None  # 仅最外层调用返回数组
 
 
 # ============ 4. 堆排序 O(n log n) 不稳定 原地 O(1) ============
-# 思想：建大顶堆 → 反复"堆顶与末尾交换 + 缩小范围下沉"
-# 面试点：sift_down 下标 2i+1/2i+2；建堆从 n//2-1 往前；end 是当前堆大小
+# 思想：先建一个大顶堆 → 反复"堆顶与末尾交换 + 缩小堆的范围下沉"。
+# 面试点：sift_down 的孩子下标是 2i+1 / 2i+2；建堆从 n//2-1 往前；
+#         end 表示当前堆的有效大小（末尾有序区不参与）。
 def sift_down(a, i, n):
-    while 2 * i + 1 < n:
-        l, r = 2 * i + 1, 2 * i + 2
-        big = l if r >= n or a[l] >= a[r] else r
-        if a[i] >= a[big]:
-            break
-        a[i], a[big] = a[big], a[i]
-        i = big
+    """大顶堆下沉：把下标 i 的元素一路下沉，直到以 i 为根的子树满足大顶堆。
+
+    变量说明：
+      - a: 存储堆的数组（下标从 0 开始）
+      - i: 当前要下沉的节点下标
+      - n: 堆的有效大小（[0, n) 是堆，n 及之后是有序区，不参与）
+      - l / r: 节点 i 的左孩子 2i+1、右孩子 2i+2
+      - big: 左右孩子中值较大的那个下标
+
+    过程拆解：
+      1. 只要左孩子存在（2i+1 < n），就找两个孩子里较大的 big；
+         - 右孩子不存在（r >= n）时 big 直接取左孩子；
+         - 否则比较 a[l] >= a[r]，取较大者；
+      2. 如果 a[i] >= a[big]，说明父节点已是最大的，下沉结束；
+      3. 否则交换 a[i] 与 a[big]，i 移到 big 继续向下检查。
+
+    循环终止条件：
+      - i 没有左孩子（2i+1 >= n，即叶子）或 a[i] >= 两个孩子的最大值时停止。
+
+    复杂度：
+      - 时间：O(log n)（堆高度），空间 O(1)。
+    """
+    while 2 * i + 1 < n:             # 有左孩子才需要继续下沉
+        l, r = 2 * i + 1, 2 * i + 2  # 左、右孩子下标
+        big = l if r >= n or a[l] >= a[r] else r  # 两个孩子里较大的
+        if a[i] >= a[big]:           # 父节点已不小于孩子 → 已是大顶堆
+            break                    # 终止下沉
+        a[i], a[big] = a[big], a[i]  # 父子交换，大值上浮
+        i = big                      # 继续下沉到刚才的孩子位置
 
 
 def heap_sort(a):
-    a = a[:]
-    n = len(a)
-    for i in range(n // 2 - 1, -1, -1):    # 建堆：从最后一个非叶
-        sift_down(a, i, n)
-    for end in range(n - 1, 0, -1):
-        a[0], a[end] = a[end], a[0]        # 最大值进有序区
-        sift_down(a, 0, end)               # 堆大小 = end
+    """堆排序（原地 O(1) 额外空间，不稳定，O(n log n)）。
+
+    变量说明：
+      - a: 待排序数组（先复制，不修改外部数组）
+      - n: 数组长度
+      - i: 建堆时从最后一个非叶节点开始倒着下沉
+      - end: 当前堆的右边界（[0, end) 是堆，end 右侧是已排好的有序区）
+
+    过程拆解：
+      1. 建堆：从最后一个非叶节点 n//2-1 开始倒序 sift_down，
+         保证每个子树都是大顶堆 → 整体大顶堆，堆顶是最大值；
+      2. 排序：end 从 n-1 递减到 1：
+         - 堆顶 a[0]（当前最大值）与 a[end] 交换 → 最大值归位到有序区；
+         - 堆的有效大小变成 end，再对新的堆顶做 sift_down，恢复大顶堆；
+      3. 循环结束后整个数组升序有序。
+
+    循环终止条件：
+      - 排序 for 循环：end 走到 1 结束（剩下单元素天然有序）。
+
+    复杂度：
+      - 时间：O(n log n)（建堆 O(n)，每次下沉 O(log n) × n 次）
+      - 空间：O(1) 额外空间（原地交换）
+      - 稳定性：不稳定（交换会破坏相等元素的相对顺序）
+    """
+    a = a[:]                         # 复制数组，避免修改外部数据
+    n = len(a)                       # 数组长度
+    for i in range(n // 2 - 1, -1, -1):  # 建堆：从最后一个非叶节点往前
+        sift_down(a, i, n)           # 每个节点下沉一次 → 整体成为大顶堆
+    for end in range(n - 1, 0, -1):  # 依次把最大值"摘"到末尾
+        a[0], a[end] = a[end], a[0]  # 堆顶(最大)与堆末尾交换 → 进入有序区
+        sift_down(a, 0, end)         # 堆范围缩小为 [0, end)，重新调整堆顶
     return a
 
 
 # ============ 测试 ============
 if __name__ == '__main__':
     import random
-    rng = random.Random(0)
-    arr = [rng.randint(0, 99) for _ in range(200)]
-    assert insertion_sort(arr[:]) == sorted(arr)
+    rng = random.Random(0)                              # 固定随机种子，结果可复现
+    arr = [rng.randint(0, 99) for _ in range(200)]      # 生成 200 个 0~99 随机数
+    assert insertion_sort(arr[:]) == sorted(arr)        # 与内置排序对照验证
     assert merge_sort(arr) == sorted(arr)
     assert quick_sort(arr) == sorted(arr)
     assert heap_sort(arr) == sorted(arr)

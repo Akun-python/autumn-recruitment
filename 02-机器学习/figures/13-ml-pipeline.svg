@@ -40,7 +40,7 @@
   </g>
   <!-- 迭代回路 -->
   <path d="M918,140 C918,220 505,230 505,180" fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#ap)"/>
-  <text x="715" y="225" font-size="13" fill="#e74c3c" text-anchor="middle">评估不合格 → 回到特征工程/调参迭代（交叉验证内闭环）</text>
+  <text x="718" y="250" font-size="13" fill="#e74c3c" text-anchor="middle">评估不合格 → 回到特征工程/调参迭代（交叉验证内闭环）</text>
   <!-- 顶部与底部 -->
   <text x="490" y="38" font-size="16" font-weight="bold" fill="#333" text-anchor="middle">机器学习标准流水线：任何一步做错（如缩放统计量泄漏）都会让模型“看起来好、上线垮”</text>
   <text x="490" y="280" font-size="13" fill="#888" text-anchor="middle">⚠ 训练集/验证集必须用同一套统计量（fit 只发生在训练集），测试集只能碰一次</text>

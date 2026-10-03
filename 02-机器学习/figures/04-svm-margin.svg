@@ -1,4 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="860" height="430" viewBox="0 0 860 430" font-family="'Microsoft YaHei','PingFang SC',sans-serif">
+  <defs>
+    <marker id="svm-a" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#27ae60"/>
+    </marker>
+  </defs>
   <rect width="860" height="430" fill="#fafbfc"/>
   <!-- 浅网格 -->
   <g stroke="#eef1f4">
@@ -10,41 +15,36 @@
     <line x1="0" y1="180" x2="860" y2="180"/><line x1="0" y1="240" x2="860" y2="240"/>
     <line x1="0" y1="300" x2="860" y2="300"/><line x1="0" y1="360" x2="860" y2="360"/>
   </g>
-  <!-- 决策边界与间隔 -->
+  <!-- 决策边界与间隔边界 -->
   <line x1="230" y1="360" x2="660" y2="80" stroke="#111" stroke-width="3"/>
   <line x1="150" y1="380" x2="580" y2="100" stroke="#3498db" stroke-width="2" stroke-dasharray="8,6"/>
   <line x1="310" y1="340" x2="740" y2="60" stroke="#e74c3c" stroke-width="2" stroke-dasharray="8,6"/>
-  <!-- 间隔双箭头 -->
-  <line x1="360" y1="247" x2="470" y2="137" stroke="#27ae60" stroke-width="3"/>
-  <text x="436" y="225" font-size="16" font-weight="bold" fill="#1e8449" text-anchor="middle">2/‖w‖</text>
-  <!-- 类 1：红色（下方） -->
+  <!-- 间隔双箭头（垂直于间隔边界，双向箭头） -->
+  <line x1="430" y1="198" x2="460" y2="242" stroke="#27ae60" stroke-width="3" marker-start="url(#svm-a)" marker-end="url(#svm-a)"/>
+  <text x="350" y="176" font-size="14" font-weight="bold" fill="#1e8449" text-anchor="middle">2/‖w‖</text>
+  <!-- 类 1：红色（间隔下方） -->
   <g fill="#e74c3c">
     <circle cx="260" cy="360" r="7"/><circle cx="330" cy="330" r="7"/><circle cx="300" cy="385" r="7"/>
     <circle cx="390" cy="350" r="7"/><circle cx="430" cy="385" r="7"/><circle cx="350" cy="375" r="7"/>
   </g>
-  <!-- 类 2：蓝色（上方） -->
+  <!-- 类 2：蓝色（间隔上方） -->
   <g fill="#2980b9">
     <rect x="500" y="90" width="14" height="14"/><rect x="555" y="60" width="14" height="14"/>
     <rect x="610" y="115" width="14" height="14"/><rect x="660" y="150" width="14" height="14"/>
     <rect x="700" y="100" width="14" height="14"/><rect x="470" y="130" width="14" height="14"/>
   </g>
-  <!-- 支持向量高亮 -->
+  <!-- 支持向量高亮（橙圈/橙框） -->
   <g fill="none" stroke="#f39c12" stroke-width="3">
     <circle cx="330" cy="330" r="13"/><circle cx="350" cy="375" r="13"/>
     <rect x="500" y="90" width="14" height="14"/><rect x="470" y="130" width="14" height="14"/>
     <rect x="610" y="115" width="14" height="14"/>
   </g>
-  <g stroke="#999" stroke-width="1.4">
-    <line x1="330" y1="330" x2="330" y2="335"/><line x1="350" y1="375" x2="350" y2="365"/>
-    <line x1="507" y1="97" x2="507" y2="105"/><line x1="477" y1="137" x2="477" y2="128"/>
-    <line x1="617" y1="122" x2="617" y2="112"/>
-  </g>
   <!-- 标注 -->
-  <text x="455" y="58" font-size="15" font-weight="bold" fill="#111" text-anchor="middle">w·x + b = 0（决策超平面）</text>
-  <text x="700" y="200" font-size="13" fill="#3498db">w·x+b=+1</text>
-  <text x="150" y="405" font-size="13" fill="#e74c3c">w·x+b=−1</text>
-  <text x="640" y="385" font-size="13" fill="#333">间隔最大化 ⇔ min ½‖w‖²</text>
-  <text x="250" y="60" font-size="13" fill="#f39c12">支持向量（决定间隔，其余样本不影响）</text>
+  <text x="250" y="32" font-size="14" fill="#f39c12">支持向量（决定间隔，其余样本不影响）</text>
+  <text x="445" y="330" font-size="15" font-weight="bold" fill="#111" text-anchor="middle">w·x + b = 0（决策超平面）</text>
+  <text x="750" y="200" font-size="13" fill="#e74c3c" text-anchor="middle">w·x+b=+1</text>
+  <text x="60" y="392" font-size="13" fill="#3498db" text-anchor="middle">w·x+b=−1</text>
+  <text x="490" y="285" font-size="13" fill="#333" text-anchor="middle">间隔最大化 ⇔ min ½‖w‖²</text>
   <!-- 底部 -->
   <text x="430" y="420" font-size="14" fill="#666" text-anchor="middle">几何间隔 γ = 1/‖w‖；软间隔引入松弛变量 ξᵢ 与惩罚 C</text>
 </svg>

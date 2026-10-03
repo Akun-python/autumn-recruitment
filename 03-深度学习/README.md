@@ -1,5 +1,7 @@
 # 🧠 03-深度学习
 
+> 🖼️ 配图：15 篇教学 notebook 均配有 Wikimedia Commons 网络示意图（感知机/CNN/梯度下降/LSTM/Attention/LeNet/SSM/GAN/VAE 等，见 `模型笔记/images/web_*`，标注出处与许可）。
+
 > 目标：网络结构理解 + 训练机制吃透。深度学习面试的考察重点是 **为什么**（为什么用 ReLU、为什么 BN 有效、为什么 Adam 要偏差校正）。
 
 ## 复习策略

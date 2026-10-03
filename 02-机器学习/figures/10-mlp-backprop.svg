@@ -45,24 +45,24 @@
     <line x1="384" y1="270" x2="594" y2="220" marker-end="url(#fw)"/>
     <line x1="384" y1="370" x2="594" y2="220" marker-end="url(#fw)"/>
   </g>
-  <!-- ===== 反向传播（红虚线，向左）===== -->
-  <g stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,4">
-    <line x1="600" y1="200" x2="380" y2="52" marker-end="url(#bw)"/>
-    <line x1="600" y1="205" x2="380" y2="152" marker-end="url(#bw)"/>
-    <line x1="600" y1="215" x2="380" y2="252" marker-end="url(#bw)"/>
-    <line x1="600" y1="235" x2="380" y2="352" marker-end="url(#bw)"/>
-    <line x1="340" y1="52" x2="112" y2="142" marker-end="url(#bw)"/>
-    <line x1="340" y1="152" x2="112" y2="145" marker-end="url(#bw)"/>
-    <line x1="340" y1="252" x2="112" y2="178" marker-end="url(#bw)"/>
-    <line x1="340" y1="352" x2="112" y2="200" marker-end="url(#bw)"/>
+  <!-- ===== 反向传播（红虚线，弧线绕开前向直线，箭头指向误差回传方向）===== -->
+  <g stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,4" fill="none">
+    <path d="M594,220 C560,320 400,88 380,57" marker-end="url(#bw)"/>
+    <path d="M594,220 C560,310 400,188 380,157" marker-end="url(#bw)"/>
+    <path d="M594,220 C560,295 400,288 380,257" marker-end="url(#bw)"/>
+    <path d="M594,220 C560,290 400,388 380,357" marker-end="url(#bw)"/>
+    <path d="M336,70 C280,92 170,124 114,156" marker-end="url(#bw)"/>
+    <path d="M336,170 C260,140 160,150 114,158" marker-end="url(#bw)"/>
+    <path d="M336,270 C260,322 160,282 114,298" marker-end="url(#bw)"/>
+    <path d="M336,370 C260,402 160,312 114,296" marker-end="url(#bw)"/>
   </g>
   <!-- 标签 -->
   <rect x="520" y="30" width="160" height="34" rx="8" fill="#d6eaf8" stroke="#2e86de"/>
   <text x="600" y="52" font-size="15" fill="#1a5276" text-anchor="middle" font-weight="bold">前向传播</text>
-  <rect x="560" y="330" width="220" height="34" rx="8" fill="#fadbd8" stroke="#e74c3c"/>
-  <text x="670" y="352" font-size="15" fill="#922b21" text-anchor="middle" font-weight="bold">反向传播（误差回传）</text>
-  <text x="670" y="376" font-size="13" fill="#922b21" text-anchor="middle">δ₂=(ŷ−y)·σ′(z₂)，δ₁=(W₂ᵀδ₂)⊙σ′(z₁)</text>
-  <text x="670" y="396" font-size="13" fill="#922b21" text-anchor="middle">∂L/∂W₂=δ₂hᵀ，∂L/∂W₁=δ₁xᵀ</text>
+  <rect x="560" y="322" width="220" height="34" rx="8" fill="#fadbd8" stroke="#e74c3c"/>
+  <text x="670" y="344" font-size="15" fill="#922b21" text-anchor="middle" font-weight="bold">反向传播（误差回传）</text>
+  <text x="670" y="378" font-size="13" fill="#922b21" text-anchor="middle">δ₂=(ŷ−y)·σ′(z₂)，δ₁=(W₂ᵀδ₂)⊙σ′(z₁)</text>
+  <text x="670" y="398" font-size="13" fill="#922b21" text-anchor="middle">∂L/∂W₂=δ₂hᵀ，∂L/∂W₁=δ₁xᵀ</text>
   <!-- 顶部 -->
-  <text x="430" y="28" font-size="16" font-weight="bold" fill="#333" text-anchor="middle">两层神经网络：蓝线 = 前向传播，红线 = 反向传播</text>
+  <text x="430" y="24" font-size="16" font-weight="bold" fill="#333" text-anchor="middle">两层神经网络：蓝线 = 前向传播，红线 = 反向传播</text>
 </svg>
