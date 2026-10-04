@@ -14,7 +14,7 @@
   <img src="assets/badges/license.svg" alt="license MIT"/>
   <img src="assets/badges/python.svg" alt="python 3.9+"/>
   <img src="assets/badges/modules.svg" alt="19 modules"/>
-  <img src="assets/badges/notebooks.svg" alt="200 notebooks"/>
+  <img src="assets/badges/notebooks.svg" alt="202 notebooks"/>
   <img src="assets/badges/numpy.svg" alt="from scratch"/>
   <img src="assets/badges/zh.svg" alt="中文教学"/>
 </p>
@@ -142,7 +142,7 @@
 
 ## 📊 当前规模
 
-当前仓库包含 **19 个主题模块、200 篇教学 Notebook**，并持续增加中。
+当前仓库包含 **19 个主题模块、202 篇教学 Notebook**，并持续增加中。
 
 | 类别 | 内容 |
 |---|---|
