@@ -13,8 +13,8 @@
 <p align="center">
   <img src="assets/badges/license.svg" alt="license MIT"/>
   <img src="assets/badges/python.svg" alt="python 3.9+"/>
-  <img src="assets/badges/modules.svg" alt="18 modules"/>
-  <img src="assets/badges/notebooks.svg" alt="187 notebooks"/>
+  <img src="assets/badges/modules.svg" alt="19 modules"/>
+  <img src="assets/badges/notebooks.svg" alt="193 notebooks"/>
   <img src="assets/badges/numpy.svg" alt="from scratch"/>
   <img src="assets/badges/zh.svg" alt="中文教学"/>
 </p>
@@ -142,7 +142,7 @@
 
 ## 📊 当前规模
 
-当前仓库包含 **18 个主题模块、187 篇教学 Notebook**，并持续增加中。
+当前仓库包含 **19 个主题模块、193 篇教学 Notebook**，并持续增加中。
 
 | 类别 | 内容 |
 |---|---|
@@ -150,7 +150,7 @@
 | 理论与模型 | 机器学习、深度学习、优化算法、强化学习 |
 | 大模型与智能体 | LLM 大模型、智能体开发、AI-Infra |
 | 感知与交互 | 计算机视觉、自然语言处理、语音、具身智能 |
-| 数据与工程 | 时间序列、数据科学、八股与工程 |
+| 数据与工程 | 时间序列、数据分析、数据科学、八股与工程 |
 | 复盘 | 面试复盘与个人学习记录 |
 
 Notebook 数量会随着内容扩充而变化，README 中的统计是阶段性快照，具体以仓库目录为准。
@@ -178,7 +178,8 @@ Notebook 数量会随着内容扩充而变化，README 中的统计是阶段性�
 | 14-具身智能 | 机器人、感知、规划控制、VLA、仿真、数据与 sim2real | [进入模块](14-具身智能/README.md) |
 | 15-AI-Infra | 推理引擎、GEMM、混合精度、并行训练、NCCL、KV Cache、量化、FlashAttention | [进入模块](15-AI-Infra/README.md) |
 | 16-语音 | 信号处理、ASR、TTS、语音增强、声纹、SVC、语音大模型 | [进入模块](16-语音/README.md) |
-| 17-数据科学 | 数据分析、统计建模、实验分析、指标与业务实践 | [进入模块](17-数据科学/README.md) |
+| 17-数据科学 | 统计推断、AB 实验、因果推断、实验评估与业务实践 | [进入模块](17-数据科学/README.md) |
+| 18-数据分析 | 业务指标、数据处理、留存漏斗、RFM 分层、数据分析面试 | [进入模块](18-数据分析/README.md) |
 
 ---
 
@@ -233,7 +234,7 @@ pip install numpy matplotlib jupyter nbclient
 pip install scikit-learn torch
 
 # 打开一个 Notebook
-jupyter notebook "16-语音/教学/05-语音增强与降噪.ipynb"
+jupyter notebook "18-数据分析/教学/03-留存分析与同期群.ipynb"
 ```
 
 建议第一次学习时：
