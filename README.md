@@ -13,8 +13,8 @@
 <p align="center">
   <img src="assets/badges/license.svg" alt="license MIT"/>
   <img src="assets/badges/python.svg" alt="python 3.9+"/>
-  <img src="assets/badges/modules.svg" alt="19 modules"/>
-  <img src="assets/badges/notebooks.svg" alt="202 notebooks"/>
+  <img src="assets/badges/modules.svg" alt="23 modules"/>
+  <img src="assets/badges/notebooks.svg" alt="232 notebooks"/>
   <img src="assets/badges/numpy.svg" alt="from scratch"/>
   <img src="assets/badges/zh.svg" alt="中文教学"/>
 </p>
@@ -142,15 +142,15 @@
 
 ## 📊 当前规模
 
-当前仓库包含 **19 个主题模块、202 篇教学 Notebook**，并持续增加中。
+当前仓库包含 **23 个主题模块、232 篇教学 Notebook**，并持续增加中。
 
 | 类别 | 内容 |
 |---|---|
 | 基础 | 数学基础、数据结构与算法、编程语言 |
-| 理论与模型 | 机器学习、深度学习、优化算法、强化学习 |
-| 大模型与智能体 | LLM 大模型、智能体开发、AI-Infra |
+| 理论与模型 | 机器学习、深度学习、优化算法、强化学习、推荐系统、图神经网络 |
+| 大模型与智能体 | LLM 大模型、智能体开发、AI-Infra、多模态大模型 |
 | 感知与交互 | 计算机视觉、自然语言处理、语音、具身智能 |
-| 数据与工程 | 时间序列、数据分析、数据科学、八股与工程 |
+| 数据与工程 | 时间序列、数据分析、数据科学、大数据与数仓、八股与工程 |
 | 复盘 | 面试复盘与个人学习记录 |
 
 Notebook 数量会随着内容扩充而变化，README 中的统计是阶段性快照，具体以仓库目录为准。
@@ -180,6 +180,10 @@ Notebook 数量会随着内容扩充而变化，README 中的统计是阶段性�
 | 16-语音 | 信号处理、ASR、TTS、语音增强、声纹、SVC、语音大模型 | [进入模块](16-语音/README.md) |
 | 17-数据科学 | 统计推断、AB 实验、因果推断、实验评估与业务实践 | [进入模块](17-数据科学/README.md) |
 | 18-数据分析 | 业务指标、数据处理、留存漏斗、RFM 分层、数据分析面试 | [进入模块](18-数据分析/README.md) |
+| 19-推荐系统 | 召回、排序、CTR 预估、冷启动、多目标优化、评估指标 | [进入模块](19-推荐系统/README.md) |
+| 20-多模态大模型 | CLIP、ViT、视觉语言模型、跨模态检索与生成 | [进入模块](20-多模态大模型/README.md) |
+| 21-大数据与数仓 | Hadoop、Spark、Flink、Hive 数仓、Kafka、数据平台 | [进入模块](21-大数据与数仓/README.md) |
+| 22-图神经网络与知识图谱 | 图表示、GCN/GAT/GraphSAGE、知识图谱构建与推理 | [进入模块](22-图神经网络与知识图谱/README.md) |
 
 ---
 
