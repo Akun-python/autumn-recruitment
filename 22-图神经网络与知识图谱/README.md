@@ -3,13 +3,14 @@
 > 图与知识是**风控、社交、搜索、大模型（GraphRAG）**的重要方向。
 > 本模块覆盖**图基础与图表示（随机游走/Node2Vec）、GCN（消息传递）、GAT 与 GraphSAGE、
 > 链路预测与图对比学习、知识图谱构建（三元组/sqlite3 实战）、TransE 推理、面试八股**，
-> 全部可执行、含断言与可视化（networkx 3.6 + numpy 手写，无 torch 依赖）。
+> 全部可执行、含断言与可视化；**GNN 模型（GCN/GAT/GraphSAGE/TransE/InfoNCE）全部用 torch 手搓**
+> （`torch.nn.Module` 自定义网络 + autograd 训练，非调库），图结构/存储部分用 networkx + sqlite3。
 >
 > 面向秋招画像：**图算法、风控算法、推荐算法、NLP/知识图谱、大模型 RAG** 岗位。
 > 前置衔接：02-机器学习（向量/相似度）、03-深度学习（注意力/MLP）、
 > 19-推荐系统（链路预测/embedding 检索）、04-LLM 大模型（GraphRAG）。
 
-> 🖼️ 教学 notebook 全部基于 numpy/pandas/matplotlib/networkx/sqlite3，自包含可执行，
+> 🖼️ 教学 notebook 基于 torch / numpy / pandas / matplotlib / networkx / sqlite3，自包含可执行，
 > 含断言与数值对照；绘图统一中文字体并显式 `plt.show()`。
 
 ## 知识地图（面试考察的六大块）
