@@ -44,6 +44,32 @@
 | 05-跨模态检索与评估 | 图文检索 Recall@K、噪声敏感性、zero-shot 分类准确率、CLIP score、评测五大陷阱 | ✅ |
 | 06-多模态面试八股 | 架构族谱、对齐四问、训练数据与配比、10 个常见坑、评测基准速答 | ✅ |
 
+## 🖼️ 图库：自绘高清流程图（300dpi · `教学/images/`）
+
+| 图 | 说明 | 用于 Notebook |
+|---|------|------|
+| [`clip_contrastive.png`](教学/images/clip_contrastive.png) | CLIP 对比学习矩阵（InfoNCE：对角线正样本） | 00 |
+| [`vlm_architecture.png`](教学/images/vlm_architecture.png) | VLM 三段式架构（视觉编码→对齐映射→LLM 生成） | 02 |
+| [`mm_interview_map.png`](教学/images/mm_interview_map.png) | 多模态面试知识地图（六大块闭环） | 06 |
+
+**📷 真实配图（Wikimedia Commons，已插入对应 notebook）**
+
+| 图 | 说明 | 用于 Notebook |
+|---|------|------|
+| [`web_vision_transformer.png`](教学/images/web_vision_transformer.png) | ViT 论文官方架构图（patch→投影→编码器→CLS） | 01 |
+| [`web_diffusion_example.png`](教学/images/web_diffusion_example.png) | DDPM 去噪采样过程示例 | 04 |
+| [`web_diffusion_forward.png`](教学/images/web_diffusion_forward.png) | 前向加噪过程示例 | 04 |
+
+**📄 经典论文原图（arXiv 论文原图，已插入对应 notebook 并标注出处）**
+
+| 图 | 论文出处 | 用于 Notebook |
+|---|------|------|
+| [`paper_clip_arch.png`](教学/images/paper_clip_arch.png) | Radford et al., CLIP, ICML 2021（arXiv:2103.00020）图1：图文对比预训练与零样本迁移 | 00 |
+| [`paper_blip2_arch.png`](教学/images/paper_blip2_arch.png) | Li et al., BLIP-2, ICML 2023（arXiv:2301.12597）图2：冻结编码器+冻结LLM+Q-Former 桥接 | 02 |
+| [`paper_llava_arch.png`](教学/images/paper_llava_arch.png) | Liu et al., LLaVA (Visual Instruction Tuning), NeurIPS 2023（arXiv:2304.08485）图2：视觉塔+投影+LLM 两阶段 | 02 |
+| [`paper_ddpm_pgm.png`](教学/images/paper_ddpm_pgm.png) | Ho et al., DDPM, NeurIPS 2020（arXiv:2006.11239）：前向加噪/反向去噪概率图模型 | 04 |
+| [`paper_ldm_arch.png`](教学/images/paper_ldm_arch.png) | Rombach et al., LDM, CVPR 2022（arXiv:2112.10752）：潜在空间扩散 + 条件注入 | 04 |
+
 ## 与其他章节衔接
 
 | 本模块主题 | 前置章节 | 衔接说明 |
