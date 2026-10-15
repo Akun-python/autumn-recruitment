@@ -47,6 +47,28 @@
 | 06-数据平台与调度 | DAG 依赖、拓扑排序、失败重试与依赖阻断、表级血缘三大用途、调度速答 | ✅ |
 | 07-大数据面试八股与高频题 | 30 秒全链路串讲、18 个高频速答、手撕全局 TopN 分治、两阶段聚合抗倾斜 | ✅ |
 
+## 🖼️ 图库：自绘高清流程图（300dpi · `教学/images/`）
+
+| 图 | 说明 | 用于 Notebook |
+|---|------|------|
+| [`dw_layers.png`](教学/images/dw_layers.png) | 数仓四层分层（ODS→DWD→DWS→ADS） | 00 |
+| [`mapreduce_flow.png`](教学/images/mapreduce_flow.png) | MapReduce 三阶段流程（Map→Shuffle→Reduce） | 01 |
+| [`rdd_lineage.png`](教学/images/rdd_lineage.png) | RDD 血缘与惰性求值（Transformation→Action） | 02 |
+| [`flink_watermark.png`](教学/images/flink_watermark.png) | Flink 事件时间与 Watermark（乱序延迟判定） | 03 |
+| [`star_schema.png`](教学/images/star_schema.png) | 星型 vs 雪花模型对比 | 04 |
+| [`kafka_pipeline.png`](教学/images/kafka_pipeline.png) | Kafka 数据管道（生产者→分区→消费者组） | 05 |
+| [`bigdata_interview_map.png`](教学/images/bigdata_interview_map.png) | 大数据面试知识地图（六大块闭环） | 07 |
+
+> 📌 **自绘图的经典论文出处**（已写入对应 notebook）：
+> `dw_layers.png` ← Inmon, *Building the Data Warehouse*, 1992；`mapreduce_flow.png` / `web_mapreduce.png` ← Dean & Ghemawat, *MapReduce*, OSDI 2004；`rdd_lineage.png` ← Zaharia et al., *RDD*, NSDI 2012；`kafka_pipeline.png` / `web_kafka_logo.svg` ← Kreps et al., *Kafka*, NetDB 2011；`flink_watermark.png` ← Carbone et al., *Apache Flink*, IEEE DEBull 2015；`star_schema.png` ← Kimball, *The Data Warehouse Toolkit*, 1996。
+
+**📷 真实配图（Wikimedia Commons，已插入对应 notebook）**
+
+| 图 | 说明 | 用于 Notebook |
+|---|------|------|
+| [`web_mapreduce.png`](教学/images/web_mapreduce.png) | MapReduce 完整并行执行流程 | 01 |
+| [`web_kafka_logo.svg`](教学/images/web_kafka_logo.svg) | Apache Kafka 官方徽标 | 05 |
+
 ## 与其他章节衔接
 
 | 本模块主题 | 前置章节 | 衔接说明 |
