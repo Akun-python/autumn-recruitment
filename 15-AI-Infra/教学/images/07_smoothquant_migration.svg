@@ -1,1 +1,139 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1010" viewBox="0 0 1500 1010"><rect width="1500" height="1010" fill="#f8fafc"/><g font-family="Microsoft YaHei,PingFang SC,Noto Sans SC,Arial,sans-serif"><text x="750" y="46" text-anchor="middle" font-size="34" font-weight="bold" fill="#0f172a">SmoothQuant：把激活离群值迁移到权重</text><text x="750" y="84" text-anchor="middle" font-size="20" fill="#475569">数学等价 XW = X′W′（X′=X·S⁻¹，W′=S·W）—— 代价从“激活量化难”转移到“权重承担尺度”</text><rect x="60" y="130" width="420" height="570" rx="12" fill="#fff7ed" stroke="#fb923c" stroke-width="2.5"/><text x="270" y="162" text-anchor="middle" font-size="22" font-weight="bold" fill="#9a3412">迁移前</text><text x="270" y="190" text-anchor="middle" font-size="16" fill="#9a3412">激活有离群尖峰 → 激活量化误差大</text><rect x="80" y="220" width="380" height="230" rx="8" fill="#ffffff" stroke="#f87171" stroke-width="2"/><text x="270" y="250" text-anchor="middle" font-size="18" font-weight="bold" fill="#b91c1c">激活 X（per-channel）</text><rect x="115" y="400" width="70" height="5" fill="#ef4444"/><text x="150" y="392" text-anchor="middle" font-size="14" fill="#7f1d1d">0.1</text><rect x="235" y="396" width="70" height="9" fill="#ef4444"/><text x="270" y="388" text-anchor="middle" font-size="14" fill="#7f1d1d">0.2</text><rect x="355" y="210" width="70" height="195" fill="#ef4444"/><text x="390" y="245" text-anchor="middle" font-size="18" font-weight="bold" fill="#ffffff">100</text><text x="270" y="438" text-anchor="middle" font-size="15" fill="#b91c1c">max|X| = 100（某个通道尖峰）</text><rect x="80" y="470" width="380" height="140" rx="8" fill="#ffffff" stroke="#93c5fd" stroke-width="2"/><text x="270" y="500" text-anchor="middle" font-size="18" font-weight="bold" fill="#1d4ed8">权重 W</text><rect x="115" y="540" width="70" height="32" fill="#93c5fd"/><rect x="235" y="540" width="70" height="32" fill="#93c5fd"/><rect x="355" y="540" width="70" height="32" fill="#93c5fd"/><text x="270" y="596" text-anchor="middle" font-size="15" fill="#1d4ed8">max|W| = 1（均匀小值）</text><text x="270" y="672" text-anchor="middle" font-size="16" font-weight="bold" fill="#b91c1c">INT8 步长 = 200/254 ≈ 0.79 → 小值量化后失真大</text><rect x="540" y="130" width="420" height="570" rx="12" fill="#f0f9ff" stroke="#38bdf8" stroke-width="2.5"/><text x="750" y="162" text-anchor="middle" font-size="22" font-weight="bold" fill="#075985">迁移机制</text><text x="750" y="190" text-anchor="middle" font-size="16" fill="#075985">按通道计算缩放系数 s</text><rect x="560" y="215" width="380" height="120" rx="8" fill="#ffffff" stroke="#38bdf8" stroke-width="2"/><text x="750" y="255" text-anchor="middle" font-size="21" font-weight="bold" fill="#0c4a6e">sⱼ = max|Xⱼ|^α / max|Wⱼ|^(1−α)</text><text x="750" y="295" text-anchor="middle" font-size="16" fill="#075985">常用 α=0.5 均衡 · α=0 不迁移 · α=1 全迁到权重</text><rect x="560" y="355" width="380" height="260" rx="8" fill="#ffffff" stroke="#38bdf8" stroke-width="2"/><text x="750" y="388" text-anchor="middle" font-size="18" font-weight="bold" fill="#075985">数值例子（α = 0.5）</text><text x="620" y="430" font-size="17" fill="#0f172a">X = [0.1, 0.2, 100]</text><text x="620" y="464" font-size="17" fill="#0f172a">W = [1, 1, 1]</text><text x="620" y="498" font-size="17" fill="#0f172a">s = √100 / √1 = 10</text><text x="620" y="532" font-size="17" fill="#0f172a">X′ = X/s = [0.01, 0.02, 10]</text><text x="620" y="566" font-size="17" fill="#0f172a">W′ = W·s = [10, 10, 10]</text><text x="620" y="600" font-size="16" font-weight="bold" fill="#15803d">验证：XW = X′W′ ✓（逐元素相等）</text><rect x="1020" y="130" width="420" height="570" rx="12" fill="#f0fdf4" stroke="#4ade80" stroke-width="2.5"/><text x="1230" y="162" text-anchor="middle" font-size="22" font-weight="bold" fill="#166534">迁移后</text><text x="1230" y="190" text-anchor="middle" font-size="16" fill="#166534">激活平滑、权重承担尺度 → 双双友好</text><rect x="1040" y="220" width="380" height="230" rx="8" fill="#ffffff" stroke="#86efac" stroke-width="2"/><text x="1230" y="250" text-anchor="middle" font-size="18" font-weight="bold" fill="#166534">X′ = X/s</text><rect x="1075" y="401" width="70" height="4" fill="#22c55e"/><text x="1110" y="393" text-anchor="middle" font-size="14" fill="#14532d">0.01</text><rect x="1195" y="398" width="70" height="7" fill="#22c55e"/><text x="1230" y="390" text-anchor="middle" font-size="14" fill="#14532d">0.02</text><rect x="1315" y="210" width="70" height="195" fill="#22c55e"/><text x="1350" y="245" text-anchor="middle" font-size="18" font-weight="bold" fill="#ffffff">10</text><text x="1230" y="438" text-anchor="middle" font-size="15" fill="#166534">max|X′| = 10（下降 10×）</text><rect x="1040" y="470" width="380" height="140" rx="8" fill="#ffffff" stroke="#60a5fa" stroke-width="2"/><text x="1230" y="500" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e40af">W′ = W·s</text><rect x="1075" y="540" width="70" height="32" fill="#60a5fa"/><rect x="1195" y="540" width="70" height="32" fill="#60a5fa"/><rect x="1315" y="540" width="70" height="32" fill="#60a5fa"/><text x="1230" y="596" text-anchor="middle" font-size="15" fill="#1e40af">max|W′| = 10（与激活平衡）</text><text x="1230" y="672" text-anchor="middle" font-size="16" font-weight="bold" fill="#166534">INT8 步长 = 20/254 ≈ 0.079 → 小值误差 ↓10×</text><defs><marker id="ar" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto"><path d="M0,0 L14,7 L0,14 Z" fill="#2563eb"/></marker></defs><path d="M488 360 L532 360" stroke="#2563eb" stroke-width="5" marker-end="url(#ar)"/><text x="510" y="380" text-anchor="middle" font-size="14" font-weight="bold" fill="#1d4ed8">算 s</text><path d="M968 360 L1012 360" stroke="#2563eb" stroke-width="5" marker-end="url(#ar)"/><text x="990" y="380" text-anchor="middle" font-size="14" font-weight="bold" fill="#1d4ed8">迁移</text><text x="750" y="730" text-anchor="middle" font-size="21" font-weight="bold" fill="#0f172a">INT8 量化误差对比（同一组激活值）</text><rect x="90" y="752" width="640" height="96" rx="10" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/><text x="410" y="788" text-anchor="middle" font-size="18" font-weight="bold" fill="#b91c1c">迁移前</text><text x="410" y="820" text-anchor="middle" font-size="15" fill="#7f1d1d">激活范围 ±100 → 步长 ≈ 0.79：小值被抹平、尖峰饱和，相对误差大</text><rect x="770" y="752" width="640" height="96" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/><text x="1090" y="788" text-anchor="middle" font-size="18" font-weight="bold" fill="#166534">迁移后</text><text x="1090" y="820" text-anchor="middle" font-size="15" fill="#14532d">激活范围 ±10 → 步长 ≈ 0.079：整体量化误差约 ↓10×，两端更均衡</text><text x="750" y="900" text-anchor="middle" font-size="25" font-weight="bold" fill="#0f172a">XW = (X·S⁻¹)(S·W) = X′W′ —— 数学完全等价</text><text x="750" y="940" text-anchor="middle" font-size="16" fill="#64748b">工程注意：s 按输入通道（per-channel）统计，X 的列 ↔ W 的行需对应矩阵布局；用校准集估计 max；</text><text x="750" y="968" text-anchor="middle" font-size="16" fill="#64748b">常与 per-channel 权重量化、GPTQ/AWQ 配合使用（SmoothQuant 治激活离群，GPTQ 治权重重建）。</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <linearGradient id="cardRed" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff1f2"/>
+      <stop offset="1" stop-color="#ffe4e6"/>
+    </linearGradient>
+    <linearGradient id="cardBlue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eff6ff"/>
+      <stop offset="1" stop-color="#dbeafe"/>
+    </linearGradient>
+    <linearGradient id="cardGreen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f0fdf4"/>
+      <stop offset="1" stop-color="#dcfce7"/>
+    </linearGradient>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#3b82f6"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect x="0" y="0" width="1400" height="900" fill="url(#bgGrad)"/>
+
+  <!-- 标题 -->
+  <text x="700" y="52" text-anchor="middle" font-size="30" font-weight="bold" fill="#0f172a">SmoothQuant：把激活离群值迁移到权重</text>
+  <text x="700" y="86" text-anchor="middle" font-size="17" fill="#475569">数学等价 XW = X′W′（X′=X·S⁻¹，W′=S·W）—— 量化难点从"激活"转移到"权重"</text>
+
+  <!-- ============ 第一栏：迁移前 ============ -->
+  <rect x="50" y="120" width="400" height="640" rx="14" fill="url(#cardRed)" stroke="#fb923c" stroke-width="2.5"/>
+  <text x="250" y="155" text-anchor="middle" font-size="21" font-weight="bold" fill="#9a3412">① 迁移前：激活有离群尖峰</text>
+
+  <!-- 激活框 -->
+  <rect x="75" y="185" width="350" height="190" rx="10" fill="#ffffff" stroke="#f87171" stroke-width="2"/>
+  <text x="250" y="212" text-anchor="middle" font-size="16" font-weight="bold" fill="#b91c1c">激活 X（按通道）</text>
+  <!-- 三个通道柱：0.1 / 0.2 / 100（离群） -->
+  <rect x="120" y="330" width="60" height="14" fill="#ef4444"/>
+  <text x="150" y="325" text-anchor="middle" font-size="13" fill="#7f1d1d">0.1</text>
+  <rect x="230" y="326" width="60" height="18" fill="#ef4444"/>
+  <text x="260" y="321" text-anchor="middle" font-size="13" fill="#7f1d1d">0.2</text>
+  <rect x="340" y="200" width="60" height="144" fill="#ef4444"/>
+  <text x="370" y="242" text-anchor="middle" font-size="15" font-weight="bold" fill="#ffffff">100</text>
+  <text x="250" y="365" text-anchor="middle" font-size="13" fill="#b91c1c">max|X| = 100（某通道尖峰，其余通道极小）</text>
+
+  <!-- 权重框 -->
+  <rect x="75" y="395" width="350" height="120" rx="10" fill="#ffffff" stroke="#93c5fd" stroke-width="2"/>
+  <text x="250" y="422" text-anchor="middle" font-size="16" font-weight="bold" fill="#1d4ed8">权重 W</text>
+  <rect x="120" y="440" width="60" height="26" fill="#93c5fd"/>
+  <rect x="230" y="440" width="60" height="26" fill="#93c5fd"/>
+  <rect x="340" y="440" width="60" height="26" fill="#93c5fd"/>
+  <text x="250" y="500" text-anchor="middle" font-size="13" fill="#1d4ed8">max|W| = 1（值均匀、幅度小）</text>
+
+  <!-- 问题陈述 -->
+  <rect x="75" y="535" width="350" height="95" rx="10" fill="#fef2f2" stroke="#f87171" stroke-width="1.5"/>
+  <text x="250" y="562" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">问题：激活直接做 INT8</text>
+  <text x="250" y="586" text-anchor="middle" font-size="13" fill="#7f1d1d">量化步长 = (100-(-100))/254 ≈ 0.79</text>
+  <text x="250" y="610" text-anchor="middle" font-size="13" fill="#7f1d1d">小值 0.1/0.2 被"抹平"，尖峰易饱和</text>
+
+  <!-- 迁移前小结 -->
+  <rect x="75" y="650" width="350" height="90" rx="10" fill="#ffffff" stroke="#f87171" stroke-width="1.5"/>
+  <text x="250" y="678" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">结论：激活量化误差大</text>
+  <text x="250" y="702" text-anchor="middle" font-size="13" fill="#7f1d1d">动态范围被离群值撑大，</text>
+  <text x="250" y="722" text-anchor="middle" font-size="13" fill="#7f1d1d">正常小值损失精度 → 需要迁移</text>
+
+  <!-- ============ 第二栏：迁移机制 ============ -->
+  <rect x="500" y="120" width="400" height="640" rx="14" fill="url(#cardBlue)" stroke="#3b82f6" stroke-width="2.5"/>
+  <text x="700" y="155" text-anchor="middle" font-size="21" font-weight="bold" fill="#1e40af">② 迁移机制：数学等价变换</text>
+
+  <!-- 公式卡片 -->
+  <rect x="525" y="185" width="350" height="150" rx="10" fill="#ffffff" stroke="#60a5fa" stroke-width="2"/>
+  <text x="700" y="218" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e40af">缩放系数（按通道 j 计算）</text>
+  <text x="700" y="262" text-anchor="middle" font-size="20" font-weight="bold" fill="#0f172a">sⱼ = max|Xⱼ|^α / max|Wⱼ|^(1−α)</text>
+  <text x="700" y="300" text-anchor="middle" font-size="13" fill="#475569">α=0.5 均衡 · α=0 不迁移 · α=1 全迁到权重</text>
+
+  <!-- 变换箭头 -->
+  <text x="700" y="370" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e40af">缩放变换</text>
+  <line x1="560" y1="405" x2="840" y2="405" stroke="#3b82f6" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <text x="700" y="430" text-anchor="middle" font-size="16" fill="#0f172a">X′ = X·s⁻¹  （激活除以 s，被压平）</text>
+  <text x="700" y="462" text-anchor="middle" font-size="16" fill="#0f172a">W′ = W·s    （权重乘 s，承担尺度）</text>
+  <text x="700" y="492" text-anchor="middle" font-size="14" font-weight="bold" fill="#15803d">验证：XW = (X·s⁻¹)(W·s) = X′W′ ✓</text>
+
+  <!-- 数值例子 -->
+  <rect x="525" y="515" width="350" height="170" rx="10" fill="#f0f9ff" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="700" y="542" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e40af">数值例子（α = 0.5）</text>
+  <text x="545" y="572" text-anchor="start" font-size="14" fill="#334155">X  = [0.1, 0.2, 100]</text>
+  <text x="545" y="597" text-anchor="start" font-size="14" fill="#334155">W  = [1, 1, 1]</text>
+  <text x="545" y="622" text-anchor="start" font-size="14" font-weight="bold" fill="#b45309">s  = √100 / √1 = 10</text>
+  <text x="545" y="647" text-anchor="start" font-size="14" fill="#334155">X′ = X/s = [0.01, 0.02, 10]</text>
+  <text x="545" y="672" text-anchor="start" font-size="14" fill="#334155">W′ = W·s = [10, 10, 10]</text>
+
+  <!-- 迁移后小结 -->
+  <rect x="525" y="700" width="350" height="40" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="700" y="726" text-anchor="middle" font-size="14" font-weight="bold" fill="#15803d">XW = X′W′：结果不变，误差却转移了</text>
+
+  <!-- ============ 第三栏：迁移后 ============ -->
+  <rect x="950" y="120" width="400" height="640" rx="14" fill="url(#cardGreen)" stroke="#22c55e" stroke-width="2.5"/>
+  <text x="1150" y="155" text-anchor="middle" font-size="21" font-weight="bold" fill="#166534">③ 迁移后：激活平滑、权重承担</text>
+
+  <!-- 激活框 -->
+  <rect x="975" y="185" width="350" height="190" rx="10" fill="#ffffff" stroke="#4ade80" stroke-width="2"/>
+  <text x="1150" y="212" text-anchor="middle" font-size="16" font-weight="bold" fill="#15803d">激活 X′（已压平）</text>
+  <rect x="1020" y="332" width="60" height="12" fill="#22c55e"/>
+  <text x="1050" y="327" text-anchor="middle" font-size="13" fill="#166534">0.01</text>
+  <rect x="1130" y="328" width="60" height="16" fill="#22c55e"/>
+  <text x="1160" y="323" text-anchor="middle" font-size="13" fill="#166534">0.02</text>
+  <rect x="1240" y="260" width="60" height="84" fill="#22c55e"/>
+  <text x="1270" y="292" text-anchor="middle" font-size="15" font-weight="bold" fill="#ffffff">10</text>
+  <text x="1150" y="365" text-anchor="middle" font-size="13" fill="#166534">max|X′| = 10（比 100 下降 10×）</text>
+
+  <!-- 权重框 -->
+  <rect x="975" y="395" width="350" height="120" rx="10" fill="#ffffff" stroke="#fbbf24" stroke-width="2"/>
+  <text x="1150" y="422" text-anchor="middle" font-size="16" font-weight="bold" fill="#b45309">权重 W′（承担尺度）</text>
+  <rect x="1020" y="440" width="60" height="40" fill="#fbbf24"/>
+  <rect x="1130" y="440" width="60" height="40" fill="#fbbf24"/>
+  <rect x="1240" y="440" width="60" height="40" fill="#fbbf24"/>
+  <text x="1150" y="500" text-anchor="middle" font-size="13" fill="#b45309">max|W′| = 10（与激活幅度均衡）</text>
+
+  <!-- 收益 -->
+  <rect x="975" y="535" width="350" height="95" rx="10" fill="#f0fdf4" stroke="#4ade80" stroke-width="1.5"/>
+  <text x="1150" y="562" text-anchor="middle" font-size="14" font-weight="bold" fill="#15803d">收益：激活做 INT8 变容易</text>
+  <text x="1150" y="586" text-anchor="middle" font-size="13" fill="#166534">量化步长 = (10-(-10))/254 ≈ 0.079</text>
+  <text x="1150" y="610" text-anchor="middle" font-size="13" fill="#166534">比迁移前小 10× → 小值误差大幅下降</text>
+
+  <!-- 迁移后小结 -->
+  <rect x="975" y="650" width="350" height="90" rx="10" fill="#ffffff" stroke="#4ade80" stroke-width="1.5"/>
+  <text x="1150" y="678" text-anchor="middle" font-size="14" font-weight="bold" fill="#15803d">结论：误差从激活转移到权重</text>
+  <text x="1150" y="702" text-anchor="middle" font-size="13" fill="#166534">激活与权重都变得"好量化"</text>
+  <text x="1150" y="722" text-anchor="middle" font-size="13" fill="#166534">整体 INT8 推理精度大幅提升</text>
+
+  <!-- ============ 底部对比条 ============ -->
+  <rect x="50" y="790" width="1300" height="90" rx="14" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="700" y="822" text-anchor="middle" font-size="17" font-weight="bold" fill="#334155">量化误差对比（同一组激活值 INT8）</text>
+  <rect x="140" y="840" width="250" height="24" rx="6" fill="#fee2e2"/>
+  <text x="265" y="857" text-anchor="middle" font-size="13" fill="#b91c1c">迁移前：范围 ±100，步长 0.79，误差大</text>
+  <rect x="1010" y="840" width="250" height="24" rx="6" fill="#dcfce7"/>
+  <text x="1135" y="857" text-anchor="middle" font-size="13" fill="#15803d">迁移后：范围 ±10，步长 0.079，误差 ↓10×</text>
+</svg>
