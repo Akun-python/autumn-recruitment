@@ -73,11 +73,11 @@
   <line x1="739" y1="510" x2="1339" y2="510" stroke="#EEF2F7" stroke-width="1"/>
 
   <text x="743" y="320" font-family="Consolas,'JetBrains Mono',monospace" font-size="16" font-weight="700" fill="#7C3AED">.</text>
-  <text x="883" y="320" font-size="14.5" fill="#334155">任意 1 个字符（通配符没有）</text>
+  <text x="883" y="320" font-size="14.5" fill="#334155">恰好 1 个任意字符</text>
   <text x="1063" y="320" font-size="13.5" fill="#64748B" font-family="Consolas,'JetBrains Mono',monospace">a.c → a1c、axc</text>
 
   <text x="743" y="364" font-family="Consolas,'JetBrains Mono',monospace" font-size="16" font-weight="700" fill="#7C3AED">*</text>
-  <text x="883" y="364" font-size="14.5" fill="#334155">前一项重复 ≥ 0 次（≠ 任意串）</text>
+  <text x="883" y="364" font-size="14.5" fill="#334155">前项重复 0 次或多次</text>
   <text x="1063" y="364" font-size="13.5" fill="#64748B" font-family="Consolas,'JetBrains Mono',monospace">ab*c → ac、abc、abbc</text>
 
   <text x="743" y="408" font-family="Consolas,'JetBrains Mono',monospace" font-size="16" font-weight="700" fill="#7C3AED">^ / $</text>

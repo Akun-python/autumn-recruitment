@@ -19,9 +19,9 @@
   <text x="70" y="68" class="title">Go slice：三元组视图与扩容</text><text x="70" y="101" class="subtitle">切片不是数组，而是指向底层数组的一段窗口：ptr · len · cap</text>
   <rect x="70" y="132" width="1260" height="110" rx="18" fill="#ffffff" filter="url(#shadow)"/>
   <rect x="92" y="153" width="116" height="66" rx="12" fill="#183b56"/><text x="150" y="181" text-anchor="middle" fill="#fff" font-size="15" font-weight="700">核心结构</text><text x="150" y="204" text-anchor="middle" fill="#bde3ff" font-size="13">slice header</text>
-  <g transform="translate(245,153)"><rect width="300" height="66" rx="12" fill="url(#blue)" stroke="#a9c9ee"/><text x="20" y="27" class="label">ptr</text><text x="20" y="52" class="value">→ 底层数组起点</text></g>
-  <g transform="translate(570,153)"><rect width="300" height="66" rx="12" fill="url(#green)" stroke="#a4ddc1"/><text x="20" y="27" class="label">len</text><text x="20" y="52" class="value">→ 当前可见元素数</text></g>
-  <g transform="translate(895,153)"><rect width="390" height="66" rx="12" fill="url(#orange)" stroke="#f2cb8f"/><text x="20" y="27" class="label">cap</text><text x="20" y="52" class="value">→ 从 ptr 起可用容量</text></g>
+  <g transform="translate(245,153)"><rect width="300" height="66" rx="12" fill="url(#blue)" stroke="#a9c9ee"/><text x="20" y="23" class="label" font-size="13">ptr</text><text x="20" y="57" class="value" font-size="19">→ 底层数组起点</text></g>
+  <g transform="translate(570,153)"><rect width="300" height="66" rx="12" fill="url(#green)" stroke="#a4ddc1"/><text x="20" y="23" class="label" font-size="13">len</text><text x="20" y="57" class="value" font-size="19">→ 当前可见元素数</text></g>
+  <g transform="translate(895,153)"><rect width="390" height="66" rx="12" fill="url(#orange)" stroke="#f2cb8f"/><text x="20" y="23" class="label" font-size="13">cap</text><text x="20" y="57" class="value" font-size="19">→ 从 ptr 起可用容量</text></g>
 
   <rect x="70" y="272" width="600" height="238" rx="20" fill="#fff" filter="url(#shadow)"/><text x="98" y="309" class="section">① 两个 slice，共享同一数组</text>
   <rect x="98" y="334" width="544" height="52" rx="10" fill="#f2f6fb" stroke="#d7e2ee"/><text x="118" y="367" class="code">a := []int{10, 20, 30, 40, 50, 60}</text>
