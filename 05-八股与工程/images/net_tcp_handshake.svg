@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <marker id="arrR" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="arrG" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="800" fill="url(#bg)"/>
+
+  <text x="700" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#0f172a">TCP 三次握手：为什么是三次？</text>
+
+  <!-- 左：客户端 -->
+  <rect x="80" y="110" width="300" height="420" rx="14" fill="#ffffff" stroke="#0284c7" stroke-width="2.5"/>
+  <text x="230" y="142" text-anchor="middle" font-size="18" font-weight="bold" fill="#0c4a6e">客户端 Client</text>
+  <text x="230" y="166" text-anchor="middle" font-size="13" fill="#0369a1">主动发起连接的一方</text>
+
+  <rect x="120" y="200" width="220" height="80" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="230" y="228" text-anchor="middle" font-size="14" font-weight="bold" fill="#0c4a6e">① SYN</text>
+  <text x="230" y="252" text-anchor="middle" font-size="12" fill="#075985">seq=x（初始序号）</text>
+  <text x="230" y="272" text-anchor="middle" font-size="12" fill="#075985">客户端 → 服务端</text>
+
+  <rect x="120" y="320" width="220" height="80" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="230" y="348" text-anchor="middle" font-size="14" font-weight="bold" fill="#14532d">③ ACK</text>
+  <text x="230" y="372" text-anchor="middle" font-size="12" fill="#166534">ack=x+1, seq=y+1</text>
+  <text x="230" y="392" text-anchor="middle" font-size="12" fill="#166534">双方正式建立连接</text>
+
+  <rect x="120" y="440" width="220" height="70" rx="8" fill="#fefce8" stroke="#ca8a04" stroke-width="1.5"/>
+  <text x="230" y="468" text-anchor="middle" font-size="14" fill="#713f12">客户端进入</text>
+  <text x="230" y="490" text-anchor="middle" font-size="14" font-weight="bold" fill="#713f12">ESTABLISHED 状态</text>
+
+  <!-- 右：服务端 -->
+  <rect x="1020" y="110" width="300" height="420" rx="14" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+  <text x="1170" y="142" text-anchor="middle" font-size="18" font-weight="bold" fill="#14532d">服务端 Server</text>
+  <text x="1170" y="166" text-anchor="middle" font-size="13" fill="#166534">被动监听的一方</text>
+
+  <rect x="1060" y="200" width="220" height="80" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1170" y="228" text-anchor="middle" font-size="14" font-weight="bold" fill="#14532d">② SYN+ACK</text>
+  <text x="1170" y="252" text-anchor="middle" font-size="12" fill="#166534">seq=y, ack=x+1</text>
+  <text x="1170" y="272" text-anchor="middle" font-size="12" fill="#166534">服务端 → 客户端</text>
+
+  <rect x="1060" y="320" width="220" height="80" rx="8" fill="#fefce8" stroke="#ca8a04" stroke-width="1.5"/>
+  <text x="1170" y="348" text-anchor="middle" font-size="14" font-weight="bold" fill="#713f12">收到 ACK 后</text>
+  <text x="1170" y="372" text-anchor="middle" font-size="12" fill="#854d0e">确认对方收到了</text>
+  <text x="1170" y="392" text-anchor="middle" font-size="12" fill="#854d0e">自己的 SYN+ACK</text>
+
+  <rect x="1060" y="440" width="220" height="70" rx="8" fill="#fefce8" stroke="#ca8a04" stroke-width="1.5"/>
+  <text x="1170" y="468" text-anchor="middle" font-size="14" fill="#713f12">服务端进入</text>
+  <text x="1170" y="490" text-anchor="middle" font-size="14" font-weight="bold" fill="#713f12">ESTABLISHED 状态</text>
+
+  <!-- 中间箭头 -->
+  <line x1="380" y1="240" x2="1020" y2="240" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrR)"/>
+  <text x="700" y="228" text-anchor="middle" font-size="15" font-weight="bold" fill="#0369a1">第 1 次：SYN（seq=x）</text>
+  <text x="700" y="252" text-anchor="middle" font-size="13" fill="#0284c7">「我想连你，我的序号从 x 开始」</text>
+
+  <line x1="1020" y1="280" x2="380" y2="280" stroke="#16a34a" stroke-width="3" marker-end="url(#arrG)"/>
+  <text x="700" y="300" text-anchor="middle" font-size="15" font-weight="bold" fill="#15803d">第 2 次：SYN+ACK（seq=y, ack=x+1）</text>
+  <text x="700" y="322" text-anchor="middle" font-size="13" fill="#16a34a">「收到你的 x，我这边序号从 y 开始，你确认一下」</text>
+
+  <line x1="380" y1="340" x2="1020" y2="340" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrR)"/>
+  <text x="700" y="362" text-anchor="middle" font-size="15" font-weight="bold" fill="#0369a1">第 3 次：ACK（ack=y+1）</text>
+  <text x="700" y="384" text-anchor="middle" font-size="13" fill="#0284c7">「收到你的 y，连接建立！」</text>
+
+  <!-- 底部 -->
+  <rect x="80" y="560" width="1240" height="190" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="700" y="598" text-anchor="middle" font-size="18" font-weight="bold" fill="#9a3412">为什么要三次？两次行不行？</text>
+  <text x="120" y="636" text-anchor="start" font-size="14" fill="#431407">💡 类比：打电话。第一次「喂，是老王吗？」→ 第二次「对，我是，你哪位？」→ 第三次「我是小李」。双方都确认了「我能听到你、你也能听到我」。</text>
+  <text x="120" y="666" text-anchor="start" font-size="14" fill="#431407">只有两次的问题：服务端无法确认「客户端能不能收到我的回复」。若客户端第一次 SYN 延迟重发，两次握手会</text>
+  <text x="120" y="696" text-anchor="start" font-size="14" fill="#431407">让服务端白白为过期请求建立连接、浪费资源（半开连接 + 资源泄漏）。第三次握手就是客户端回执「我收到了」。</text>
+  <text x="120" y="726" text-anchor="start" font-size="14" fill="#431407">⚠️ 面试追问：SYN 洪泛攻击 = 攻击者只发 SYN 不回 ACK，服务端堆积半连接耗尽资源——可用 SYN Cookie 缓解。</text>
+</svg>

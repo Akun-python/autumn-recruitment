@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="800" fill="url(#bg)"/>
+
+  <text x="700" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#0f172a">TCP 拥塞控制：慢启动 / 拥塞避免 / 快重传 / 快恢复</text>
+
+  <!-- 顶部：三个区域 -->
+  <rect x="70" y="90" width="410" height="250" rx="14" fill="#ffffff" stroke="#0284c7" stroke-width="2.5"/>
+  <text x="275" y="122" text-anchor="middle" font-size="18" font-weight="bold" fill="#0c4a6e">① 慢启动</text>
+  <text x="275" y="148" text-anchor="middle" font-size="13" fill="#0369a1">指数翻倍试探</text>
+  <rect x="110" y="168" width="330" height="50" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="275" y="192" text-anchor="middle" font-size="14" fill="#0c4a6e">cwnd: 1 → 2 → 4 → 8 → 16</text>
+  <text x="275" y="214" text-anchor="middle" font-size="12" fill="#075985">每个 RTT 翻倍（1,2,4,8,16,…）</text>
+  <text x="110" y="250" text-anchor="start" font-size="13" fill="#0c4a6e">直到：达到慢启动阈值 ssthresh，或发生丢包</text>
+  <text x="110" y="274" text-anchor="start" font-size="13" fill="#0c4a6e">💡 类比：新司机小心试探油门，没出事就大胆加。</text>
+  <text x="110" y="298" text-anchor="start" font-size="13" fill="#0c4a6e">⚠️ 易错点：「慢」启动其实增长飞快（指数级）。</text>
+
+  <rect x="510" y="90" width="410" height="250" rx="14" fill="#ffffff" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="715" y="122" text-anchor="middle" font-size="18" font-weight="bold" fill="#78350f">② 拥塞避免</text>
+  <text x="715" y="148" text-anchor="middle" font-size="13" fill="#92400e">线性增长稳步推进</text>
+  <rect x="550" y="168" width="330" height="50" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="715" y="192" text-anchor="middle" font-size="14" fill="#78350f">cwnd: 16 → 17 → 18 → 19</text>
+  <text x="715" y="214" text-anchor="middle" font-size="12" fill="#92400e">每个 RTT 只加 1（加法增大）</text>
+  <text x="550" y="250" text-anchor="start" font-size="13" fill="#78350f">越过 ssthresh 后改用线性增长，</text>
+  <text x="550" y="274" text-anchor="start" font-size="13" fill="#78350f">避免一下子塞爆网络。</text>
+  <text x="550" y="298" text-anchor="start" font-size="13" fill="#78350f">💡 类比：高速上定速巡航，稳着开。</text>
+
+  <rect x="950" y="90" width="380" height="250" rx="14" fill="#ffffff" stroke="#ef4444" stroke-width="2.5"/>
+  <text x="1140" y="122" text-anchor="middle" font-size="18" font-weight="bold" fill="#7f1d1d">③ 拥塞发生（丢包）</text>
+  <text x="1140" y="148" text-anchor="middle" font-size="13" fill="#b91c1c">两种信号两种策略</text>
+  <rect x="990" y="168" width="300" height="50" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="1140" y="192" text-anchor="middle" font-size="14" fill="#7f1d1d">超时重传（计时器到期）</text>
+  <text x="1140" y="214" text-anchor="middle" font-size="12" fill="#b91c1c">网络很糟 → 回到慢启动，cwnd=1</text>
+  <rect x="990" y="240" width="300" height="50" rx="8" fill="#fecaca" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="1140" y="264" text-anchor="middle" font-size="14" fill="#7f1d1d">收到 3 个重复 ACK</text>
+  <text x="1140" y="286" text-anchor="middle" font-size="12" fill="#b91c1c">丢包较轻 → 快重传 + 快恢复</text>
+
+  <!-- 中：快重传快恢复 -->
+  <rect x="70" y="370" width="1260" height="180" rx="14" fill="#ffffff" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="700" y="404" text-anchor="middle" font-size="18" font-weight="bold" fill="#4c1d95">④ 快重传 + 快恢复（Fast Retransmit / Fast Recovery）</text>
+
+  <rect x="110" y="425" width="280" height="100" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="250" y="455" text-anchor="middle" font-size="14" font-weight="bold" fill="#4c1d95">快重传</text>
+  <text x="250" y="480" text-anchor="middle" font-size="12" fill="#6d28d9">收到 3 个重复 ACK，</text>
+  <text x="250" y="500" text-anchor="middle" font-size="12" fill="#6d28d9">不等超时立即重传</text>
+
+  <rect x="430" y="425" width="280" height="100" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="570" y="455" text-anchor="middle" font-size="14" font-weight="bold" fill="#4c1d95">快恢复</text>
+  <text x="570" y="480" text-anchor="middle" font-size="12" fill="#6d28d9">ssthresh = cwnd/2</text>
+  <text x="570" y="500" text-anchor="middle" font-size="12" fill="#6d28d9">cwnd = ssthresh，</text>
+  <text x="570" y="520" text-anchor="middle" font-size="12" fill="#6d28d9">直接进拥塞避免（不回到 1）</text>
+
+  <rect x="750" y="425" width="540" height="100" rx="10" fill="#faf5ff" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="1020" y="455" text-anchor="middle" font-size="14" font-weight="bold" fill="#6b21a8">为什么「快」？</text>
+  <text x="1020" y="480" text-anchor="middle" font-size="12" fill="#7e22ce">超时要等一个 RTO（可能很久）；</text>
+  <text x="1020" y="500" text-anchor="middle" font-size="12" fill="#7e22ce">3 个重复 ACK 说明后续报文还通着，</text>
+  <text x="1020" y="520" text-anchor="middle" font-size="12" fill="#7e22ce">网络没崩，别把窗口打回 1</text>
+
+  <!-- 底部：cwnd 曲线示意 -->
+  <rect x="70" y="580" width="1260" height="170" rx="14" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="700" y="614" text-anchor="middle" font-size="17" font-weight="bold" fill="#334155">cwnd 随时间变化曲线（面试手绘必备）</text>
+
+  <polyline points="200,700 280,640 360,590 440,555" fill="none" stroke="#0284c7" stroke-width="3"/>
+  <polyline points="440,555 560,548 680,541" fill="none" stroke="#f59e0b" stroke-width="3"/>
+  <text x="250" y="745" text-anchor="middle" font-size="13" fill="#0284c7">慢启动（指数）</text>
+  <text x="590" y="745" text-anchor="middle" font-size="13" fill="#f59e0b">拥塞避免（线性）</text>
+  <line x1="440" y1="545" x2="440" y2="730" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="440" y="745" text-anchor="middle" font-size="12" fill="#64748b">ssthresh</text>
+  <text x="120" y="745" text-anchor="start" font-size="12" fill="#475569">cwnd</text>
+  <text x="1230" y="745" text-anchor="end" font-size="12" fill="#475569">时间 →</text>
+  <text x="700" y="660" text-anchor="middle" font-size="13" fill="#b91c1c">⚠️ 3 个重复 ACK → 快重传 + 快恢复（不跌回 1）</text>
+</svg>

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="800" fill="url(#bg)"/>
+
+  <text x="700" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#0f172a">MVCC 多版本并发控制：读不阻塞写，写不阻塞读</text>
+
+  <!-- 顶：版本链 -->
+  <rect x="70" y="80" width="1260" height="280" rx="14" fill="#ffffff" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="700" y="112" text-anchor="middle" font-size="18" font-weight="bold" fill="#4c1d95">同一行数据的版本链（按时间从新到旧）</text>
+
+  <rect x="100" y="140" width="220" height="90" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="210" y="168" text-anchor="middle" font-size="14" font-weight="bold" fill="#4c1d95">最新版本</text>
+  <text x="210" y="190" text-anchor="middle" font-size="13" fill="#6d28d9">age=30</text>
+  <text x="210" y="212" text-anchor="middle" font-size="12" fill="#6d28d9">trx_id=105</text>
+
+  <line x1="320" y1="185" x2="370" y2="185" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="370" y="140" width="220" height="90" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="480" y="168" text-anchor="middle" font-size="14" fill="#4c1d95">上一版本</text>
+  <text x="480" y="190" text-anchor="middle" font-size="13" fill="#6d28d9">age=25</text>
+  <text x="480" y="212" text-anchor="middle" font-size="12" fill="#6d28d9">trx_id=100</text>
+
+  <line x1="590" y1="185" x2="640" y2="185" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="640" y="140" width="220" height="90" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="750" y="168" text-anchor="middle" font-size="14" fill="#4c1d95">更早版本</text>
+  <text x="750" y="190" text-anchor="middle" font-size="13" fill="#6d28d9">age=20</text>
+  <text x="750" y="212" text-anchor="middle" font-size="12" fill="#6d28d9">trx_id=95</text>
+
+  <line x1="860" y1="185" x2="910" y2="185" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="910" y="140" width="220" height="90" rx="8" fill="#e2e8f0" stroke="#64748b" stroke-width="1.5"/>
+  <text x="1020" y="168" text-anchor="middle" font-size="14" fill="#334155">最初版本</text>
+  <text x="1020" y="190" text-anchor="middle" font-size="13" fill="#475569">age=18</text>
+  <text x="1020" y="212" text-anchor="middle" font-size="12" fill="#475569">trx_id=90</text>
+
+  <text x="700" y="268" text-anchor="middle" font-size="14" fill="#6d28d9">每个写操作不覆盖旧值，而是生成新版本并指回旧版本（undo log 实现）</text>
+  <text x="700" y="330" text-anchor="middle" font-size="15" fill="#4c1d95">读事务根据「可见性规则」挑一个合适的版本——这就叫快照读（Snapshot Read）</text>
+
+  <!-- 中：隔离级别 -->
+  <rect x="70" y="390" width="1260" height="190" rx="14" fill="#ffffff" stroke="#0284c7" stroke-width="2.5"/>
+  <text x="700" y="424" text-anchor="middle" font-size="18" font-weight="bold" fill="#0c4a6e">三种常见隔离级别下 MVCC 的可见范围</text>
+
+  <rect x="110" y="448" width="380" height="115" rx="10" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="300" y="478" text-anchor="middle" font-size="15" font-weight="bold" fill="#0c4a6e">读已提交 RC</text>
+  <text x="130" y="506" text-anchor="start" font-size="13" fill="#075985">• 每次 SELECT 都生成新快照</text>
+  <text x="130" y="530" text-anchor="start" font-size="13" fill="#075985">• 能看到别的事务已提交的最新版</text>
+  <text x="130" y="554" text-anchor="start" font-size="13" fill="#075985">• 同一事务两次读可能不同 → 不可重复读</text>
+
+  <rect x="520" y="448" width="380" height="115" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="710" y="478" text-anchor="middle" font-size="15" font-weight="bold" fill="#14532d">可重复读 RR（MySQL 默认）</text>
+  <text x="540" y="506" text-anchor="start" font-size="13" fill="#166534">• 第一次 SELECT 生成快照，之后复用</text>
+  <text x="540" y="530" text-anchor="start" font-size="13" fill="#166534">• 别的事务提交也看不见 → 可重复读</text>
+  <text x="540" y="554" text-anchor="start" font-size="13" fill="#166534">• 配合间隙锁可防幻读</text>
+
+  <rect x="930" y="448" width="360" height="115" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="1110" y="478" text-anchor="middle" font-size="15" font-weight="bold" fill="#78350f">读未提交 RU</text>
+  <text x="950" y="506" text-anchor="start" font-size="13" fill="#92400e">• 直接读最新版本，</text>
+  <text x="950" y="530" text-anchor="start" font-size="13" fill="#92400e">  包括未提交的（脏读）</text>
+  <text x="950" y="554" text-anchor="start" font-size="13" fill="#92400e">• 一般不用，风险最高</text>
+
+  <!-- 底：原理与类比 -->
+  <rect x="70" y="600" width="1260" height="160" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="700" y="636" text-anchor="middle" font-size="17" font-weight="bold" fill="#9a3412">核心机制与面试追问</text>
+  <text x="120" y="668" text-anchor="start" font-size="14" fill="#431407">• 隐藏字段：每行带 trx_id（创建者事务 id）、roll_pointer（指向上个版本）</text>
+  <text x="120" y="694" text-anchor="start" font-size="14" fill="#431407">• 可见性判断：ReadView 记录活跃事务列表；只有「已提交且早于快照」的版本才可见</text>
+  <text x="120" y="720" text-anchor="start" font-size="14" fill="#431407">💡 类比：Git 版本管理。每次 commit 不删旧文件，都留一个历史版本，你 checkout 任意一次提交。</text>
+  <text x="120" y="746" text-anchor="start" font-size="14" fill="#431407">⚠️ 易错点：MVCC 只解决快照读（普通 SELECT）；当前读（SELECT ... FOR UPDATE / UPDATE / DELETE）仍走行锁。</text>
+</svg>

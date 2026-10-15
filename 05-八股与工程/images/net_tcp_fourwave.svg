@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <marker id="arrR" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#0ea5e9"/>
+    </marker>
+    <marker id="arrG" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="800" fill="url(#bg)"/>
+
+  <text x="700" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#0f172a">TCP 四次挥手：为什么断开要四次？</text>
+
+  <!-- 左：客户端 -->
+  <rect x="80" y="100" width="300" height="430" rx="14" fill="#ffffff" stroke="#0284c7" stroke-width="2.5"/>
+  <text x="230" y="132" text-anchor="middle" font-size="18" font-weight="bold" fill="#0c4a6e">客户端 Client</text>
+  <text x="230" y="156" text-anchor="middle" font-size="13" fill="#0369a1">主动关闭的一方</text>
+
+  <rect x="120" y="180" width="220" height="60" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="230" y="205" text-anchor="middle" font-size="14" font-weight="bold" fill="#0c4a6e">① FIN</text>
+  <text x="230" y="227" text-anchor="middle" font-size="12" fill="#075985">「我没数据要发了」</text>
+
+  <rect x="120" y="270" width="220" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="230" y="295" text-anchor="middle" font-size="14" font-weight="bold" fill="#78350f">收到 ACK 后</text>
+  <text x="230" y="317" text-anchor="middle" font-size="12" fill="#92400e">进入 FIN_WAIT_2</text>
+
+  <rect x="120" y="360" width="220" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="230" y="385" text-anchor="middle" font-size="14" font-weight="bold" fill="#14532d">④ ACK</text>
+  <text x="230" y="407" text-anchor="middle" font-size="12" fill="#166534">「我也关好了」</text>
+
+  <rect x="120" y="450" width="220" height="60" rx="8" fill="#e2e8f0" stroke="#64748b" stroke-width="1.5"/>
+  <text x="230" y="475" text-anchor="middle" font-size="13" fill="#334155">等待 2×MSL 后</text>
+  <text x="230" y="495" text-anchor="middle" font-size="13" fill="#334155">TIME_WAIT → CLOSED</text>
+
+  <!-- 右：服务端 -->
+  <rect x="1020" y="100" width="300" height="430" rx="14" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+  <text x="1170" y="132" text-anchor="middle" font-size="18" font-weight="bold" fill="#14532d">服务端 Server</text>
+  <text x="1170" y="156" text-anchor="middle" font-size="13" fill="#166534">被动关闭的一方</text>
+
+  <rect x="1060" y="180" width="220" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1170" y="205" text-anchor="middle" font-size="14" font-weight="bold" fill="#14532d">② ACK</text>
+  <text x="1170" y="227" text-anchor="middle" font-size="12" fill="#166534">「知道了，我可能还有数据要发」</text>
+
+  <rect x="1060" y="270" width="220" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1170" y="295" text-anchor="middle" font-size="14" font-weight="bold" fill="#14532d">③ FIN</text>
+  <text x="1170" y="317" text-anchor="middle" font-size="12" fill="#166534">「我的数据也发完了」</text>
+
+  <rect x="1060" y="360" width="220" height="60" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="1170" y="385" text-anchor="middle" font-size="14" fill="#78350f">收到 ACK 后</text>
+  <text x="1170" y="407" text-anchor="middle" font-size="12" fill="#92400e">直接 CLOSED</text>
+
+  <!-- 中间箭头 -->
+  <line x1="380" y1="210" x2="1020" y2="210" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrR)"/>
+  <text x="700" y="200" text-anchor="middle" font-size="15" font-weight="bold" fill="#0369a1">第 1 次：FIN（客户端 → 服务端）</text>
+
+  <line x1="1020" y1="240" x2="380" y2="240" stroke="#16a34a" stroke-width="3" marker-end="url(#arrG)"/>
+  <text x="700" y="270" text-anchor="middle" font-size="15" font-weight="bold" fill="#15803d">第 2 次：ACK（服务端 → 客户端）</text>
+
+  <line x1="1020" y1="330" x2="380" y2="330" stroke="#16a34a" stroke-width="3" marker-end="url(#arrG)"/>
+  <text x="700" y="320" text-anchor="middle" font-size="15" font-weight="bold" fill="#15803d">第 3 次：FIN（服务端 → 客户端）</text>
+
+  <line x1="380" y1="390" x2="1020" y2="390" stroke="#0ea5e9" stroke-width="3" marker-end="url(#arrR)"/>
+  <text x="700" y="410" text-anchor="middle" font-size="15" font-weight="bold" fill="#0369a1">第 4 次：ACK（客户端 → 服务端）</text>
+
+  <!-- 底部 -->
+  <rect x="80" y="560" width="1240" height="190" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="700" y="598" text-anchor="middle" font-size="18" font-weight="bold" fill="#9a3412">为什么四次？和三次握手的区别</text>
+  <text x="120" y="636" text-anchor="start" font-size="14" fill="#431407">💡 类比：收快递包裹。②「收到你的关闭申请」和 ③「我这边也发完了」被拆成两条消息——因为 TCP 是</text>
+  <text x="120" y="666" text-anchor="start" font-size="14" fill="#431407">全双工（两条独立通道）。握手时双方都没数据，可合并为 SYN+ACK；挥手时服务端可能还有数据没发完，</text>
+  <text x="120" y="696" text-anchor="start" font-size="14" fill="#431407">必须先回 ACK 表示「收到了」，等数据发完再单独发 FIN——所以是四次。</text>
+  <text x="120" y="726" text-anchor="start" font-size="14" fill="#431407">⚠️ 面试追问：TIME_WAIT 等 2×MSL 是为了让最后的 ACK 万一丢了还能重发，并让旧连接的报文在网络中彻底消失。</text>
+</svg>

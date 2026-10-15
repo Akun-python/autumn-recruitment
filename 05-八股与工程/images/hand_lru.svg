@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="800" fill="url(#bg)"/>
+
+  <text x="700" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#0f172a">手撕 LRU：双向链表 + 哈希表，O(1) 读写</text>
+
+  <!-- 数据结构 -->
+  <rect x="70" y="90" width="640" height="300" rx="14" fill="#ffffff" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="390" y="124" text-anchor="middle" font-size="18" font-weight="bold" fill="#4c1d95">① 双向链表：维护访问顺序</text>
+  <text x="390" y="148" text-anchor="middle" font-size="13" fill="#6d28d9">头 = 最近使用，尾 = 最久未用（被淘汰者）</text>
+
+  <rect x="110" y="170" width="120" height="70" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="170" y="196" text-anchor="middle" font-size="14" font-weight="bold" fill="#4c1d95">head</text>
+  <text x="170" y="218" text-anchor="middle" font-size="12" fill="#6d28d9">最近使用</text>
+
+  <line x1="230" y1="205" x2="270" y2="205" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="270" y="170" width="110" height="70" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="325" y="196" text-anchor="middle" font-size="14" fill="#4c1d95">key=1</text>
+  <text x="325" y="218" text-anchor="middle" font-size="12" fill="#6d28d9">value=A</text>
+
+  <line x1="380" y1="205" x2="420" y2="205" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="420" y="170" width="110" height="70" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="475" y="196" text-anchor="middle" font-size="14" fill="#4c1d95">key=2</text>
+  <text x="475" y="218" text-anchor="middle" font-size="12" fill="#6d28d9">value=B</text>
+
+  <line x1="530" y1="205" x2="570" y2="205" stroke="#7c3aed" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="570" y="170" width="110" height="70" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="625" y="196" text-anchor="middle" font-size="14" fill="#7f1d1d">key=3</text>
+  <text x="625" y="218" text-anchor="middle" font-size="12" fill="#b91c1c">value=C</text>
+  <text x="625" y="240" text-anchor="middle" font-size="11" fill="#ef4444">（最久未用，淘汰它）</text>
+
+  <text x="390" y="320" text-anchor="middle" font-size="13" fill="#6d28d9">双向：前驱 prev + 后继 next，方便 O(1) 删除任意节点</text>
+
+  <rect x="750" y="90" width="580" height="300" rx="14" fill="#ffffff" stroke="#059669" stroke-width="2.5"/>
+  <text x="1040" y="124" text-anchor="middle" font-size="18" font-weight="bold" fill="#065f46">② 哈希表：key → 链表节点地址</text>
+  <text x="1040" y="148" text-anchor="middle" font-size="13" fill="#047857">O(1) 找到节点，再 O(1) 移动位置</text>
+
+  <rect x="800" y="170" width="220" height="70" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/>
+  <text x="910" y="196" text-anchor="middle" font-size="14" fill="#064e3b">哈希表</text>
+  <text x="910" y="218" text-anchor="middle" font-size="12" fill="#065f46">key=1→节点A, key=2→节点B, key=3→节点C</text>
+
+  <rect x="1080" y="170" width="200" height="70" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="1180" y="196" text-anchor="middle" font-size="14" font-weight="bold" fill="#7f1d1d">容量 cap</text>
+  <text x="1180" y="218" text-anchor="middle" font-size="12" fill="#b91c1c">例如 cap = 3</text>
+  <text x="1180" y="240" text-anchor="middle" font-size="12" fill="#b91c1c">满了就淘汰尾部</text>
+
+  <!-- 操作 -->
+  <rect x="70" y="420" width="1260" height="330" rx="14" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="700" y="456" text-anchor="middle" font-size="18" font-weight="bold" fill="#334155">③ 核心操作（全 O(1)）</text>
+
+  <rect x="110" y="480" width="360" height="120" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="290" y="510" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e3a8a">get(key)：查 + 提级</text>
+  <text x="290" y="540" text-anchor="middle" font-size="13" fill="#1e40af">① 哈希表 O(1) 找到节点</text>
+  <text x="290" y="564" text-anchor="middle" font-size="13" fill="#1e40af">② 把该节点移到链表头部</text>
+  <text x="290" y="588" text-anchor="middle" font-size="13" fill="#1e40af">③ 返回 value；没有则 -1</text>
+
+  <rect x="510" y="480" width="360" height="120" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="690" y="510" text-anchor="middle" font-size="15" font-weight="bold" fill="#7f1d1d">put(key, value)：写 + 可能淘汰</text>
+  <text x="690" y="540" text-anchor="middle" font-size="13" fill="#991b1b">① 已存在：更新值 + 移到头部</text>
+  <text x="690" y="564" text-anchor="middle" font-size="13" fill="#991b1b">② 不存在：新节点插入头部</text>
+  <text x="690" y="588" text-anchor="middle" font-size="13" fill="#991b1b">③ 超容量：删除尾节点 + 同步删哈希表</text>
+
+  <rect x="910" y="480" width="380" height="120" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="1100" y="510" text-anchor="middle" font-size="15" font-weight="bold" fill="#14532d">为何双向链表？</text>
+  <text x="1100" y="540" text-anchor="middle" font-size="13" fill="#166534">删除尾节点要能找到它的前驱</text>
+  <text x="1100" y="564" text-anchor="middle" font-size="13" fill="#166534">双向链表 O(1) 得到 prev</text>
+  <text x="1100" y="588" text-anchor="middle" font-size="13" fill="#166534">单链表需从头遍历，是 O(n)</text>
+
+  <text x="700" y="640" text-anchor="middle" font-size="15" font-weight="bold" fill="#334155">示例：cap=3，依次 put(1,A) put(2,B) put(3,C) put(4,D) 访问 get(1)</text>
+
+  <rect x="110" y="665" width="1180" height="70" rx="10" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="130" y="697" text-anchor="start" font-size="14" fill="#431407">💡 类比：LRU 像书桌常用书。最近看过的放最上面（链表头），桌子只有 3 本的位置；新书放上来、最底下的书（最久没看的）送回书架。</text>
+  <text x="130" y="721" text-anchor="start" font-size="14" fill="#431407">⚠️ 易错点：get 也会改变顺序（读一次也算「最近使用」）！容易漏写这一行。</text>
+</svg>

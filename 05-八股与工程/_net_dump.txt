@@ -1,0 +1,1472 @@
+===== CELL 0 [markdown] =====
+# 计算机网络八股与工程（秋招速通版）
+
+> 面向**算法 / 后端秋招**的计算机网络高频考点整理。每个主题均包含：**定义与原理讲解**、
+> **公式或伪代码**、**可直接运行的 Python 3 示例**、**对比表格**、**面试追问与标准回答**、
+> **易错点 / 面试点评**。建议先通读建立体系，再按每节末尾的「追问」逐条自测。
+
+**本文目录**
+1. OSI 七层与 TCP/IP 四层模型对比
+2. TCP 三次握手（状态迁移 / 为什么是 3 次 / SYN 泛洪）
+3. TCP 四次挥手（半关闭 / TIME_WAIT 与 2MSL）
+4. TCP 可靠传输机制（ACK / RTO / 快速重传 / 滑动窗口）
+5. 流量控制 vs 拥塞控制（四条线 + cwnd 示意图）
+6. TCP vs UDP（含 QUIC 为什么基于 UDP）
+7. HTTP 报文结构、方法（GET/POST）与状态码
+8. HTTP 1.0 / 1.1 / 2 / 3 演进（队头阻塞 / HPACK / QUIC）
+9. HTTPS 与 TLS（握手流程 / 证书链 / 混合加密）
+10. DNS 解析完整流程与 CDN
+11. 经典综合题：输入 URL 到页面显示的完整过程
+
+---
+
+## 1. OSI 七层与 TCP/IP 四层模型
+
+### 1.1 OSI 七层模型（参考模型，重在分层思想）
+
+| 层 | 名称 | 核心职责 | 典型协议 / 设备 |
+| --- | --- | --- | --- |
+| 7 | **应用层** | 面向用户的应用协议，提供网络服务接口 | HTTP / HTTPS / DNS / FTP / SMTP |
+| 6 | **表示层** | 数据格式转换、加密、压缩（编码与解码） | ASCII / JPEG / SSL 的一部分语义 |
+| 5 | **会话层** | 建立、管理、终止会话（连接同步） | NetBIOS、RPC |
+| 4 | **传输层** | 端到端可靠或尽力传输、端口寻址、分片重组 | **TCP / UDP** |
+| 3 | **网络层** | 逻辑寻址（IP）、路由选择、分组转发 | **IP / ICMP / ARP**、路由器 |
+| 2 | **数据链路层** | 物理寻址（MAC）、帧封装、差错检测 | Ethernet / PPP、交换机 |
+| 1 | **物理层** | 比特流传输、电气/机械特性 | 双绞线 / 光纤、集线器 |
+
+> 记忆口诀（自下而上）：**物 链 网 传 会 表 应**；自上而下：**应 表 会 传 网 链 物**。
+
+### 1.2 TCP/IP 四层模型（事实标准）
+
+- **应用层**：对应 OSI 的应用层 + 表示层 + 会话层（合并），如 HTTP、DNS。
+- **传输层**：TCP / UDP，负责端口到端口的通信。
+- **网络层（网际层）**：IP、ICMP、路由，负责主机到主机的寻址与转发。
+- **网络接口层（链路层）**：对应 OSI 的数据链路层 + 物理层，负责在同一物理链路上的帧传输。
+
+### 1.3 两层模型对比表
+
+| 对比维度 | OSI 七层 | TCP/IP 四层 |
+| --- | --- | --- |
+| 分层数量 | 7 层 | 4 层 |
+| 性质 | **理论参考模型**，先有模型后有协议 | **实际工程模型**，先有协议后归纳 |
+| 表示层 / 会话层 | 独立成层 | 合并进应用层 |
+| 数据链路层 / 物理层 | 独立成层 | 合并为网络接口层 |
+| 传输层可靠性 | 概念上提供，未强调 | **TCP 提供可靠、UDP 提供尽力而为** |
+| 主要用途 | 教学、标准化讨论 | 实际网络（Internet）实现 |
+
+### 1.4 数据封装与解封装（伪代码）
+
+```text
+发送端：应用数据 → 应用层 → 传输层加 TCP/UDP 头 → 网络层加 IP 头
+        → 链路层加 MAC 头与 FCS 尾部 → 物理层转比特流
+接收端：反向逐层剥头（解封装），每层只处理本层头部
+```
+
+### 1.5 面试追问
+
+**追问 1：为什么实际网络不用 OSI 七层，而用 TCP/IP 四层？**
+**标准回答：** OSI 是理想化参考模型，分层过细（表示层、会话层在实践中边界模糊），且是先定模型再定协议，落地困难；TCP/IP 是**先有实现后归纳**的模型，贴近真实协议栈，工程可实施性强。
+
+**追问 2：TCP 层收到重复或乱序数据怎么办？**
+**标准回答：** 传输层用**序号 + 确认号 + 接收窗口**做排序、去重、流量控制；网络层只保证尽力转发，不保证顺序。
+
+**追问 3：为什么说「数据链路层只在本链路上传输」？**
+**标准回答：** MAC 寻址只对同一广播域有效，跨网段必须由网络层 IP 寻址 + 路由器转发，逐跳更换 MAC 地址。
+
+> ⚠️ **易错点**：ARP 属于网络层还是链路层？**ARP 用于 IP→MAC 映射，常归入网络层（或说横跨 2/3 层）**；不要把 ICMP 归为传输层，它是网络层的辅助协议。
+
+---
+
+## 2. TCP 三次握手
+
+### 2.1 定义与过程
+
+**三次握手（Three-Way Handshake）** 是 TCP 建立连接时双方交换三个报文段以**同步初始序号（ISN）**并**确认双方收发能力**的过程。
+
+```text
+客户端                               服务端
+  |----- ① SYN(seq=x) ---------------->|   SYN_SENT → LISTEN 收到
+  |                                     |   LISTEN → SYN_RCVD
+  |<----- ② SYN+ACK(seq=y, ack=x+1) ---|   SYN_RCVD → ESTABLISHED(服务端)
+  |----- ③ ACK(seq=x+1, ack=y+1) ----->|   SYN_SENT → ESTABLISHED(客户端)
+```
+
+- 第 1 次：客户端发 **SYN=1, seq=x**，进入 **SYN_SENT**。
+- 第 2 次：服务端回 **SYN=1, ACK=1, seq=y, ack=x+1**，进入 **SYN_RCVD**。
+- 第 3 次：客户端发 **ACK=1, seq=x+1, ack=y+1**，双方进入 **ESTABLISHED**。
+
+### 2.2 状态迁移表
+
+| 端 | 状态序列 |
+| --- | --- |
+| 客户端 | CLOSED → **SYN_SENT** → **ESTABLISHED** |
+| 服务端 | LISTEN → **SYN_RCVD** → **ESTABLISHED** |
+
+### 2.3 为什么必须是 3 次（两个核心理由）
+
+1. **防止历史重复连接**：若客户端发出的旧 SYN 迟到，服务端若只回一次 ACK 就建立连接，会被**过期报文**误导；三次握手让客户端收到 SYN+ACK 后能根据序号判断是否为历史连接，若是则发 **RST** 终止，避免服务端建立无效连接。
+2. **确认双方收发能力都正常**：第一次证明「客户端能发、服务端能收」；第二次证明「服务端能发、客户端能收」；第三次是客户端**明确告知**服务端「我收到你的 SYN+ACK」，从而让服务端确认「客户端能收」。两次握手无法让服务端确认客户端已就绪。
+
+> 补充数学视角：握手次数最少为 3，是因为**「确认对方收到了自己的确认」**需要一轮额外往返；4 次则多一次无用往返，故 3 次是最优。
+
+### 2.4 SYN 泛洪攻击（SYN Flood）
+
+- **原理**：攻击者伪造大量源 IP 发送 SYN，服务端回复 SYN+ACK 后进入 **SYN_RCVD** 并分配内核资源（半连接队列），但不完成第三次握手，很快**占满半连接队列**，导致正常客户端无法建立连接。
+- **缓解手段**：
+  - **SYN Cookie**：不分配队列资源，用 `(源IP、源端口、时间、密钥)` 哈希生成序号返回，收到 ACK 时再验证合法性；
+  - 缩短 SYN 超时时间、限制半连接队列上限、`tcp_syncookies=1`；
+  - 网络层：防火墙限速 / 清洗。
+
+### 2.5 Python 3 可运行示例（模拟握手与历史报文拒绝）
+
+
+===== CELL 1 [markdown] =====
+## 核心概念
+
+### (a) 🗂️ 计算机网络全景：分层模型是骨架，TCP/HTTP 是血肉
+
+网络八股的一条主线是「分层」：从 OSI 七层 / TCP-IP 四层模型出发，向上是 TCP 的连接管理与可靠传输，再向上是 HTTP/HTTPS 与 DNS，最后用「输入 URL 到页面显示」把整条链路串成压轴综合题。下图就是整篇的导航地图。
+
+（该图在 GitHub/VSCode + mermaid 插件中可渲染）
+
+```mermaid
+flowchart TB
+    Model["🧱 分层模型<br/>OSI 七层 / TCP-IP 四层"]
+    Model --> Tcp["🤝 TCP 连接管理<br/>三次握手 + 四次挥手"]
+    Tcp --> Rel["📡 可靠传输<br/>重传 + 滑动窗口"]
+    Rel --> Flow["🚦 流量控制 vs 拥塞控制"]
+    Model --> Udp["⚖️ TCP vs UDP（含 QUIC）"]
+    Model --> Http["🌐 HTTP 报文 / 状态码 / 演进"]
+    Http --> Tls["🔐 HTTPS 与 TLS 证书链"]
+    Model --> Dns["📇 DNS 与 CDN"]
+    Http --> Journey["🏁 输入 URL 到页面显示"]
+    Dns --> Journey
+    Tls --> Journey
+```
+
+- **🧱 分层模型**：OSI 七层（物理→应用）是理论参考，TCP/IP 四层（网络接口 / 网际 / 传输 / 应用）才是事实标准。要会讲数据封装与解封装：发送时从上往下逐层加头部，接收时从下往上逐层剥。
+- **🤝 TCP 连接管理**：三次握手（SYN → SYN+ACK → ACK）解决「双方都能收发 + 防止历史报文错连」，为什么不能两次要会论证；四次挥手（FIN → ACK → FIN → ACK）源于 TCP 半关闭，TIME_WAIT 等 2MSL 的原因与调优也是必背。
+- **📡 可靠传输**：TCP 靠序号 + 确认 + 超时重传 + 快速重传 + 滑动窗口保证可靠与效率。RTO 按 RFC 6298 计算、重传指数退避（1s → 2s → 4s…），这些公式与 Python 模拟代码都要能讲。
+- **🚦 流量控制 vs 拥塞控制**：流量控制是「接收方怕你太快」，靠调整窗口大小；拥塞控制是「网络怕你太快」，靠慢启动、拥塞避免、快重传、快恢复四条线调节 cwnd。两者管的对象不同，是最爱考的一对辨析。
+- **⚖️ TCP vs UDP**：TCP 可靠有序但慢，UDP 无连接、低延迟；视频通话、DNS、游戏走 UDP。QUIC 基于 UDP 重造可靠传输与多路复用，是为了在用户态快速迭代并避开 TCP 的队头阻塞。
+- **🌐 HTTP 报文 / 状态码 / 演进**：请求行 / 头部 / 空行 / 正文的结构、GET vs POST、状态码 1xx~5xx 分类要熟。HTTP/1.0 → 1.1（长连接）→ 2（二进制分帧、HPACK 头部压缩、多路复用）→ 3（QUIC）的演进与队头阻塞问题是高频考点。
+- **🔐 HTTPS 与 TLS**：对称加密快、非对称加密安全，TLS 用「混合加密」结合两者。握手要能讲出协商密钥与证书验证的完整流程，CA 证书链为什么能防中间人攻击也要说清。
+- **📇 DNS 与 CDN**：DNS 走递归 + 迭代查询，从浏览器缓存 → 本地 DNS → 根 / 顶级 / 权威服务器逐级解析；CDN 通过 DNS 调度把用户带到最近的边缘节点，两者关系是 URL 综合题的必备环节。
+- **🏁 输入 URL 到页面显示**：压轴综合题：DNS 解析 → TCP 三次握手 → TLS 握手 → HTTP 请求 → 服务器响应 → 浏览器渲染，每层还有缓存（DNS 缓存 / CDN / 浏览器缓存）。能按时间线完整复述，基本就覆盖了全部网络考点。
+
+===== CELL 2 [markdown] =====
+![net_tcp_handshake.png](images/net_tcp_handshake.png)
+
+
+*配图来源：本仓库 matplotlib 绘制（`images/net_tcp_handshake.png`）*
+
+
+===== CELL 3 [code] =====
+# ---- matplotlib 中文字体（防图内中文乱码）----
+import matplotlib
+matplotlib.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', 'DejaVu Sans']
+matplotlib.rcParams['axes.unicode_minus'] = False
+# -------------------------------------------
+"""模拟 TCP 三次握手，并演示「历史迟到 SYN 会被拒绝」的场景。
+纯标准库，可直接运行。"""
+from dataclasses import dataclass
+
+@dataclass
+class Pkt:
+    flags: str   # 例如 'SYN', 'SYN+ACK', 'ACK', 'RST'
+    seq: int
+    ack: int
+    stale: bool = False   # 是否为迟到的历史报文
+
+def handshake(client_isn=100, server_isn=300, with_stale_syn=False):
+    print("== 正常三次握手 ==")
+    c_seq, s_seq = client_isn, server_isn
+
+    # ① 客户端发 SYN
+    c_seq += 1
+    p1 = Pkt('SYN', seq=c_seq, ack=0)
+    print(f"客户端 -> 服务端: {p1}")
+
+    # ② 服务端回 SYN+ACK
+    s_seq += 1
+    p2 = Pkt('SYN+ACK', seq=s_seq, ack=c_seq + 1)
+    print(f"服务端 -> 客户端: {p2}")
+
+    # ③ 客户端回 ACK
+    c_seq += 1
+    p3 = Pkt('ACK', seq=c_seq, ack=s_seq + 1)
+    print(f"客户端 -> 服务端: {p3}")
+    print("双方进入 ESTABLISHED。\n")
+
+    if with_stale_syn:
+        print("== 历史迟到 SYN 场景 ==")
+        stale = Pkt('SYN', seq=50, ack=0, stale=True)   # 旧连接残留的 SYN
+        print(f"客户端 -> 服务端: {stale}  (迟到的旧 SYN)")
+        # 服务端按新 SYN 处理会回 SYN+ACK，ack=51
+        s_seq += 1
+        resp = Pkt('SYN+ACK', seq=s_seq, ack=stale.seq + 1)
+        print(f"服务端 -> 客户端: {resp}")
+        # 客户端发现 seq=50 不是自己当前期望的序号 → 发 RST 拒绝
+        print(f"客户端 -> 服务端: RST (客户端判断这是历史连接，直接终止)")
+        print("结论：三次握手让客户端有能力拒绝历史连接。")
+
+if __name__ == '__main__':
+    handshake(with_stale_syn=True)
+
+
+===== CELL 4 [markdown] =====
+### 2.6 面试追问
+
+**追问 1：两次握手为什么不行？**
+**标准回答：** 两次握手只能确认服务端「能收能发」，无法确认客户端是否收到 SYN+ACK；且无法处理**历史重复 SYN**——服务端收到重发的旧 SYN 就会直接建立连接，浪费资源并可能造成数据错乱。
+
+**追问 2：三次握手中可以携带数据吗？**
+**标准回答：** 前两次（SYN、SYN+ACK）**不能携带应用数据**（SYN 报文本身不携带数据，序号消耗 1）；第三次 ACK 可以携带数据（此时客户端已确认双方就绪）。
+
+**追问 3：什么是 SYN Cookie，如何工作？**
+**标准回答：** 服务端收到 SYN 时不进半连接队列，而是把 `(IP、端口、时间戳、密钥)` 做哈希生成一个特殊序号当作 SYN+ACK 的 seq 返回；收到客户端 ACK 时校验 `ack-1` 是否等于该哈希，验证通过才分配连接。从而在 SYN 泛洪下不耗尽资源。
+
+> ⚠️ **易错点**：SYN Flood 消耗的是**半连接队列**而非全连接队列；第三次握手丢失时客户端会重传 ACK，服务端 SYN_RCVD 超时后重传 SYN+ACK（Linux 默认重传 5 次）。
+
+---
+
+## 3. TCP 四次挥手
+
+### 3.1 过程
+
+**四次挥手（Four-Way Handshake）** 用于关闭 TCP 连接，核心在于 TCP 是**全双工**，每个方向需要**独立关闭**，因此需要 4 个报文。
+
+```text
+主动关闭方 A                         被动关闭方 B
+  |----- ① FIN(seq=u) ---------------->|   ESTABLISHED → FIN_WAIT_1
+  |<----- ② ACK(ack=u+1) --------------|   B → CLOSE_WAIT，A → FIN_WAIT_2
+  |            (B 继续发送剩余数据)      |
+  |<----- ③ FIN(seq=w) ----------------|   B 发完数据后 → LAST_ACK
+  |----- ④ ACK(ack=w+1) -------------->|   B → CLOSED；A → TIME_WAIT(2MSL)
+```
+
+- ① A 发 **FIN**，进入 **FIN_WAIT_1**（A 不再发数据，但仍可收）；
+- ② B 回 **ACK**，进入 **CLOSE_WAIT**（B 还可以继续发数据），A 进入 **FIN_WAIT_2**；
+- ③ B 数据发完后发 **FIN**，进入 **LAST_ACK**；
+- ④ A 回 **ACK** 后进入 **TIME_WAIT**（持续 **2MSL**），B 收到后进入 **CLOSED**。
+
+### 3.2 为什么是 4 次（半关闭）
+
+因为 ② 和 ③ 不能合并：B 收到 FIN 后**未必立刻没有数据要发**，ACK 只是确认收到 FIN，而 FIN 要等 B **把剩余数据发完**才能发出，所以 ACK 与 FIN 天然分离 → 4 次挥手是**全双工关闭的最少次数**。若 B 恰好无数据且支持延迟 ACK 合并，个别实现可能把 ②③ 合并成 3 个报文，但语义上仍是 4 个阶段。
+
+### 3.3 TIME_WAIT 的作用与 2MSL 的原因
+
+- **作用 1（可靠终止）**：保证最后的 ACK 丢失时能重传（若 B 的 FIN 重传，A 可再回 ACK），否则 B 会一直停在 LAST_ACK；
+- **作用 2（防旧报文串扰）**：保证本次连接的所有报文在网络中**彻底消失**（MSL 为报文最大生存时间，双向最坏 2MSL），避免与后续新连接（相同四元组）的报文混淆。
+
+### 3.4 大量 TIME_WAIT 的后果与调优
+
+| 后果 | 说明 |
+| --- | --- |
+| 端口耗尽 | 客户端短连接场景下 TIME_WAIT 占用本地端口（默认约 2~4 分钟），高并发 QPS 下可能 `Cannot assign requested address` |
+| 内存/表项开销 | 每个 TIME_WAIT 保留内核 sock 结构，百万级连接占用可观内存 |
+| 新连接被延迟 | 相同四元组的新连接须等 TIME_WAIT 结束（除非开启 reuse） |
+
+**调优手段**：
+- 服务端开启 `SO_REUSEADDR`（允许 TIME_WAIT 端口被复用监听）；
+- Linux 开启 `net.ipv4.tcp_tw_reuse=1`（**仅对出站连接**，且要求时间戳选项开启，安全复用 TIME_WAIT 端口）；
+- 调小 `tcp_fin_timeout` / 缩短 MSL（需谨慎，破坏防串扰保证）；
+- 业务层：改用**长连接**（连接池）、HTTP/2 多路复用减少建连频率；
+- 不建议在生产盲目开 `tcp_tw_recycle`（已被移除，且依赖时间戳，NAT 场景会误杀报文）。
+
+### 3.5 Python 3 可运行示例（挥手状态机模拟）
+
+
+===== CELL 5 [markdown] =====
+![net_tcp_fourwave.png](images/net_tcp_fourwave.png)
+
+
+*配图来源：本仓库 matplotlib 绘制（`images/net_tcp_fourwave.png`）*
+
+
+===== CELL 6 [code] =====
+"""模拟四次挥手的报文与状态迁移（标准库，可直接运行）。"""
+from dataclasses import dataclass
+
+@dataclass
+class Pkt:
+    flags: str
+    seq: int
+    ack: int
+
+def four_way_close(a_isn=500, b_isn=800, fin_lost=False):
+    a, b = a_isn, b_isn
+    print("== 四次挥手 ==")
+    # ① A 发 FIN
+    a += 1
+    print(f"A -> B: FIN(seq={a})   A: ESTABLISHED -> FIN_WAIT_1")
+
+    # ② B 回 ACK
+    b += 1
+    print(f"B -> A: ACK(ack={a + 1})   B -> CLOSE_WAIT, A -> FIN_WAIT_2")
+    print("(B 继续发送剩余数据……)")
+
+    # ③ B 发 FIN
+    b += 1
+    print(f"B -> A: FIN(seq={b})   B -> LAST_ACK")
+
+    # ④ A 回 ACK
+    a += 1
+    if fin_lost:   # 演示 B 的 FIN 丢失场景：B 重传 FIN
+        print("(B 的 FIN 丢失，B 超时重传 FIN)")
+        b += 1
+        print(f"B -> A: FIN(seq={b})   (重传)")
+    print(f"A -> B: ACK(ack={b + 1})   A -> TIME_WAIT(2MSL) -> CLOSED")
+    print("B 收到 ACK -> CLOSED")
+
+if __name__ == '__main__':
+    four_way_close(fin_lost=True)
+
+
+===== CELL 7 [markdown] =====
+### 3.6 面试追问
+
+**追问 1：为什么主动关闭方要等 2MSL 而不是立刻关闭？**
+**标准回答：** ① 保证最后的 ACK 若丢失，能响应对方重传的 FIN；② 让本连接在网络中的报文（最大生命周期 MSL）全部消散，防止四元组相同的后续新连接收到旧报文。2MSL = 一来一回的最大时间。
+
+**追问 2：TIME_WAIT 过多时优先调什么？**
+**标准回答：** 优先从**业务架构**入手：客户端用连接池/长连接减少建连；服务端监听套接字开 `SO_REUSEADDR`；谨慎开启 `tcp_tw_reuse`（仅出站）。不要盲目调小 2MSL。
+
+**追问 3：如果服务端收到 FIN 后一直不回复会怎样？**
+**标准回答：** 客户端停留在 FIN_WAIT_1，超时后重传 FIN；若持续无响应最终进入 CLOSED。被动方进入 CLOSE_WAIT 后若应用不 close，会泄漏 CLOSE_WAIT 连接（常见于**应用层忘记关闭 socket**）。
+
+> ⚠️ **易错点**：TIME_WAIT 存在于**主动关闭方**；面试常考「大量 TIME_WAIT 出现在哪一端」——通常是**短连接客户端**（如压测工具、网关）。
+
+---
+
+## 4. TCP 可靠传输机制
+
+### 4.1 机制总览
+
+| 机制 | 作用 | 关键点 |
+| --- | --- | --- |
+| **确认应答 ACK** | 接收方告知发送方已收到哪些字节 | 确认号 = 期望收到的下一个字节序号 |
+| **超时重传** | 发送方超时未收到 ACK 则重发 | 重传计时器 RTO 动态计算 |
+| **快速重传** | 收到 **3 个冗余 ACK** 立即重传 | 不等超时，减少等待 |
+| **累计确认** | ACK n 表示 1..n-1 全部收到 | 丢失后续报文只需重传从缺口开始 |
+| **滑动窗口** | 限制在途数据量，实现流量控制 | 发送窗口 = min(拥塞窗口, 接收窗口) |
+
+### 4.2 超时重传与 RTO 计算（RFC 6298 公式）
+
+```text
+SRTT   = (1 - α) × SRTT + α × RTT          # α = 1/8，平滑往返时间
+RTTVAR = (1 - β) × RTTVAR + β × |RTT - SRTT|   # β = 1/4，抖动方差
+RTO    = SRTT + max(G, 4 × RTTVAR)         # G 为时钟粒度（如 1ms）
+# 初始 RTO = 1s，重传后采用指数退避：RTO = RTO × 2（上限 60s）
+```
+
+### 4.3 快速重传（Fast Retransmit）
+
+- 接收方收到乱序报文时，**每收到一个乱序段就回复对最近有序字节的 ACK**（冗余 ACK）；
+- 发送方收到 **3 个相同的冗余 ACK**（即第 4 次重复）时，**不等超时**立即重传缺失报文；
+- 优点：更快恢复；代价：无法区分「丢包」还是「乱序」（乱序也会触发冗余 ACK），后续有 **SACK（选择性确认）** 精准告知缺口。
+
+### 4.4 滑动窗口（发送 / 接收窗口）
+
+发送窗口维护三指针：
+
+```text
+窗口内：
+| 已发送已确认 | 已发送未确认 | 可发送未发送 | 不可发送 |
+|<- 窗口左沿前进 ->|<---- 发送窗口 W ---->|
+可用窗口 = 发送窗口 - 已发送未确认
+```
+
+- **发送窗口 = min(拥塞窗口 cwnd, 接收窗口 rwnd)**；
+- **接收窗口 rwnd** 由接收方在 TCP 头 `window` 字段通告，实现**流量控制**（防止发送方淹没接收方缓冲区）。
+
+### 4.5 Python 3 可运行示例（滑动窗口 + 快速重传模拟）
+
+
+===== CELL 8 [code] =====
+"""模拟滑动窗口发送与快速重传（标准库，可直接运行，修正丢包死循环）。"""
+import random
+
+def send_with_window(data, win_size=4, drop_idx=None):
+    """data: 待发送字节序号列表；win_size: 发送窗口；drop_idx: 模拟丢包的序号。"""
+    acked = set()          # 已确认
+    sent_but_unacked = {}  # 序号 -> 已发送未确认
+    dup_ack = {}
+    base, nxt = 0, 0       # 窗口基址 / 下一个待发序号
+    rounds = 0
+
+    while base < len(data) and rounds < 200:
+        rounds += 1
+        # 填充窗口
+        while nxt < min(base + win_size, len(data)):
+            seq = data[nxt]
+            if seq == drop_idx:
+                print(f"发送 seq={seq}  (该包在网络上丢失)")
+            else:
+                print(f"发送 seq={seq}")
+            sent_but_unacked[seq] = 1
+            nxt += 1
+
+        # 模拟接收方 ACK；丢包序号只累积冗余 ACK
+        for seq in list(sent_but_unacked):
+            if seq == drop_idx:
+                dup_ack[seq] = dup_ack.get(seq, 0) + 1
+                if dup_ack[seq] >= 3:
+                    print(f"!! 收到 3 个冗余 ACK，快速重传 seq={seq}（不等超时）")
+                    dup_ack[seq] = 0
+                    acked.add(seq)      # 重传成功 → 确认（模拟）
+                    sent_but_unacked.pop(seq, None)
+            else:
+                acked.add(seq)
+                sent_but_unacked.pop(seq, None)
+                dup_ack.pop(seq, None)
+        # 窗口左沿推进
+        while base in acked:
+            base += 1
+        print(f"   窗口左沿推进到 {base}，已确认={sorted(acked)}")
+    print("全部确认完毕。")
+
+random.seed(1)
+send_with_window(list(range(10)), win_size=4, drop_idx=6)
+
+
+===== CELL 9 [markdown] =====
+### 4.6 面试追问
+
+**追问 1：累计确认有什么缺点？**
+**标准回答：** 一个报文丢失会导致后续所有报文只得到「对缺口前序号的 ACK」，发送方必须重传缺口后的全部数据，效率低；**SACK**（RFC 2018/2883）通过选项告知「哪些段已收到」，只重传真正丢失的段。
+
+**追问 2：RTO 太短或太长会怎样？**
+**标准回答：** 太短 → 无辜重传（网络抖动被误判为丢包），浪费带宽；太长 → 丢包恢复慢、吞吐下降。因此 RTO 用 SRTT + 4×RTTVAR 动态跟随网络状态。
+
+**追问 3：接收窗口为 0 时发送方怎么办？**
+**标准回答：** 发送方停止发送并启动**持续计时器（persist timer）**，周期性发送 **1 字节的窗口探测报文（zero-window probe）**，防止接收方「窗口更新 ACK 丢失」导致死锁。
+
+> ⚠️ **易错点**：**流量控制（rwnd）是接收方能力限制，拥塞控制（cwnd）是网络能力限制**，两者相乘/取小共同决定发送速率——面试高频辨析题。
+
+---
+
+## 5. 流量控制 vs 拥塞控制
+
+### 5.1 定义与区别
+
+- **流量控制（Flow Control）**：端到端的、**接收方主导**的控制，防止发送方把接收方缓冲区塞爆（`rwnd`）。
+- **拥塞控制（Congestion Control）**：**网络整体**的控制，防止过多数据注入导致路由器队列溢出丢包（`cwnd`）。
+
+| 维度 | 流量控制 | 拥塞控制 |
+| --- | --- | --- |
+| 控制对象 | 发送方 vs 接收方（两端） | 发送方 vs 全网路径 |
+| 触发依据 | 接收方通告的 `rwnd` | 丢包 / 延迟推断网络拥塞 |
+| 机制 | 滑动窗口 | 慢启动 / 拥塞避免 / 快重传 / 快恢复 |
+| 是否端到端 | 是 | 本质是端到端协作（TCP 层），但面向网络状态 |
+
+### 5.2 拥塞控制四条线
+
+1. **慢启动（Slow Start）**：`cwnd` 从 1 MSS 开始，**每个 RTT 翻倍（指数增长）**，直到 `cwnd >= ssthresh`。
+2. **拥塞避免（Congestion Avoidance）**：进入**加性增**，每个 RTT `cwnd += 1`（线性增长），直到出现丢包。
+3. **快速重传（Fast Retransmit）**：收到 **3 个冗余 ACK** 立即重传丢失段（不等超时）。
+4. **快速恢复（Fast Recovery）**：收到 3 个冗余 ACK 时 `ssthresh = cwnd / 2`，`cwnd = ssthresh + 3`（进入线性增长）；**若超时**则回到慢启动（cwnd=1，ssthresh 减半）。
+
+### 5.3 cwnd 随轮次变化示意图（ASCII）
+
+```text
+cwnd(段)
+ 32 |                                        ____
+ 28 |                                    __/
+ 24 |                                __/
+ 20 |                            __/
+ 16 |                   ____--__/            ← ssthresh=16：停止指数，改线性(+1/RTT)
+ 12 |               __/
+  8 |           __/
+  4 |       __/
+  2 |   __/
+  1 | _/
+    +---+---+---+---+---+---+---+---+---+---+---+----> RTT 轮次
+      1   2   3   4   5   6   7   8   9  10  11  12
+      |----- 慢启动(指数×2) -----|---- 拥塞避免(线性+1) ----|
+      ↑ 收到3个冗余ACK: ssthresh=cwnd/2=8, cwnd=8+3 → 快恢复
+```
+
+### 5.4 Python 3 可运行示例（cwnd 演化模拟）
+
+
+===== CELL 10 [markdown] =====
+![net_congestion.png](images/net_congestion.png)
+
+
+*配图来源：本仓库 matplotlib 绘制（`images/net_congestion.png`）*
+
+
+===== CELL 11 [code] =====
+"""模拟 cwnd 演化：慢启动 → 拥塞避免 → 快恢复（标准库，可直接运行）。"""
+def simulate_cwnd(ssthresh=16, loss_round=9, rounds=14):
+    cwnd, out = 1, []
+    for r in range(1, rounds + 1):
+        if r == loss_round:                    # 第 9 轮出现丢包（3 冗余 ACK）
+            ssthresh = max(cwnd // 2, 2)
+            cwnd = ssthresh + 3                # 快恢复：减半 + 3
+            mode = "快恢复"
+        elif cwnd < ssthresh:
+            cwnd *= 2                          # 慢启动：指数
+            mode = "慢启动"
+        else:
+            cwnd += 1                          # 拥塞避免：线性
+            mode = "拥塞避免"
+        out.append((r, cwnd, mode))
+    return out
+
+if __name__ == '__main__':
+    for r, c, m in simulate_cwnd():
+        print(f"RTT={r:>2}  cwnd={c:>3}  阶段={m}")
+        print(f"        {'#' * c}")
+
+
+===== CELL 12 [markdown] =====
+### 5.5 面试追问
+
+**追问 1：为什么慢启动叫「慢」却指数增长？**
+**标准回答：** 指**初始值小、增速可控**（从 1 开始试探网络容量），指数增长是为了快速逼近可用带宽；一旦超过 ssthresh 就转线性，避免瞬间打爆网络。
+
+**追问 2：超时丢包和冗余 ACK 丢包的处理有什么不同？**
+**标准回答：** 超时说明网络可能严重拥塞（甚至路径中断），回到慢启动 `cwnd=1`；3 个冗余 ACK 说明网络还能传数据，只是丢了单个包，用快重传 + 快恢复（减半）更高效。
+
+**追问 3：现代拥塞控制算法有哪些演进？**
+**标准回答：** Reno（经典四线）、**NewReno**（改进快恢复、处理多个丢包）、**BIC/CUBIC**（Linux 默认，按三次曲线增长，适合高带宽长链路）、**BBR**（Google，基于瓶颈带宽与最小 RTT 探测，不依赖丢包）。
+
+> ⚠️ **易错点**：慢启动阈值 ssthresh 在**每次丢包时减半**；「快恢复」后不是回到慢启动，而是**直接进入拥塞避免（线性）**，除非发生超时。
+
+---
+
+## 6. TCP vs UDP
+
+### 6.1 对比表
+
+| 维度 | **TCP** | **UDP** |
+| --- | --- | --- |
+| 连接性 | 面向连接（三次握手） | 无连接 |
+| 可靠性 | **可靠**：确认、重传、排序 | 尽力而为，可能丢包乱序 |
+| 传输方式 | 字节流 | 数据报（保留报文边界） |
+| 流量/拥塞控制 | 有（rwnd/cwnd） | 无 |
+| 头部开销 | 20 字节 | **8 字节** |
+| 速度 | 较慢 | 快、低延迟 |
+| 典型应用 | HTTP/HTTPS、FTP、SMTP、SSH | DNS、视频直播、VoIP、游戏、QUIC |
+
+### 6.2 各应用场景对照
+
+- **TCP 场景**：需要完整、有序数据的场景——网页、文件传输、邮件、远程登录。
+- **UDP 场景**：容忍少量丢失、追求实时性——**DNS 查询（默认）**、RTP 音视频、实时游戏、NTP 时间同步、DHCP。
+- 注意：**HTTP/3 的 QUIC 基于 UDP**，改变了「可靠传输必须用 TCP」的刻板印象。
+
+### 6.3 QUIC 为什么基于 UDP
+
+1. **突破 TCP 内核僵化**：TCP 的演进（如多路复用、0-RTT）需要修改操作系统内核，部署周期长；QUIC 在**用户态**实现，可随应用快速迭代。
+2. **消除队头阻塞**：TCP 按字节流严格有序，一个包丢失会阻塞后续所有 HTTP 请求（TCP 层队头阻塞）；QUIC 内部多路复用，**每个流独立可靠传输**，一个流丢包不影响其他流。
+3. **更快建连**：TLS 1.3 与传输握手合并，支持 **0-RTT / 1-RTT** 建连。
+4. **连接迁移**：QUIC 用 **Connection ID** 而非四元组标识连接，Wi-Fi ↔ 蜂窝切换不断连。
+5. UDP 只提供「尽力传输 + 端口多路复用」，其余（重传、乱序处理、拥塞控制）由 QUIC 自己在用户态实现。
+
+### 6.4 Python 3 可运行示例（UDP 收发 + TCP 对比）
+
+
+===== CELL 13 [markdown] =====
+> 🔬 **示例代码（需在独立环境中运行）**：`multiprocessing`/`socket` 等需要独立进程或对端，notebook 单进程环境无法演示（Jupyter 中 `__name__ == '__main__'` 恒成立，进程池会挂起），请保存为 `.py` 文件运行。
+
+```python
+"""UDP 数据报收发示例（标准库，可直接运行：先开接收端再开发送端）。"""
+import socket, threading
+
+def udp_demo():
+    rx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    rx.bind(('127.0.0.1', 9999))
+    tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def recv_loop():
+        data, addr = rx.recvfrom(1024)
+        print(f"接收端收到: {data.decode()}  来自 {addr}")
+
+    t = threading.Thread(target=recv_loop); t.start()
+    tx.sendto(b'hello udp', ('127.0.0.1', 9999))   # 无连接，直接发
+    t.join()
+    rx.close(); tx.close()
+    # 对比：TCP 需要 connect 三次握手 + accept，见第 2 节
+
+if __name__ == '__main__':
+    udp_demo()
+```
+
+
+===== CELL 14 [markdown] =====
+### 6.5 面试追问
+
+**追问 1：DNS 为什么用 UDP 而不用 TCP？**
+**标准回答：** 查询报文小、一次往返即可完成，UDP 开销低、速度快；但**区域传送（AXFR）和响应超过 512/4096 字节（EDNS）**时会改用 TCP 保证可靠与完整。
+
+**追问 2：UDP 如何实现可靠传输？**
+**标准回答：** 在应用层自行实现——**序号 + ACK + 重传 + 滑动窗口**（如 RUDP、KCP），或直接使用 **QUIC**（在 UDP 之上实现 TLS + 可靠流 + 拥塞控制）。
+
+**追问 3：为什么视频直播用 UDP 却感觉「不卡」？**
+**标准回答：** 视频可以容忍**少量丢包**（丢帧后解码器可跳过或用前向纠错 FEC 恢复），且要**低延迟**；TCP 的可靠重传会引入延迟与卡顿，反而体验更差。
+
+> ⚠️ **易错点**：TCP 是**字节流**无报文边界，UDP 是**数据报**有边界——「TCP 粘包问题」正源于此，UDP 天然不存在粘包。
+
+---
+
+## 7. HTTP 报文结构、方法与状态码
+
+### 7.1 报文结构
+
+**请求报文**（四部分：请求行 / 请求头 / 空行 / 请求体）：
+
+```text
+GET /index.html HTTP/1.1\r\n
+Host: www.example.com\r\n
+User-Agent: curl/8.0\r\n
+Accept: */*\r\n
+\r\n
+(请求体，GET 通常为空)
+```
+
+**响应报文**（状态行 / 响应头 / 空行 / 响应体）：
+
+```text
+HTTP/1.1 200 OK\r\n
+Content-Type: text/html; charset=utf-8\r\n
+Content-Length: 1234\r\n
+\r\n
+<html>...</html>
+```
+
+### 7.2 GET vs POST 对比表
+
+| 维度 | **GET** | **POST** |
+| --- | --- | --- |
+| 语义 | 获取资源（**安全、幂等、可缓存**） | 提交/创建资源（**非幂等**） |
+| 参数位置 | URL 查询字符串（可见、有长度限制） | 请求体（相对隐蔽，无长度限制） |
+| 缓存 | 可被浏览器/代理缓存 | 默认不可缓存（需显式响应头） |
+| 回退/刷新 | 安全，可重复执行 | 可能重复提交（需防重） |
+| 典型场景 | 搜索、翻页、下载 | 登录、下单、上传 |
+
+> REST 语义下，还有 **PUT（整体替换，幂等）/ PATCH（局部修改）/ DELETE（删除）/ HEAD（只取头）/ OPTIONS（探测能力，CORS 预检）**。
+
+### 7.3 状态码分类
+
+| 分类 | 含义 | 常见值 |
+| --- | --- | --- |
+| **2xx** | 成功 | **200 OK**、201 Created、204 No Content |
+| **3xx** | 重定向 | **301 永久**、**302 临时**、304 Not Modified（缓存）、307/308 |
+| **4xx** | 客户端错误 | **400 Bad Request**、**401 未认证**、**403 无权限**、**404 不存在**、**405 方法不允许**、**429 限流** |
+| **5xx** | 服务端错误 | **500 内部错误**、**502 网关错误**（上游无响应）、**503 服务不可用**、**504 网关超时** |
+
+### 7.4 Python 3 可运行示例（发送 GET/POST 并打印状态）
+
+
+===== CELL 15 [markdown] =====
+> 🔬 **需在联网环境运行**（httpbin.org 在当前离线/受限网络不可达，notebook 内不执行）：
+
+```python
+"""用标准库 urllib 演示 GET/POST 与状态码处理（可直接运行）。"""
+import urllib.request, urllib.error
+
+def fetch(method: str, url: str, data: bytes = None):
+    req = urllib.request.Request(url, data=data, method=method)
+    try:
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            print(f"{method} {url} -> {resp.status} {resp.reason}")
+            print("响应头:", dict(resp.headers)["Content-Type"])
+            print("响应体前 100 字节:", resp.read(100))
+    except urllib.error.HTTPError as e:
+        print(f"{method} {url} -> 错误 {e.code}: {e.reason}")
+
+if __name__ == '__main__':
+    fetch("GET", "https://httpbin.org/get?a=1")
+    fetch("POST", "https://httpbin.org/post", b'{"k": "v"}')
+    fetch("GET", "https://httpbin.org/status/404")   # 演示 404
+
+```
+- 演示内容：`urllib` 发起 GET/POST、读取状态码与响应体、捕获 HTTP 404
+- 离线替代：可部署本地 `http.server` 或改用 `http://www.baidu.com` 做连通性探测
+- 面试点：HTTP GET 幂等 / POST 带 body；状态码 2xx 成功、4xx 客户端错、5xx 服务端错
+
+
+===== CELL 16 [markdown] =====
+### 7.5 面试追问
+
+**追问 1：301 和 302 的区别？**
+**标准回答：** 301 是**永久重定向**，浏览器和搜索引擎会缓存新地址，后续直接访问新 URL；302 是**临时重定向**，每次仍需访问原地址。307/308 则保证**不改变请求方法**（302 在部分客户端会把 POST 转成 GET）。
+
+**追问 2：401 与 403 的区别？**
+**标准回答：** 401 = **未认证**（不知道你是谁，需登录/token），响应头带 `WWW-Authenticate`；403 = **已认证但无权限**（知道你但禁止访问）。
+
+**追问 3：什么情况下返回 304？**
+**标准回答：** 客户端带 `If-Modified-Since` / `If-None-Match` 做**条件请求**，服务端判断资源未变化时返回 **304 Not Modified**（无响应体），配合缓存（见第 11 节）减少传输。
+
+> ⚠️ **易错点**：**204 No Content** 与 **304** 都没有响应体，但 204 表示「处理成功且无内容返回」，304 表示「用缓存，不用返回」——语义不同。
+
+---
+
+## 8. HTTP 1.0 / 1.1 / 2 / 3 演进
+
+### 8.1 各版本核心特性
+
+| 版本 | 核心改进 | 遗留问题 |
+| --- | --- | --- |
+| **HTTP/1.0** | 基础报文；每次请求**新建 TCP 连接**，用完即断 | 连接开销大，串行请求慢 |
+| **HTTP/1.1** | **Keep-Alive 长连接**（默认）、**管线化（Pipelining）**、Host 头、分块传输 | 管线化要求**响应按序返回** → **队头阻塞**；头部重复冗余 |
+| **HTTP/2** | **二进制分帧**、**多路复用**、**HPACK 头部压缩**、服务器推送、流优先级 | TCP 层队头阻塞仍存在；握手延迟 |
+| **HTTP/3** | 基于 **QUIC(UDP)**，**流独立**消除队头阻塞、0-RTT 建连、连接迁移 | 需 UDP 支持，兼容性仍在推广中 |
+
+### 8.2 队头阻塞（Head-of-Line Blocking）
+
+- **HTTP/1.1 管线化队头阻塞（HTTP 层）**：多个请求共用一条 TCP 连接，响应必须**按发送顺序**返回，第一个响应慢，后续全部被堵 → 已被浏览器禁用管线化，改为**多连接**（每域名 6 条左右）。
+- **HTTP/2 多路复用**：把请求/响应拆成**帧**交错传输，逻辑上解决了 HTTP 层队头阻塞。
+- **TCP 层队头阻塞（HTTP/2 仍存在）**：TCP 是字节流，一个 TCP 包丢失，接收缓冲区里后续所有帧都**无法按序交付**给应用层，即使其他流的数据已到达 → 仍需等待重传。
+- **HTTP/3 的解法**：QUIC 在 UDP 之上**按流独立传输与重传**，一个流的丢包只阻塞该流 → 彻底消除队头阻塞。
+
+### 8.3 HPACK 头部压缩与二进制分帧
+
+- **二进制分帧**：HTTP/2 将报文拆成**帧（Frame）**，帧携带**流标识（Stream ID）**，同一连接上多个流的帧交错发送 → 实现多路复用。
+- **HPACK**：① **静态表**（61 个高频头字段映射到固定索引）；② **动态表**（连接内已发送头部建索引，后续用索引引用）；③ **哈夫曼编码**压缩字面值 → 头部体积大幅下降。
+
+### 8.4 Python 3 可运行示例（对比 HTTP/1.1 与 HTTP/2 请求）
+
+
+===== CELL 17 [markdown] =====
+![net_http2.png](images/net_http2.png)
+
+
+*配图来源：本仓库 matplotlib 绘制（`images/net_http2.png`）*
+
+
+===== CELL 18 [code] =====
+"""演示 HTTP/1.1 与 HTTP/2 的差异（标准库 urllib 走 HTTP/1.1；httpx 可选装）。
+可直接运行：打印 httpbin 响应与协议版本。"""
+import urllib.request, ssl
+
+def h1_demo():
+    ctx = ssl.create_default_context()
+    req = urllib.request.Request("https://httpbin.org/get", headers={"User-Agent": "py"})
+    with urllib.request.urlopen(req, context=ctx, timeout=5) as r:
+        print("HTTP/1.1 响应状态:", r.status, "| 头部:", dict(r.headers)["Server"])
+
+if __name__ == '__main__':
+    h1_demo()
+    # HTTP/2 验证：安装 httpx 后执行以下代码
+    # import httpx
+    # with httpx.Client(http2=True) as c:
+    #     r = c.get("https://httpbin.org/get")
+    #     print("HTTP/2 响应:", r.status_code, "协议:", r.http_version)
+
+
+===== CELL 19 [markdown] =====
+### 8.5 面试追问
+
+**追问 1：HTTP/2 还有队头阻塞吗？**
+**标准回答：** 有——**TCP 层队头阻塞**。TCP 按字节流严格有序，单个包丢失会导致接收缓冲区的后续数据无法交付应用层；HTTP/2 只解决了 HTTP 层的队头阻塞。
+
+**追问 2：为什么 HTTP/3 不用 TCP 实现同样的功能？**
+**标准回答：** TCP 的行为由操作系统内核决定，难以快速演进；且 TCP 流模型天然无法做到流间独立（一个字节流）。QUIC 在用户态 UDP 上自定义**多流可靠传输**，兼顾演进速度与消除队头阻塞。
+
+**追问 3：Keep-Alive 和 HTTP/2 多路复用的区别？**
+**标准回答：** Keep-Alive 只是复用连接，**请求仍然串行**；多路复用是在**一条连接内并发**传输多个请求/响应（帧交错），并发度大幅提升。
+
+> ⚠️ **易错点**：HTTP/2 的「多路复用」解决的是 **HTTP 层队头阻塞**，**TCP 层队头阻塞**要等 HTTP/3/QUIC 才解决——面试官常在这个点挖坑。
+
+---
+
+## 9. HTTPS 与 TLS
+
+### 9.1 对称 / 非对称加密
+
+| 类型 | 密钥 | 速度 | 用途 |
+| --- | --- | --- | --- |
+| **对称加密**（AES、ChaCha20） | 双方用**同一把密钥** | 快 | 加密实际数据 |
+| **非对称加密**（RSA、ECC） | **公钥加密/私钥解密**（反之签名） | 慢（百倍级差距） | 密钥交换、数字签名、身份认证 |
+
+### 9.2 为什么混合加密
+
+- 只用对称：密钥如何安全送达对方？网络上传输密钥本身会被窃听。
+- 只用非对称：速度太慢，无法承载海量数据。
+- **混合加密**：用**非对称加密安全地协商出会话密钥（前向安全可用 ECDHE）**，之后**用对称加密传输业务数据**——兼顾安全与性能。
+
+### 9.3 TLS 1.2 握手流程（详细步骤）
+
+```text
+客户端                                   服务端
+  |--- ① ClientHello (TLS版本/随机数/密码套件列表) --->|
+  |<-- ② ServerHello (选定版本/随机数/密码套件) -------|
+  |<-- ③ Certificate (服务端证书，含公钥) ------------|
+  |<-- ④ ServerKeyExchange (ECDHE 参数) + ServerHelloDone -|
+  |--- ⑤ ClientKeyExchange (客户端 ECDHE 参数) ------->|
+  |--- ⑥ ChangeCipherSpec + Finished(加密的握手摘要) -->|
+  |<-- ⑦ ChangeCipherSpec + Finished -----------------|
+  |=== ⑧ 后续应用数据用协商出的对称密钥加密传输 =======|
+```
+
+1. **ClientHello**：客户端生成随机数 `client_random`，声明支持的 TLS 版本与密码套件。
+2. **ServerHello**：服务端选定版本与套件，返回随机数 `server_random`。
+3. **Certificate**：服务端下发证书（公钥 + CA 签名）。
+4. **ServerKeyExchange**：ECDHE 模式下交换椭圆曲线参数；随后 **ServerHelloDone**。
+5. **ClientKeyExchange**：客户端交换自己的 ECDHE 参数，双方各自算出**相同的预主密钥**（pre-master secret）→ 用 `client_random + server_random + pre-master` 派生会话密钥。
+6. 客户端发 **ChangeCipherSpec**（通知切换加密）并发送 **Finished**（对之前所有握手消息的 MAC 摘要，用新密钥加密）。
+7. 服务端同样发送 **ChangeCipherSpec + Finished** 并校验摘要。
+8. 握手完成，之后全部用**对称密钥**加密。
+
+> TLS 1.3 简化为 1-RTT（合并步骤），且移除 RSA 密钥交换（仅保留 ECDHE/DHE，保证**前向安全**），并支持 0-RTT 恢复。
+
+### 9.4 证书链与 CA
+
+- **CA（证书颁发机构）** 是受信任的第三方，用**自己的私钥**给服务器证书签名；
+- **证书链**：服务器证书 ← 中间 CA 证书 ← 根 CA 证书（浏览器内置信任根）；
+- 校验过程：用**上一级公钥验证下一级证书签名**，直到内置根证书；同时检查**域名匹配、有效期、吊销状态（OCSP/CRL）**；
+- 任一环节失败 → 浏览器警告「证书不受信任」。
+
+### 9.5 Python 3 可运行示例（获取并打印证书链）
+
+
+===== CELL 20 [markdown] =====
+> 🔬 **示例代码（需联网）**：获取 `baidu.com` 证书链依赖外网访问，离线环境请保存为 `.py` 后运行。
+
+```python
+"""使用标准库 ssl 获取 https://www.baidu.com 的证书链（可直接运行）。"""
+import ssl, socket
+
+host, port = 'www.baidu.com', 443
+ctx = ssl.create_default_context()
+with socket.create_connection((host, port), timeout=5) as sock:
+    with ctx.wrap_socket(sock, server_hostname=host) as ssock:
+        print("协商 TLS 版本:", ssock.version())
+        print("密码套件:", ssock.cipher())
+        for i, cert in enumerate(ssock.get_peer_cert_chain() or []):
+            import datetime
+            # cert 为 ASN.1 字典，常见字段如下
+            print(f"证书[{i}] subject: {cert.get('subject')}")
+            print(f"     issuer : {cert.get('issuer')}")
+```
+
+
+===== CELL 21 [markdown] =====
+### 9.6 面试追问
+
+**追问 1：为什么 ECDHE 优于传统 RSA 密钥交换？**
+**标准回答：** RSA 密钥交换把私钥用于解密协商，一旦**私钥泄露**，历史上所有录制的流量都能被解密（无前向安全）；ECDHE 每次会话的临时密钥用完即弃，**前向安全**，私钥泄露不影响历史流量。
+
+**追问 2：中间人攻击如何被 TLS 阻止？**
+**标准回答：** 中间人无法伪造「受信任 CA 签发的证书」——即使截获 ClientHello 并伪造证书，客户端校验证书链/域名/签名会失败；若用户忽略警告，攻击才能得逞（因此要教育用户不点「继续访问」）。
+
+**追问 3：HTTPS 一定安全吗？**
+**标准回答：** 传输加密是安全的，但仍有攻击面：**证书被错误信任**（私有 CA 被攻破）、**降级攻击**（强制回退 TLS1.0）、**HSTS 缺失**（首次访问被降级为 HTTP）、服务端私钥泄露等。
+
+> ⚠️ **易错点**：**握手过程本身前几轮是明文**（ClientHello/ServerHello 不加密），泄露的是版本与随机数（无害）；真正需要保密的是 **pre-master secret**，它从不以明文传输。
+
+---
+
+## 10. DNS 解析完整流程与 CDN
+
+### 10.1 定义
+
+**DNS（Domain Name System）** 将域名映射为 IP 地址，是分布式、层次化的**命名系统**。端口 **53**，默认 **UDP**，大响应/区域传送用 TCP。
+
+### 10.2 查询方式
+
+- **递归查询（Recursive）**：客户端 → 本地 DNS 服务器；本地服务器**替客户端**逐级向上查询，最终把结果返回给客户端。
+- **迭代查询（Iterative）**：本地 DNS 服务器 → 根/顶级/权威服务器时，被返回「下一级服务器地址」，**自己再发起新查询**，逐级逼近答案。
+
+### 10.3 完整解析流程（伪代码）
+
+```text
+1. 客户端查浏览器缓存 → 未命中
+2. 查操作系统 hosts / 系统缓存 → 未命中
+3. 向本地 DNS 服务器(如 114.114.114.114)发起【递归查询】
+4. 本地 DNS 向【根服务器 .】发起【迭代查询】
+   → 根返回 .com 顶级域服务器地址
+5. 本地 DNS 向【.com 顶级服务器】查询
+   → 返回 example.com 权威服务器地址
+6. 本地 DNS 向【example.com 权威服务器】查询
+   → 返回 A/AAAA 记录（含 TTL）
+7. 本地 DNS 缓存结果(TTL 内)，并递归返回给客户端
+8. 客户端拿到 IP，缓存并建立连接
+```
+
+### 10.4 DNS 与 CDN 的关系
+
+- **CDN（内容分发网络）**：把内容缓存到离用户最近的边缘节点。
+- 关键机制：网站通过 **CNAME** 记录把 `cdn.example.com` 指向 CDN 服务商的域名；
+- 本地 DNS 解析到 CDN 服务商的 **GSLB（全局负载均衡）** 后，GSLB 根据**用户来源 IP / 地理 / 负载 / 网络状况**返回**最优边缘节点 IP**；
+- 因此 CDN 依赖 DNS 做**智能调度**（DNS 劫持 CDN 调度也可被污染——所以有 HTTPDNS 方案，用 HTTP 查询绕过本地 DNS）。
+
+### 10.5 Python 3 可运行示例（域名解析）
+
+
+===== CELL 22 [code] =====
+"""标准库 socket 演示 DNS 解析（可直接运行）。"""
+import socket
+
+def resolve(domain):
+    try:
+        infos = socket.getaddrinfo(domain, 80)
+        ips = sorted({info[4][0] for info in infos})
+        print(f"{domain} 解析到 {len(ips)} 个 IP:")
+        for ip in ips:
+            print("   ", ip)
+    except socket.gaierror as e:
+        print(f"解析失败: {e}")
+
+if __name__ == '__main__':
+    resolve('www.baidu.com')
+    resolve('www.google.com')   # 可能因网络环境失败，属预期
+
+
+===== CELL 23 [markdown] =====
+### 10.6 面试追问
+
+**追问 1：递归查询和迭代查询的主角分别是谁？**
+**标准回答：** **递归查询**的主角是本地 DNS 服务器（替客户端跑腿）；**迭代查询**的主角是本地 DNS 服务器与各级权威服务器之间逐级「问路」。客户端只向本地 DNS 发一次递归查询。
+
+**追问 2：DNS 缓存与 TTL 的作用？**
+**标准回答：** TTL 决定记录在缓存中的存活时间，减少权威服务器压力、加快解析；但 TTL 过长会导致**变更生效慢**（换 IP 后旧 IP 仍被访问），CDN 故障切换常用短 TTL（如 30s）。
+
+**追问 3：DNS 污染/劫持怎么办？**
+**标准回答：** 使用 **HTTPDNS**（通过 HTTPS 从服务商 API 拿 IP，绕过本地 DNS）、**DoH/DoT**（DNS over HTTPS/TLS 加密查询）、多 DNS 备份与监控切换。
+
+> ⚠️ **易错点**：**根服务器只有 13 个逻辑 IP**（任播部署多台物理机）；「DNS 解析」返回的可能是 **CNAME 链**而非最终 A 记录，CDN 调度正是利用 CNAME 实现的。
+
+---
+
+## 11. 经典综合题：输入 URL 到页面显示
+
+### 11.1 完整过程（含每一层缓存）
+
+1. **输入与解析 URL**：浏览器解析协议（https）、域名、端口、路径、参数；做 HSTS 检查、安全检查（XSS 过滤等）。
+2. **DNS 解析**（第 10 节）：查 **浏览器缓存 → 系统 hosts/OS 缓存 → 本地 DNS（递归）→ 根/顶级/权威（迭代）**；命中 CDN 时由 GSLB 返回边缘节点 IP。
+3. **建立 TCP 连接**：三次握手（第 2 节）；HTTP/2/3 则多路复用或 QUIC 0-RTT 建连。
+4. **TLS 握手**（HTTPS）：协商版本与套件、证书校验、密钥交换（第 9 节）。
+5. **发送 HTTP 请求**：组装请求报文；查 **浏览器 HTTP 缓存（强缓存 Expires/Cache-Control）**——命中直接使用缓存（不发请求）；否则带条件请求头走**协商缓存（ETag/Last-Modified）**，命中返回 **304**。
+6. **网络传输**：请求经网卡 → 交换机 → 路由器 → 运营商骨干 → CDN/源站；沿途有 **代理缓存/CDN 缓存**。
+7. **服务器处理**：负载均衡（Nginx/LVS）转发 → Web 服务器（Nginx/Tomcat）→ 应用逻辑 → 数据库/缓存（Redis）→ 生成响应。
+8. **返回响应**：状态行 + 响应头 + 响应体；CDN 层可缓存静态资源（CSS/JS/图片）。
+9. **浏览器渲染**：解析 HTML → DOM 树；解析 CSS → CSSOM；合并成**渲染树**；布局（Layout）→ 绘制（Paint）→ 合成（Composite）；JS 执行（可能阻塞解析，异步脚本不阻塞）。
+10. **后续资源加载**：并发加载 CSS/JS/图片（HTTP/2 多路复用）；触发二次请求（懒加载、API 调用）。
+
+### 11.2 缓存层级速查表（每层都列）
+
+| 层级 | 缓存内容 | 失效依据 |
+| --- | --- | --- |
+| 浏览器缓存（内存/磁盘） | 已访问页面资源 | Cache-Control/Expires/ETag |
+| 系统/浏览器 DNS 缓存 | 域名→IP | TTL |
+| 本地 DNS 服务器缓存 | 域名→IP | TTL |
+| CDN 边缘节点 | 静态资源 | 源站回源策略/TTL |
+| 反向代理（Nginx） | 静态资源/微服务响应 | proxy_cache 配置 |
+| 应用层缓存（Redis） | 热点数据 | 过期/淘汰策略 |
+| 数据库缓存/页缓存 | 数据页 | Buffer Pool |
+
+### 11.3 Python 3 可运行示例（模拟带缓存的全过程）
+
+
+===== CELL 24 [code] =====
+"""模拟 URL 访问全过程的状态流转（标准库，可直接运行）。"""
+CACHE = {"www.example.com/index.html": "<html>Hello</html>"}
+
+def visit(url):
+    steps = []
+    # 1. 解析
+    domain, path = url.split('/')[2], '/' + '/'.join(url.split('/')[3:])
+    steps.append(f"解析 URL: domain={domain}, path={path}")
+
+    # 2. DNS（查缓存）
+    steps.append("DNS: 浏览器缓存命中" if domain in ("www.example.com",)
+                 else "DNS: 递归+迭代解析")
+    # 3. TCP 三次握手
+    steps.append("TCP: 三次握手完成 (SYN → SYN+ACK → ACK)")
+    # 4. TLS
+    if url.startswith("https"):
+        steps.append("TLS: 证书校验通过, ECDHE 密钥协商完成")
+    # 5. HTTP 缓存
+    if path in CACHE:
+        steps.append(f"HTTP缓存: 命中 (304/直接用缓存), 响应体 {len(CACHE[path])} 字节")
+    else:
+        steps.append("HTTP缓存: 未命中, 发送请求到源站")
+    # 6-8. 传输与服务器
+    steps.append("传输: 经交换机/路由器/CDN 到达源站 → 生成响应 200 OK")
+    # 9. 渲染
+    steps.append("渲染: HTML→DOM, CSS→CSSOM, 布局→绘制→合成")
+    return steps
+
+if __name__ == '__main__':
+    for s in visit("https://www.example.com/index.html"):
+        print("->", s)
+
+
+===== CELL 25 [markdown] =====
+### 11.4 面试追问
+
+**追问 1：强缓存与协商缓存的区别？**
+**标准回答：** **强缓存**（Cache-Control: max-age / Expires）命中后**不发请求**直接使用；**协商缓存**（ETag / Last-Modified）需发请求，服务器返回 **304** 才用缓存。优先级：`Cache-Control` > `Expires`；`ETag` 比 `Last-Modified` 更精确（秒级粒度问题）。
+
+**追问 2：浏览器最多对一个域名开几条 TCP 连接？**
+**标准回答：** 现代浏览器 HTTP/1.1 下通常 **6 条左右**（视浏览器而异），这就是 HTTP/1.1 时代「域名分片」优化存在的原因；HTTP/2 一条连接多路复用后不再需要分片。
+
+**追问 3：从输入 URL 到首屏最快的方式有哪些？**
+**标准回答：** DNS 预解析（`dns-prefetch`）、TCP+TLS 预连接（`preconnect`）、关键资源预加载（`preload`）、HTTP/2 多路复用、CDN 就近缓存、服务端渲染/流式渲染、资源压缩与合并。
+
+> ⚠️ **易错点**：面试答「输入 URL 全过程」时**必须按层展开缓存**（DNS 缓存、浏览器缓存、CDN 缓存、应用缓存），只答「DNS→TCP→HTTP→渲染」会被认为不深入。
+
+---
+
+## 附：高频速记表（考前 5 分钟）
+
+| 考点 | 一句话答案 |
+| --- | --- |
+| 为什么三次握手 | 防历史连接 + 确认双方收发能力，2 次不够、4 次浪费 |
+| 为什么四次挥手 | 全双工 + 半关闭，ACK 与 FIN 必然分离 |
+| TIME_WAIT 2MSL | 保证最后 ACK 可重传 + 防旧报文串扰 |
+| 流量 vs 拥塞控制 | 接收方能力 vs 网络能力；rwnd vs cwnd |
+| 快恢复 | ssthresh=cwnd/2，cwnd=ssthresh+3，线性增长 |
+| HTTP/2 队头阻塞 | 仍有 TCP 层队头阻塞；HTTP/3/QUIC 消除 |
+| 混合加密 | 非对称协商密钥 + 对称加密数据（兼顾安全与性能） |
+| CDN 调度 | CNAME → GSLB 按地理位置/负载返回最优节点 |
+
+> 祝顺利上岸！本笔记配套仓库：`autumn-recruit-algo/05-八股与工程/`。
+
+
+===== CELL 26 [markdown] =====
+
+---
+
+## 12. 扩展专题：面试加分项（12.1 – 12.16）
+
+> 本专题覆盖：TCP 状态机全量、连接队列、BDP、粘包拆包、拥塞算法演进、加密与证书、
+> 协议栈封装、DNS 记录、QUIC 深挖、排查工具与高频 10 问。全部代码纯标准库、可直接运行。
+
+### 12.1 TCP 状态机全量：11 个状态
+
+| 状态 | 含义 | 出现端 |
+| --- | --- | --- |
+| **CLOSED** | 初始状态，无连接 | 双方 |
+| **LISTEN** | 服务端监听，等待连接 | 服务端 |
+| **SYN_SENT** | 已发 SYN，等待 SYN+ACK | 客户端 |
+| **SYN_RCVD** | 已收 SYN 并回 SYN+ACK，等待第三次 ACK | 服务端 |
+| **ESTABLISHED** | 连接建立，正常传数据 | 双方 |
+| **FIN_WAIT_1** | 已发 FIN，等待对端 ACK | 主动关闭方 |
+| **FIN_WAIT_2** | 已收对端 ACK，等待对端 FIN | 主动关闭方 |
+| **CLOSE_WAIT** | 已收 FIN 并回 ACK，等待应用层 close | 被动关闭方 |
+| **LAST_ACK** | 已发 FIN，等待对端最终 ACK | 被动关闭方 |
+| **TIME_WAIT** | 已回最终 ACK，等待 2MSL 后关闭 | 主动关闭方 |
+| **CLOSING** | 双方同时发 FIN（同时关闭），互相等待 ACK | 双方（罕见） |
+
+**状态迁移文字图**：
+
+```text
+建立连接:
+  客户端: CLOSED -> SYN_SENT -> ESTABLISHED
+  服务端: CLOSED -> LISTEN -> SYN_RCVD -> ESTABLISHED
+
+关闭连接:
+  主动方: ESTABLISHED -> FIN_WAIT_1 -> FIN_WAIT_2 -> TIME_WAIT(2MSL) -> CLOSED
+  被动方: ESTABLISHED -> CLOSE_WAIT -> LAST_ACK -> CLOSED
+  同时关闭: ESTABLISHED -> ... -> CLOSING -> TIME_WAIT -> CLOSED
+```
+
+> 💡 **速记**：主动方「F1 → F2 → TW」，被动方「CW → LA」；
+> **TIME_WAIT 只出现在主动关闭方**（与第 3 节呼应，高频考点）。
+
+
+===== CELL 27 [markdown] =====
+
+### 12.2 半连接队列 vs 全连接队列（backlog 面试题）
+
+- **半连接队列（syn queue）**：服务端收到 SYN 并回 SYN+ACK 后、尚未完成第三次握手的连接（状态 **SYN_RCVD**）。长度受 `net.ipv4.tcp_max_syn_backlog` 影响。
+- **全连接队列（accept queue）**：已完成三次握手、等待应用 `accept()` 取走的连接（状态 ESTABLISHED 但未 accept）。长度由 `listen(fd, backlog)` 的 **backlog** 决定，且受 `net.core.somaxconn` 制约。
+
+| 项 | 半连接队列 | 全连接队列 |
+| --- | --- | --- |
+| 容纳谁 | 完成 2 次握手的连接（SYN_RCVD） | 完成 3 次握手的连接（未 accept） |
+| 溢出后果 | 内核丢 SYN / 触发 SYN Cookie | 连接已建但 accept 不到，客户端 connect 成功却无法通信 |
+| 排查参数 | `tcp_max_syn_backlog` | `backlog` / `somaxconn` |
+| 常见问题 | SYN Flood 打满 | 高并发下 accept 太慢打满，偶发 connection reset |
+
+> ⚠️ **易错点**：三次握手**已完成**但没被 `accept()` 的连接同样占资源；
+> `ss -lnt` 的 `Recv-Q` 可看全连接队列积压——排查「连接建立慢 / 偶发失败」的第一现场。
+
+
+===== CELL 28 [code] =====
+
+"""
+带宽延迟积 BDP 与理想发送窗口计算（纯数学，可直接运行）。
+
+BDP = 带宽 × RTT 表示网络中最多能容纳的「在途数据」；
+发送窗口小于 BDP 时无法打满带宽，这是 TCP 调优的核心公式。
+"""
+import math
+
+def bdp_analysis(bandwidth_mbps, rtt_ms, mss=1460):
+    bw_bps = bandwidth_mbps * 1e6                 # 带宽（bit/s）
+    rtt_s = rtt_ms / 1000.0                       # 往返时间（s）
+    bdp_bits = bw_bps * rtt_s                     # BDP（bit）
+    bdp_bytes = bdp_bits / 8.0                    # BDP（字节）
+    ideal_segments = max(1, math.ceil(bdp_bytes / mss))   # 理想窗口（按 MSS 计）
+
+    print(f"=== BDP 分析: 带宽 {bandwidth_mbps} Mbps, RTT {rtt_ms} ms ===")
+    print(f"在途容量 BDP = {bdp_bits / 1e6:.2f} Mbit = {bdp_bytes / 1024:.1f} KB")
+    print(f"理想窗口     = 约 {ideal_segments} 个 MSS（{mss} B）")
+
+    # 若窗口被限制为 W 字节，吞吐上限 = W / RTT
+    for win_kb in (16, 64, 256, 1024, 4096):
+        win_bytes = win_kb * 1024
+        thr = win_bytes / rtt_s * 8 / 1e6         # Mbps
+        print(f"窗口 {win_kb:>5} KB -> 理论吞吐上限约 {thr:8.1f} Mbps")
+
+if __name__ == '__main__':
+    bdp_analysis(bandwidth_mbps=1000, rtt_ms=10)   # 千兆内网
+    print()
+    bdp_analysis(bandwidth_mbps=100, rtt_ms=200)   # 百兆 + 跨洋链路
+
+
+===== CELL 29 [markdown] =====
+
+### 12.4 TCP 粘包 / 拆包问题
+
+**为什么会有粘包**：TCP 是**字节流**，没有消息边界——「发送方一次 send 的数据」与「接收方一次 recv 拿到的数据」**没有对应关系**：
+
+- **粘包**：多个 send 的数据被一次 recv 全部读走（接收方没及时取 / Nagle 合并小包）；
+- **拆包**：一个 send 的数据被多次 recv 分开读走（对端缓冲小 / 网络分片）。
+
+**UDP 为什么没有**：UDP 是**数据报**，内核按报文边界交付，一次 recv 对应一个完整报文。
+
+| 方案 | 做法 | 优点 | 缺点 |
+| --- | --- | --- | --- |
+| **定长包** | 每条消息固定 N 字节，不足补零 | 极简 | 浪费带宽、长度不灵活 |
+| **分隔符** | 用 `\n` / `\r\n` 等结尾 | 简单，文本协议常用 | 消息体内不能出现分隔符（需转义） |
+| **长度前缀（最常用）** | 头 4 字节 = 消息长度，再跟消息体 | 二进制安全、高效 | 需要自己拼装缓冲（半包处理） |
+
+> ⚠️ **易错点**：粘包拆包是**应用层**问题，TCP 内核不感知「消息」；
+> 网传「Nagle 算法导致粘包」只对一半——即使关掉 Nagle，接收缓冲不满时照样拆包。
+
+
+===== CELL 30 [code] =====
+"""模拟 TCP 字节流粘包/拆包，并用「长度前缀」协议正确还原（纯标准库，可直接运行）。"""
+import struct
+
+def frame(msg: bytes) -> bytes:
+    """发送端：4 字节大端长度 + 消息体（帧格式）。"""
+    return struct.pack('>I', len(msg)) + msg
+
+def unframe(stream: bytes):
+    """接收端：按长度前缀从字节流中一条条取出完整消息（半包留在缓冲）。"""
+    msgs, buf = [], bytearray(stream)
+    while len(buf) >= 4:
+        (n,) = struct.unpack('>I', bytes(buf[:4]))     # 解析消息长度
+        if len(buf) < 4 + n:                           # 半包：数据还没到齐
+            break
+        msgs.append(bytes(buf[4:4 + n]))               # 取出完整消息
+        del buf[:4 + n]                                # 消费掉
+    return msgs, bytes(buf)
+
+if __name__ == '__main__':
+    # 模拟 TCP 字节流：三条消息「粘」在一起，且网络传输中被切成两段到达
+    raw = frame(b'hello') + frame(b'world') + frame(b'python')
+    cut = 6                                            # 模拟网络拆成两段
+    part1, part2 = raw[:cut], raw[cut:]
+
+    print("第 1 段到达（只有半包，尚无完整消息）:")
+    msgs, rest = unframe(part1)
+    for m in msgs:
+        print("  还原:", m.decode())
+    print("  缓冲中剩余半包字节数:", len(rest))
+
+    print("第 2 段到达，补齐剩余消息:")
+    msgs, rest = unframe(rest + part2)
+    for m in msgs:
+        print("  还原:", m.decode())
+    print("  缓冲剩余:", len(rest))
+    print("结论: 长度前缀协议完整还原 3 条消息，无粘连、无残缺")
+
+
+===== CELL 31 [markdown] =====
+
+### 12.6 常见端口与协议对照表（面试速查）
+
+| 端口 | 协议 / 服务 | 传输层 | 备注 |
+| --- | --- | --- | --- |
+| 20/21 | FTP（数据/控制） | TCP | 21 控制，20 主动模式数据 |
+| 22 | SSH | TCP | 远程登录、隧道 |
+| 23 | Telnet | TCP | 明文，已被 SSH 取代 |
+| 25 | SMTP | TCP | 发邮件 |
+| 53 | **DNS** | **UDP（默认）/ TCP** | 区域传送、大响应用 TCP |
+| 67/68 | DHCP | UDP | 67 服务端、68 客户端 |
+| 80 | HTTP | TCP | 明文 |
+| **443** | **HTTPS** | TCP | TLS 加密 |
+| 110/143 | POP3 / IMAP | TCP | 收邮件 |
+| 3306 | MySQL | TCP | 数据库 |
+| 6379 | Redis | TCP | 缓存 |
+| 6380 | Redis Sentinel | TCP | 哨兵默认端口 |
+| 8080 | Tomcat / 代理 | TCP | 常被 HTTP 代理使用 |
+| 27017 | MongoDB | TCP | 数据库 |
+
+> ⚠️ **高频追问**：DNS 默认 **UDP 53**，但**区域传送（AXFR）与超大响应走 TCP**；
+> NTP 用 **UDP 123**、SNMP 用 UDP 161/162——「监控类协议偏爱 UDP」。
+
+
+===== CELL 32 [markdown] =====
+
+### 12.7 拥塞控制算法演进：Tahoe / Reno / NewReno / CUBIC / BBR
+
+| 算法 | 丢包处理 | 特点 | 适用场景 |
+| --- | --- | --- | --- |
+| **Tahoe** | 丢包一律回到**慢启动**（cwnd=1，ssthresh 减半） | 最朴素，恢复慢 | 教学原型 |
+| **Reno** | 3 冗余 ACK → **快重传 + 快恢复**（ssthresh=cwnd/2，cwnd=ssthresh+3）；超时 → 慢启动 | 经典四线模型 | 小窗口、低丢包 |
+| **NewReno** | 改进快恢复：同一窗口多个丢包时逐段重传，不退回慢启动 | 处理**多丢包**窗口 | 替代 Reno 的默认实现 |
+| **BIC/CUBIC** | 按**三次函数**增长 cwnd（凹陷曲线），带宽探测更激进 | Linux 内核默认，适合高带宽长链路 | 数据中心 / 骨干 |
+| **BBR** | **不依赖丢包**：探测瓶颈带宽 + 最小 RTT，按 BDP 发包 | 对丢包不敏感、吞吐平滑 | 高 RTT、丢包虚高的弱网 |
+
+**一句话总结**：Reno 系「**以丢包为拥塞信号**」，高带宽下带宽利用率不足；CUBIC 提高探测；
+BBR 转向「**以带宽/时延为信号**」的探测式控制，不靠丢包。
+
+> ⚠️ **易错点**：快恢复后 cwnd = **ssthresh + 3**（不是 ssthresh）；
+> 「快恢复后进拥塞避免」只对 **NewReno/Reno 单丢包**成立，**超时仍回慢启动**。
+
+
+===== CELL 33 [code] =====
+"""
+对称 / 非对称 / 混合加密概念模拟（纯标准库，可直接运行）。
+
+- 对称加密：XOR 演示（真实场景是 AES/ChaCha20）
+- 非对称 / 密钥交换：教科书版 DH（p=23, g=5），演示双方算出相同密钥
+- 混合加密：DH 协商对称密钥 -> 用对称加密传输业务数据（HTTPS 的做法）
+"""
+import random
+
+def xor_crypt(data: bytes, key: int) -> bytes:
+    """对称加密示意：用 key 派生逐字节掩码做 XOR（仅演示概念）。"""
+    return bytes(b ^ ((key + i * 31) & 0xFF) for i, b in enumerate(data))
+
+def dh_exchange(g, p, a=None, b=None):
+    """DH 密钥协商：a/b 为两端私有指数（不公开），返回共享密钥。"""
+    a = a if a is not None else random.randint(2, p - 2)
+    b = b if b is not None else random.randint(2, p - 2)
+    A, B = pow(g, a, p), pow(g, b, p)      # 公开值（可被窃听者看到）
+    print(f"线路上公开: g={g}, p={p}, A={A}, B={B}")
+    ka, kb2 = pow(B, a, p), pow(A, b, p)
+    print(f"客户端算出 {ka}，服务端算出 {kb2}，一致? {ka == kb2}")
+    return ka
+
+if __name__ == '__main__':
+    print("== ① 对称加密（XOR 演示）==")
+    secret = 165                            # 0xA5
+    plain = b"Hello, HTTPS!"
+    enc = xor_crypt(plain, secret)
+    print(f"明文: {plain}\n密文: {enc}\n解密: {xor_crypt(enc, secret)}")
+
+    print("\n== ② 非对称（DH 密钥交换演示，教科书参数 p=23, g=5）==")
+    print("私有指数仅两端知晓：a=6, b=15")
+    shared = dh_exchange(g=5, p=23, a=6, b=15)
+
+    print("\n== ③ 混合加密（HTTPS 流程抽象）==")
+    data_key = shared * 1000 + 12345       # 由协商出的共享密钥派生会话密钥
+    data = "支付 100 元".encode()
+    cipher = xor_crypt(data, data_key)     # 用对称密钥加密业务数据
+    print(f"业务数据加密后: {cipher}")
+    print(f"对端解密还原:   {xor_crypt(cipher, data_key).decode()}")
+    print("结论: 非对称负责安全协商密钥，对称负责高效加密数据")
+
+
+===== CELL 34 [markdown] =====
+
+### 12.9 证书链验证：6 步检查 + 常见坑
+
+**证书链**：`服务器证书 ← 中间 CA ← 根 CA`（浏览器/系统内置根证书库里的 Trust Anchor）。
+
+**验证 6 步**（客户端访问 `https://www.example.com` 时）：
+
+```text
+1. 取回服务器证书与中间证书（TLS Certificate 消息）
+2. 从服务器证书开始逐级向上：用「上一级证书的公钥」验证「本级证书的签名」
+   （RSA: 用父公钥解子签名摘要，比对子证书内容哈希）
+3. 一直验证到某个内置【根证书】为止（信任锚）；找不到可信任根 -> 失败
+4. 检查主题域名：证书的 SAN / CN 必须与访问的 host 匹配
+5. 检查有效期：当前时间在 notBefore ~ notAfter 之间
+6. 检查吊销状态：OCSP（在线）/ CRL（离线列表），推荐但非强制
+```
+
+**常见坑**：
+- **自签名证书**：无受信任 CA 签名，默认校验失败（内网常用「加入信任库」解决）；
+- **根 CA 私钥泄露**：攻击者可签发任意域名证书（根 CA 必须离线保管）；
+- **双向 TLS（mTLS）**：服务端也要验证**客户端证书**（微服务内部认证常用）；
+- **中间证书缺失**：服务器只发叶子证书、没发中间证书，客户端拼不出链——可用 `ssl.get_peer_cert_chain()` 检查（见第 9 节）。
+
+> ⚠️ **易错点**：验证是**自上而下**（先找到信任锚，再逐级向下验签），描述时别把方向说反；
+> 「域名不匹配」与「签名无效」是**两类**错误，浏览器都会警告，但原因不同。
+
+
+===== CELL 35 [markdown] =====
+
+### 12.10 分层封装 / 解封装完整示意（头部字段）
+
+**发送端逐层加头（封装）**，以一条 16 字节应用数据（`GET / HTTP/1.1`）为例：
+
+```text
+应用层    |GET / HTTP/1.1\r\n\r\n|                       <- 原始数据(16B)
+传输层    | TCP头(20B: 源/目的端口, seq, ack, 窗口...)  | 数据 |
+网络层    | IP头(20B: 源/目的IP, TTL, 协议=6...) | TCP头 | 数据 |
+链路层    | MAC头(14B: 源/目的MAC, 类型0x0800) | IP头 | TCP头 | 数据 | FCS(4B) |
+物理层    0b10110001...                       <- 比特流
+```
+
+**关键点**：
+- 每层只认识**自己的头部**：路由器只看 IP 头；交换机只看 MAC 头；两端主机才看 TCP 头；
+- **MTU（1500B 常见）= IP 头 + TCP 头 + 数据**，超过则**分片**（IPv4 可中间分片，IPv6 只允许端到端）；
+- **MSS（1460B 常见）= MTU − IP头(20) − TCP头(20)**，TCP 以此限制单段负载，主动避免 IP 分片。
+
+**接收端反向解封装**：剥 MAC 头 → 剥 IP 头（查目的 IP）→ 剥 TCP 头（查端口、排序、去重）→ 交给应用。
+
+> ⚠️ **易错点**：**分片是 IP 层概念**，TCP 层用 MSS 主动规避；「TCP 分段（segment）→ IP 分片（fragment）」两词别混用。
+
+
+===== CELL 36 [code] =====
+
+"""模拟协议栈逐层封装与解封装（纯 Python，可直接运行）。"""
+def build_frame(payload: bytes) -> bytes:
+    """发送端封装：应用数据依次叠加 TCP / IP / MAC 头部。"""
+    tcp  = b'[TCP sport=8080 dport=443 seq=1]' + payload
+    ip   = b'[IP src=10.0.0.1 dst=203.0.113.5 ttl=64 proto=6]' + tcp
+    mac  = b'[MAC aa:bb:cc:dd:ee:ff -> 11:22:33:44:55:66 type=0x0800]' + ip
+    return mac
+
+def unwrap(frame: bytes):
+    """接收端解封装：逐层剥头，打印每层解析结果与最终负载。"""
+    layers = ['链路层', '网络层', '传输层']
+    buf = frame
+    for layer in layers:
+        head, _, buf = buf.partition(b']')        # 每层头部以 ']' 结尾
+        print(f"  [{layer}] {head[1:].decode()}")
+    print(f"  [应用层负载] {buf.decode()!r}")
+
+if __name__ == '__main__':
+    payload = b'GET / HTTP/1.1'
+    print("== 发送端封装（逐层长度增长）==")
+    print(f"  {len(payload):>3}B  应用数据: {payload.decode()}")
+    tcp = b'[TCP sport=8080 dport=443 seq=1]' + payload
+    print(f"  {len(tcp):>3}B  传输层加 TCP 头")
+    ip = b'[IP src=10.0.0.1 dst=203.0.113.5 ttl=64 proto=6]' + tcp
+    print(f"  {len(ip):>3}B  网络层加 IP 头")
+    frame = build_frame(payload)
+    print(f"  {len(frame):>3}B  链路层加 MAC 头 + FCS")
+    print()
+    print("== 接收端解封装（逐层剥头）==")
+    unwrap(frame)
+
+
+===== CELL 37 [markdown] =====
+
+### 12.12 DNS 记录类型速查 + 域名层级
+
+| 记录类型 | 作用 | 示例 |
+| --- | --- | --- |
+| **A** | 域名 → **IPv4** | `www.example.com. 3600 IN A 93.184.216.34` |
+| **AAAA** | 域名 → **IPv6** | `... IN AAAA 2606:2800:220:1::1` |
+| **CNAME** | 域名 → **另一个域名**（别名） | `cdn.example.com. IN CNAME edge.globalcdn.net.` |
+| **NS** | 指定该域名的**权威 DNS 服务器** | `example.com. IN NS ns1.example.com.` |
+| **MX** | 邮件服务器（含优先级） | `example.com. IN MX 10 mail.example.com.` |
+| **TXT** | 任意文本（SPF 反垃圾、域名验证） | `example.com. IN TXT "v=spf1 include:..."` |
+| **SRV** | 服务位置（端口 + 主机），微服务发现 | `_http._tcp.example.com. IN SRV 0 5 80 www...` |
+| **PTR** | **IP 反查域名**（反向解析） | `34.216.184.93.in-addr.arpa. IN PTR www.example.com.` |
+
+**域名层级（FQDN 从右往左）**：
+
+```text
+www.blog.example.com.            <- 末尾根 "."
+│ └─ 三级域名（主机名）
+│     └─ 二级域名（example.com，需注册）
+│          └─ 顶级域 TLD（.com）
+└──────────────────────── 根域（"."）
+```
+
+> **tip**：`CNAME` 与 `A` 的区别是高频题（CNAME 是「别名 → 另一域名」，解析链可继续）；
+> `dig +trace` 能直观看到迭代查询全过程（对应第 10 节的伪代码）。
+
+
+===== CELL 38 [markdown] =====
+
+### 12.13 QUIC 深度追问 5 条（HTTP/3）
+
+**追问 1：QUIC 解决了 HTTP/2 的什么问题？**
+**标准回答：** 解决 **TCP 层队头阻塞**：HTTP/2 虽在一条连接内多路复用，但 TCP 是单一字节流，一个包丢失会让接收缓冲区中所有流的后续帧等待重传；QUIC 在 UDP 上实现**多流独立可靠传输**——每个流自己的包丢失只阻塞该流。
+
+**追问 2：0-RTT 是怎么做到的？不是还没建连吗？**
+**标准回答：** 客户端通过 **TLS 1.3 会话恢复缓存（Session Ticket）**，重连时直接把应用数据随首个报文发出，服务端可立即响应——**0 个 RTT 完成首包数据**。代价是**重放攻击风险**，因此 0-RTT 数据不宜用于幂等性要求高的写操作。
+
+**追问 3：连接迁移为什么不断连？**
+**标准回答：** TCP 用「四元组（IP:port）」标识连接，Wi-Fi 切蜂窝后 IP 变了连接就断；QUIC 用 **64 位 Connection ID** 标识连接，地址变化只更新 CID↔地址映射，连接与握手状态全部保留。
+
+**追问 4：QUIC 的拥塞控制还是 TCP 那套吗？**
+**标准回答：** QUIC 在**用户态可插拔**：默认 Reno/CUBIC，可随时替换（BBR、自定义算法），不需要改操作系统内核；并提供更细粒度的 ACK 与显式 ECN 支持。
+
+**追问 5：QUIC 彻底没有队头阻塞了吗？**
+**标准回答：** **流之间**没有了；**单条流内仍有**（同一流仍需按序交付）——面试答「彻底消除」会被扣分。
+
+> ⚠️ **易错点**：HTTP/3 = **HTTP 语义 + QUIC 传输**；QUIC 的握手把 **TLS 1.3 内置于传输握手**（不像 TCP 先建 TCP 再叠加 TLS）。
+
+
+===== CELL 39 [markdown] =====
+
+### 12.14 网络排查工具速查（工程实战）
+
+| 工具 | 命令示例 | 原理 / 用途 |
+| --- | --- | --- |
+| **ping** | `ping -c 4 host` | **ICMP 回显**，测连通性与延迟；不通 ≠ 服务挂了（可能禁 ICMP） |
+| **traceroute**（Win: tracert） | `tracert host` | 逐跳探测路径，TTL 递增触发 ICMP 超时报文，定位链路断点 |
+| **nslookup / dig** | `nslookup example.com` | 查 DNS 记录（A/CNAME/MX），`dig +trace` 看迭代全过程 |
+| **netstat / ss** | `ss -lntp` | 查看监听端口与连接状态（**ESTABLISHED / TIME_WAIT** 统计） |
+| **tcpdump** | `tcpdump -i eth0 port 80` | 内核旁路抓包，看握手、重传、报文内容 |
+| **curl** | `curl -v https://x.com` | 发 HTTP 请求，`-v` 看 TLS 握手与报文头，`-w` 看耗时分解 |
+| **nc（netcat）** | `nc -zv host 3306` | 端口连通性测试（TCP 建连探测） |
+
+**排查三板斧**（面试回答思路）：
+1. **本机层**：`ping 127.0.0.1` → 网卡 / 协议栈是否正常；
+2. **链路层**：`ping 网关IP` → 局域网是否通；`traceroute` 定位跨网段断点；
+3. **应用层**：`ss -lntp` 确认端口监听、`curl -v` 确认 HTTP 层、`tcpdump` 抓包确认数据是否到达。
+
+> ⚠️ **易错点**：`ping 通 ≠ 端口可用`（ICMP 与 TCP 是两回事）；`localhost` 通 ≠ 外网通；
+> 「端口不通」先分清是**防火墙挡了**还是**进程没监听**（`ss -lntp` 一看便知）。
+
+
+===== CELL 40 [markdown] =====
+
+### 12.15 网络面试高频 10 问（快速自测）
+
+1. **HTTP/1.1 与 HTTP/2 根本区别？** 二进制分帧 + 多路复用 + HPACK；但仍有 **TCP 层队头阻塞**。
+2. **为什么 TCP 可靠而 UDP 不可靠？** 序号 + ACK + 重传 + 校验和 + 窗口；UDP 只做尽力转发。
+3. **三次握手丢了最后那个 ACK 会怎样？** 服务端 SYN_RCVD 超时重传 SYN+ACK（重传次数有限），仍无响应则回 RST 或超时释放。
+4. **TIME_WAIT 为什么是 2MSL 不是 1MSL？** 一来一回最坏时间：保证最老报文消散 + 应付最后一次 ACK 丢失重传。
+5. **HTTP 长连接与应用层心跳是一回事吗？** 不是——HTTP Keep-Alive 指**复用 TCP 连接**；心跳（ping/pong）用于**保活检测**，见 12.16。
+6. **HTTPS 一定防中间人吗？** 证书链校验通过才防；诱导安装恶意根证书 / 忽略警告则失守。
+7. **CDN 如何把用户导向最近节点？** CNAME → GSLB 按用户 Local DNS 出口 IP 就近返回边缘节点。
+8. **Socket 与端口的关系？** 四元组 (srcIP, srcPort, dstIP, dstPort) 唯一标识一条 TCP 连接；一个端口通常只被一个进程监听（SO_REUSEPORT 除外）。
+9. **UDP 一定比 TCP 快吗？** 不一定——丢包率高时应用层自行重传反而更慢；要按重传成本与延迟权衡（QUIC 即是按需可靠）。
+10. **IP 分片为什么有害？** 单片丢失导致整个报文重组失败全丢（放大丢包率）；TCP 用 MSS 规避，UDP 大报文应用层自行控制。
+
+> **点评**：前 5 问属于「必对」，6–10 是拉开差距的「细节题」；回答先给**结论一句话**，再补**机制 2–3 句**。
+
+
+===== CELL 41 [markdown] =====
+
+### 12.16 TCP KeepAlive vs HTTP Keep-Alive vs HTTP/2（三连辨析）
+
+| 概念 | 层次 | 作用 | 关键行为 |
+| --- | --- | --- | --- |
+| **TCP KeepAlive** | 传输层（内核） | 探测死连接，回收半开连接 | 默认 2 小时探测一次（`tcp_keepalive_time`），发 1 字节探测包 |
+| **HTTP Keep-Alive** | 应用层（HTTP/1.1） | 复用 TCP 连接，避免频繁握手 | 响应头 `Connection: keep-alive`（1.1 默认），空闲超时由服务器配置 |
+| **HTTP/2 多路复用** | 应用层（HTTP/2） | 一条连接**并发**多个请求 | 帧交错 + 流标识，无 HTTP 层队头阻塞 |
+
+**核心区别**：
+- TCP KeepAlive 的目的是**保活检测**（连接是否还活着），**不传业务数据**；
+- HTTP Keep-Alive 的目的是**连接复用**（省握手），请求仍然串行；
+- HTTP/2 把连接复用升级为**并发多路复用**。
+
+> ⚠️ **易错点**：`SO_KEEPALIVE` 默认 2 小时**太慢**，生产会调小并配合应用层心跳；
+> 面试问「连接保活」先问清是**哪一层**再答，别把 HTTP Keep-Alive 与 TCP KeepAlive 混为一谈。
+
+---
+
+**小结**：扩展专题覆盖 TCP 状态机、连接队列、BDP、粘包、加密证书、封装、DNS、QUIC、排查工具等
+高频加分点，配合正文 1–11 节即可覆盖秋招计算机网络主考点。
+

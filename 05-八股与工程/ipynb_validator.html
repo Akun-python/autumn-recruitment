@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>ipynb JSON validator</title></head>
+<body>
+<h1>Notebook JSON validation</h1>
+<pre id="out">loading...</pre>
+<script>
+const targets = ['05-Redis.ipynb', '06-分布式.ipynb'];
+(async () => {
+  let out = '';
+  for (const t of targets) {
+    try {
+      const resp = await fetch(t, { cache: 'no-store' });
+      const text = await resp.text();
+      const nb = JSON.parse(text);
+      const types = {};
+      for (const c of nb.cells) types[c.cell_type] = (types[c.cell_type]||0)+1;
+      out += t + ' => JSON.parse OK; cells=' + nb.cells.length + '; types=' + JSON.stringify(types) + '\n';
+    } catch (e) {
+      out += t + ' => FAIL: ' + e.message + '\n';
+    }
+  }
+  document.getElementById('out').textContent = out;
+})();
+</script>
+</body>
+</html>

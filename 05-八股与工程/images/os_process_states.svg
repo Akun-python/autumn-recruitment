@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="800" fill="url(#bg)"/>
+
+  <text x="700" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#0f172a">进程状态机：创建 → 就绪 → 运行 → 阻塞/终止</text>
+
+  <!-- 五个状态卡片 -->
+  <rect x="90" y="110" width="220" height="120" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="200" y="146" text-anchor="middle" font-size="19" font-weight="bold" fill="#0c4a6e">① 创建</text>
+  <text x="200" y="176" text-anchor="middle" font-size="14" fill="#075985">new</text>
+  <text x="200" y="202" text-anchor="middle" font-size="13" fill="#0c4a6e">分配 PCB、加载程序</text>
+
+  <rect x="410" y="110" width="220" height="120" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="520" y="146" text-anchor="middle" font-size="19" font-weight="bold" fill="#14532d">② 就绪</text>
+  <text x="520" y="176" text-anchor="middle" font-size="14" fill="#166534">ready</text>
+  <text x="520" y="202" text-anchor="middle" font-size="13" fill="#14532d">万事俱备，等 CPU</text>
+
+  <rect x="730" y="110" width="220" height="120" rx="12" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+  <text x="840" y="146" text-anchor="middle" font-size="19" font-weight="bold" fill="#713f12">③ 运行</text>
+  <text x="840" y="176" text-anchor="middle" font-size="14" fill="#854d0e">running</text>
+  <text x="840" y="202" text-anchor="middle" font-size="13" fill="#713f12">真正占着 CPU 执行</text>
+
+  <rect x="1050" y="110" width="220" height="120" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="1160" y="146" text-anchor="middle" font-size="19" font-weight="bold" fill="#7f1d1d">④ 阻塞</text>
+  <text x="1160" y="176" text-anchor="middle" font-size="14" fill="#b91c1c">blocked/wait</text>
+  <text x="1160" y="202" text-anchor="middle" font-size="13" fill="#7f1d1d">等 I/O 或资源，不占 CPU</text>
+
+  <!-- 终止 -->
+  <rect x="410" y="420" width="220" height="120" rx="12" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+  <text x="520" y="456" text-anchor="middle" font-size="19" font-weight="bold" fill="#1e293b">⑤ 终止</text>
+  <text x="520" y="486" text-anchor="middle" font-size="14" fill="#334155">terminated</text>
+  <text x="520" y="512" text-anchor="middle" font-size="13" fill="#1e293b">回收资源、销毁 PCB</text>
+
+  <!-- 箭头 -->
+  <line x1="310" y1="170" x2="410" y2="170" stroke="#0284c7" stroke-width="2.5" marker-end="url(#arr)"/>
+  <text x="360" y="160" text-anchor="middle" font-size="13" fill="#0369a1">创建完成</text>
+
+  <line x1="630" y1="170" x2="730" y2="170" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arr)"/>
+  <text x="680" y="160" text-anchor="middle" font-size="13" fill="#15803d">调度选中</text>
+
+  <line x1="950" y1="170" x2="1050" y2="170" stroke="#b91c1c" stroke-width="2.5" marker-end="url(#arr)"/>
+  <text x="1000" y="160" text-anchor="middle" font-size="13" fill="#b91c1c">请求 I/O 等</text>
+
+  <line x1="1160" y1="230" x2="1160" y2="330" stroke="#b91c1c" stroke-width="2.5" marker-end="url(#arr)"/>
+  <line x1="1160" y1="330" x2="840" y2="330" stroke="#b91c1c" stroke-width="2.5"/>
+  <line x1="840" y1="330" x2="840" y2="230" stroke="#b91c1c" stroke-width="2.5" marker-end="url(#arr)"/>
+  <text x="1090" y="330" text-anchor="middle" font-size="13" fill="#b91c1c">I/O 完成 → 回到就绪</text>
+
+  <line x1="840" y1="230" x2="630" y2="420" stroke="#64748b" stroke-width="2.5" marker-end="url(#arr)"/>
+  <text x="700" y="390" text-anchor="middle" font-size="13" fill="#475569">时间片用完 → 就绪</text>
+
+  <line x1="620" y1="120" x2="520" y2="420" stroke="#64748b" stroke-width="2.5" marker-end="url(#arr)"/>
+  <text x="590" y="330" text-anchor="middle" font-size="13" fill="#475569">运行完毕 / 出错</text>
+
+  <!-- 底部：类比 -->
+  <rect x="90" y="570" width="1220" height="180" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="700" y="610" text-anchor="middle" font-size="18" font-weight="bold" fill="#9a3412">💡 类比：餐厅点餐流程</text>
+  <text x="130" y="650" text-anchor="start" font-size="14" fill="#431407">• 创建 = 你写好了菜单交给厨房（分配 PCB、加载程序代码）</text>
+  <text x="130" y="678" text-anchor="start" font-size="14" fill="#431407">• 就绪 = 菜已配好料，排在窗口等厨师（厨师 = CPU）来炒</text>
+  <text x="130" y="706" text-anchor="start" font-size="14" fill="#431407">• 运行 = 厨师正在炒你这道菜（占着 CPU 执行）</text>
+  <text x="130" y="734" text-anchor="start" font-size="14" fill="#431407">• 阻塞 = 菜等着烤箱烤熟，厨师先去做别的菜（等 I/O，不占 CPU）</text>
+  <text x="700" y="650" text-anchor="start" font-size="14" fill="#431407">⚠️ 易错点：阻塞 ≠ 就绪。阻塞是「缺东西做不了」，就绪是「全齐了只差 CPU」。</text>
+  <text x="700" y="678" text-anchor="start" font-size="14" fill="#431407">⚠️ 易错点：进程 ≠ 线程。进程有独立内存空间，线程共享进程内存，切换线程更轻。</text>
+  <text x="700" y="706" text-anchor="start" font-size="14" fill="#431407">⚠️ 易错点：只有「运行」态才占用 CPU，就绪与阻塞都不占。</text>
+</svg>

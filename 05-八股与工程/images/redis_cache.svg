@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="800" fill="url(#bg)"/>
+
+  <text x="700" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#0f172a">Redis 缓存：读流程、写策略、缓存一致性</text>
+
+  <!-- 顶部：经典读流程 -->
+  <rect x="70" y="80" width="1260" height="200" rx="14" fill="#ffffff" stroke="#0284c7" stroke-width="2.5"/>
+  <text x="700" y="112" text-anchor="middle" font-size="18" font-weight="bold" fill="#0c4a6e">① 经典缓存读流程（Cache Aside）</text>
+
+  <rect x="110" y="140" width="200" height="100" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="210" y="170" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e3a8a">用户请求</text>
+  <text x="210" y="194" text-anchor="middle" font-size="12" fill="#1e40af">查 Redis</text>
+  <text x="210" y="216" text-anchor="middle" font-size="12" fill="#1e40af">（key）</text>
+
+  <line x1="310" y1="190" x2="360" y2="190" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="360" y="140" width="200" height="100" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="460" y="170" text-anchor="middle" font-size="14" font-weight="bold" fill="#7f1d1d">命中？</text>
+  <text x="460" y="194" text-anchor="middle" font-size="12" fill="#991b1b">命中 → 直接返回</text>
+  <text x="460" y="216" text-anchor="middle" font-size="12" fill="#991b1b">未命中 ↓</text>
+
+  <line x1="560" y1="216" x2="610" y2="216" stroke="#ef4444" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="610" y="140" width="200" height="100" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="1.5"/>
+  <text x="710" y="170" text-anchor="middle" font-size="14" font-weight="bold" fill="#713f12">查数据库</text>
+  <text x="710" y="194" text-anchor="middle" font-size="12" fill="#854d0e">DB 里取到数据</text>
+
+  <line x1="810" y1="190" x2="860" y2="190" stroke="#ca8a04" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="860" y="140" width="200" height="100" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="960" y="170" text-anchor="middle" font-size="14" font-weight="bold" fill="#14532d">写回 Redis</text>
+  <text x="960" y="194" text-anchor="middle" font-size="12" fill="#166534">设过期时间 TTL</text>
+  <text x="960" y="216" text-anchor="middle" font-size="12" fill="#166534">下次命中</text>
+
+  <line x1="1060" y1="190" x2="1110" y2="190" stroke="#16a34a" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="1110" y="140" width="180" height="100" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1200" y="170" text-anchor="middle" font-size="14" font-weight="bold" fill="#14532d">返回结果</text>
+  <text x="1200" y="194" text-anchor="middle" font-size="12" fill="#166534">给用户</text>
+
+  <!-- 中间：三种写策略 -->
+  <rect x="70" y="310" width="1260" height="230" rx="14" fill="#ffffff" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="700" y="342" text-anchor="middle" font-size="18" font-weight="bold" fill="#78350f">② 三种写策略（面试必答）</text>
+
+  <rect x="110" y="365" width="380" height="155" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="1.5"/>
+  <text x="300" y="395" text-anchor="middle" font-size="15" font-weight="bold" fill="#713f12">Cache Aside 旁路缓存</text>
+  <text x="130" y="423" text-anchor="start" font-size="13" fill="#854d0e">先更新 DB，再删缓存（或更新缓存）</text>
+  <text x="130" y="447" text-anchor="start" font-size="13" fill="#854d0e">读时未命中才回填缓存</text>
+  <text x="130" y="471" text-anchor="start" font-size="13" fill="#854d0e">最常用、最易控制一致性</text>
+  <text x="130" y="495" text-anchor="start" font-size="13" fill="#854d0e">要求缓存自带过期兜底</text>
+
+  <rect x="520" y="365" width="380" height="155" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="710" y="395" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e3a8a">Read/Write Through</text>
+  <text x="540" y="423" text-anchor="start" font-size="13" fill="#1e40af">缓存组件代理所有读写</text>
+  <text x="540" y="447" text-anchor="start" font-size="13" fill="#1e40af">写：先写缓存，同步写 DB</text>
+  <text x="540" y="471" text-anchor="start" font-size="13" fill="#1e40af">读：未命中由缓存组件查 DB 并回填</text>
+  <text x="540" y="495" text-anchor="start" font-size="13" fill="#1e40af">对应用透明，但组件复杂</text>
+
+  <rect x="930" y="365" width="360" height="155" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="1110" y="395" text-anchor="middle" font-size="15" font-weight="bold" fill="#7f1d1d">Write Behind 异步写</text>
+  <text x="950" y="423" text-anchor="start" font-size="13" fill="#991b1b">先写缓存，立即返回</text>
+  <text x="950" y="447" text-anchor="start" font-size="13" fill="#991b1b">后台批量写 DB（异步）</text>
+  <text x="950" y="471" text-anchor="start" font-size="13" fill="#991b1b">性能最高</text>
+  <text x="950" y="495" text-anchor="start" font-size="13" fill="#991b1b">但宕机会丢数据，慎用</text>
+
+  <!-- 底部：一致性与问题 -->
+  <rect x="70" y="570" width="1260" height="180" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="700" y="606" text-anchor="middle" font-size="17" font-weight="bold" fill="#9a3412">③ 一致性要点与经典问题</text>
+  <text x="120" y="638" text-anchor="start" font-size="14" fill="#431407">• 删除缓存失败怎么办？→ 重试 / 延时双删（先删缓存，更新 DB，等几百 ms 再删一次）</text>
+  <text x="120" y="664" text-anchor="start" font-size="14" fill="#431407">• 缓存穿透：查不存在的 key，每次都打到 DB → 布隆过滤器 / 缓存空值</text>
+  <text x="120" y="690" text-anchor="start" font-size="14" fill="#431407">• 缓存击穿：热点 key 过期瞬间大量请求直达 DB → 互斥锁重建 / 逻辑过期</text>
+  <text x="120" y="716" text-anchor="start" font-size="14" fill="#431407">• 缓存雪崩：大量 key 同时过期 / Redis 宕机 → 过期时间加随机抖动 / 集群高可用</text>
+  <text x="120" y="742" text-anchor="start" font-size="14" fill="#431407">💡 类比：缓存像「便利贴」。先看便利贴（命中就用）；没有就去档案室查（DB）再抄到便利贴上（设 TTL 防过期发霉）。</text>
+</svg>

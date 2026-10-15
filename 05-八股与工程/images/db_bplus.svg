@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="800" fill="url(#bg)"/>
+
+  <text x="700" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#0f172a">B+ 树索引：为什么数据库索引用它？</text>
+
+  <!-- 顶部：B+树结构 -->
+  <rect x="70" y="80" width="1260" height="330" rx="14" fill="#ffffff" stroke="#0284c7" stroke-width="2.5"/>
+  <text x="700" y="112" text-anchor="middle" font-size="18" font-weight="bold" fill="#0c4a6e">B+ 树结构（3 层示意）</text>
+
+  <!-- 根节点 -->
+  <rect x="560" y="135" width="280" height="55" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="700" y="160" text-anchor="middle" font-size="14" fill="#0c4a6e">根节点：</text>
+  <text x="700" y="180" text-anchor="middle" font-size="13" fill="#075985">[ 50 | 100 ]（只有索引键）</text>
+
+  <!-- 内部节点 -->
+  <rect x="240" y="225" width="260" height="55" rx="8" fill="#bae6fd" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="370" y="250" text-anchor="middle" font-size="14" fill="#0c4a6e">内部节点：</text>
+  <text x="370" y="270" text-anchor="middle" font-size="13" fill="#075985">[ 10 | 30 ]</text>
+
+  <rect x="560" y="225" width="280" height="55" rx="8" fill="#bae6fd" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="700" y="250" text-anchor="middle" font-size="14" fill="#0c4a6e">内部节点：</text>
+  <text x="700" y="270" text-anchor="middle" font-size="13" fill="#075985">[ 60 | 80 ]</text>
+
+  <rect x="900" y="225" width="260" height="55" rx="8" fill="#bae6fd" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="1030" y="250" text-anchor="middle" font-size="14" fill="#0c4a6e">内部节点：</text>
+  <text x="1030" y="270" text-anchor="middle" font-size="13" fill="#075985">[ 120 | 150 ]</text>
+
+  <!-- 叶子节点 -->
+  <rect x="120" y="315" width="230" height="70" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="235" y="340" text-anchor="middle" font-size="14" fill="#14532d">叶子：[ 5 ][ 10 ][ 15 ]</text>
+  <text x="235" y="362" text-anchor="middle" font-size="12" fill="#166534">存完整数据行</text>
+  <text x="235" y="380" text-anchor="middle" font-size="11" fill="#166534">→ 指向下一叶子</text>
+
+  <rect x="380" y="315" width="230" height="70" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="495" y="340" text-anchor="middle" font-size="14" fill="#14532d">叶子：[ 30 ][ 50 ][ 55 ]</text>
+  <text x="495" y="362" text-anchor="middle" font-size="12" fill="#166534">存完整数据行</text>
+  <text x="495" y="380" text-anchor="middle" font-size="11" fill="#166534">→ 指向下一叶子</text>
+
+  <rect x="640" y="315" width="230" height="70" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="755" y="340" text-anchor="middle" font-size="14" fill="#14532d">叶子：[ 60 ][ 80 ][ 90 ]</text>
+  <text x="755" y="362" text-anchor="middle" font-size="12" fill="#166534">存完整数据行</text>
+  <text x="755" y="380" text-anchor="middle" font-size="11" fill="#166534">→ 指向下一叶子</text>
+
+  <rect x="900" y="315" width="230" height="70" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1015" y="340" text-anchor="middle" font-size="14" fill="#14532d">叶子：[ 120 ][ 150 ]</text>
+  <text x="1015" y="362" text-anchor="middle" font-size="12" fill="#166534">存完整数据行</text>
+
+  <!-- 叶子链表 -->
+  <line x1="350" y1="385" x2="380" y2="385" stroke="#16a34a" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="610" y1="385" x2="640" y2="385" stroke="#16a34a" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="870" y1="385" x2="900" y2="385" stroke="#16a34a" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="700" y="400" text-anchor="middle" font-size="13" fill="#15803d">叶子节点用链表串起来 → 范围查询（如 WHERE id BETWEEN 30 AND 90）一路往后扫</text>
+
+  <!-- 连接线 -->
+  <line x1="600" y1="190" x2="370" y2="225" stroke="#0284c7" stroke-width="1.5"/>
+  <line x1="700" y1="190" x2="700" y2="225" stroke="#0284c7" stroke-width="1.5"/>
+  <line x1="800" y1="190" x2="1030" y2="225" stroke="#0284c7" stroke-width="1.5"/>
+  <line x1="320" y1="280" x2="235" y2="315" stroke="#0284c7" stroke-width="1.5"/>
+  <line x1="420" y1="280" x2="495" y2="315" stroke="#0284c7" stroke-width="1.5"/>
+  <line x1="630" y1="280" x2="590" y2="315" stroke="#0284c7" stroke-width="1.5"/>
+  <line x1="770" y1="280" x2="755" y2="315" stroke="#0284c7" stroke-width="1.5"/>
+  <line x1="960" y1="280" x2="1015" y2="315" stroke="#0284c7" stroke-width="1.5"/>
+  <line x1="1030" y1="280" x2="1030" y2="315" stroke="#0284c7" stroke-width="1.5"/>
+
+  <!-- 底部：为什么选 B+ 树 -->
+  <rect x="70" y="440" width="1260" height="310" rx="14" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="700" y="476" text-anchor="middle" font-size="18" font-weight="bold" fill="#334155">为什么数据库索引用 B+ 树，而不是二叉搜索树 / 哈希表？</text>
+
+  <rect x="110" y="500" width="380" height="115" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="300" y="530" text-anchor="middle" font-size="14" font-weight="bold" fill="#14532d">对比二叉搜索树</text>
+  <text x="130" y="558" text-anchor="start" font-size="13" fill="#166534">• 二叉树一层只有 2 个孩子，深度深 → 磁盘 IO 次数多</text>
+  <text x="130" y="582" text-anchor="start" font-size="13" fill="#166534">• B+ 树一个节点可装上千键，3~4 层就够 百万行数据</text>
+  <text x="130" y="606" text-anchor="start" font-size="13" fill="#166534">• 高度小 = 每次查询只读几次磁盘</text>
+
+  <rect x="520" y="500" width="380" height="115" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="710" y="530" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e3a8a">对比哈希索引</text>
+  <text x="540" y="558" text-anchor="start" font-size="13" fill="#1e40af">• 哈希适合等值查询 =，O(1) 极快</text>
+  <text x="540" y="582" text-anchor="start" font-size="13" fill="#1e40af">• 但不支持范围查询、排序、前缀 LIKE</text>
+  <text x="540" y="606" text-anchor="start" font-size="13" fill="#1e40af">• B+ 树叶子有序链表 → 范围/排序全能</text>
+
+  <rect x="930" y="500" width="360" height="115" rx="10" fill="#fefce8" stroke="#ca8a04" stroke-width="1.5"/>
+  <text x="1110" y="530" text-anchor="middle" font-size="14" font-weight="bold" fill="#713f12">对比 B 树</text>
+  <text x="950" y="558" text-anchor="start" font-size="13" fill="#854d0e">• B 树每个节点都存数据，空间利用率低</text>
+  <text x="950" y="582" text-anchor="start" font-size="13" fill="#854d0e">• B+ 树数据全在叶子，内部节点纯索引</text>
+  <text x="950" y="606" text-anchor="start" font-size="13" fill="#854d0e">• 同样空间可装更多索引键 → 树更矮</text>
+
+  <rect x="110" y="640" width="1180" height="95" rx="10" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="130" y="672" text-anchor="start" font-size="14" fill="#431407">💡 类比：B+ 树像「图书分类目录 + 书架」。目录只记大类编号（内部节点），真正书在最后一排书架上</text>
+  <text x="130" y="696" text-anchor="start" font-size="14" fill="#431407">（叶子节点）按顺序摆好且书架之间相连。找书先翻目录（几次磁盘读），再顺着书架扫范围。</text>
+  <text x="130" y="720" text-anchor="start" font-size="14" fill="#431407">⚠️ 易错点：主键索引的叶子直接存整行（聚簇索引）；普通索引叶子存主键值，查不到时还要回表。</text>
+</svg>

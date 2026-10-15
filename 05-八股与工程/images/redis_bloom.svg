@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="800" fill="url(#bg)"/>
+
+  <text x="700" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#0f172a">布隆过滤器：用少量空间判断「一定不在」或「可能在」</text>
+
+  <!-- 顶部：添加元素 -->
+  <rect x="70" y="80" width="620" height="300" rx="14" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+  <text x="380" y="112" text-anchor="middle" font-size="18" font-weight="bold" fill="#14532d">① 添加元素：经过 k 个哈希函数，置 1</text>
+
+  <!-- 位数组 -->
+  <rect x="110" y="150" width="540" height="80" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="380" y="180" text-anchor="middle" font-size="14" fill="#14532d">位数组 bit[0..15]（初始全 0）</text>
+  <text x="380" y="205" text-anchor="middle" font-size="13" fill="#166534">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</text>
+
+  <rect x="110" y="255" width="200" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="210" y="282" text-anchor="middle" font-size="14" fill="#14532d">元素「user1」</text>
+  <text x="210" y="302" text-anchor="middle" font-size="12" fill="#166534">k=3 个哈希</text>
+
+  <line x1="310" y1="285" x2="360" y2="285" stroke="#16a34a" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="360" y="255" width="240" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="480" y="282" text-anchor="middle" font-size="14" fill="#14532d">h1→bit3, h2→bit7, h3→bit12</text>
+  <text x="480" y="302" text-anchor="middle" font-size="12" fill="#166534">这三个位置全部置 1</text>
+
+  <!-- 右：查询 -->
+  <rect x="740" y="80" width="590" height="300" rx="14" fill="#ffffff" stroke="#0284c7" stroke-width="2.5"/>
+  <text x="1035" y="112" text-anchor="middle" font-size="18" font-weight="bold" fill="#0c4a6e">② 查询元素：k 个位置是否都为 1？</text>
+
+  <rect x="790" y="150" width="230" height="80" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="905" y="178" text-anchor="middle" font-size="14" font-weight="bold" fill="#0c4a6e">情况 A：有位置是 0</text>
+  <text x="905" y="202" text-anchor="middle" font-size="13" fill="#075985">→ 一定不在（绝不误报）</text>
+  <text x="905" y="222" text-anchor="middle" font-size="12" fill="#075985">返回「不存在」</text>
+
+  <rect x="790" y="250" width="230" height="80" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="905" y="278" text-anchor="middle" font-size="14" font-weight="bold" fill="#78350f">情况 B：全是 1</text>
+  <text x="905" y="302" text-anchor="middle" font-size="13" fill="#92400e">→ 可能在（可能误判）</text>
+  <text x="905" y="322" text-anchor="middle" font-size="12" fill="#92400e">需去 DB 二次确认</text>
+
+  <rect x="1070" y="150" width="220" height="180" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="1180" y="178" text-anchor="middle" font-size="14" font-weight="bold" fill="#7f1d1d">误报（假阳性）来源</text>
+  <text x="1090" y="202" text-anchor="start" font-size="12" fill="#991b1b">不同元素哈希可能落到</text>
+  <text x="1090" y="220" text-anchor="start" font-size="12" fill="#991b1b">相同位置，多个元素把</text>
+  <text x="1090" y="238" text-anchor="start" font-size="12" fill="#991b1b">某元素的位置都置 1 了</text>
+  <text x="1090" y="256" text-anchor="start" font-size="12" fill="#991b1b">→ 误判「可能存在」</text>
+  <text x="1090" y="280" text-anchor="start" font-size="12" fill="#991b1b">只能误报「在」，</text>
+  <text x="1090" y="298" text-anchor="start" font-size="12" fill="#991b1b">不会误报「不在」</text>
+
+  <!-- 底部 -->
+  <rect x="70" y="410" width="1260" height="340" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="700" y="448" text-anchor="middle" font-size="18" font-weight="bold" fill="#9a3412">用途、参数与易错点</text>
+  <text x="120" y="486" text-anchor="start" font-size="14" fill="#431407">① 经典用途：缓存穿透防护。查一个 key 前先过布隆过滤器，若「一定不在」就直接返回，不再打 DB。</text>
+  <text x="120" y="516" text-anchor="start" font-size="14" fill="#431407">② 空间省：16 亿元素也只需约 1.9 GB（相比存全量 key 省一个量级），且查询 O(k)。</text>
+  <text x="120" y="546" text-anchor="start" font-size="14" fill="#431407">③ 三个参数：位数组长度 m、哈希函数个数 k、预期元素数 n → 误报率 p ≈ (1 − e^(−kn/m))^k</text>
+  <text x="120" y="576" text-anchor="start" font-size="14" fill="#431407">④ 不可删除：删元素会把共享位清 0，误删别人的标记 → 标准布隆过滤器不支持删除。</text>
+  <text x="120" y="606" text-anchor="start" font-size="14" fill="#431407">⑤ 变体：计数布隆过滤器（每位置计数器）可支持删除；布谷鸟过滤器、RedisBloom 模块等。</text>
+  <text x="120" y="636" text-anchor="start" font-size="14" fill="#431407">💡 类比：查重名单。把名字写进一张有很多格子的登记表，每个名字会在几个格子里打勾；</text>
+  <text x="120" y="662" text-anchor="start" font-size="14" fill="#431407">查一个名字：若有格子空着 → 肯定没登记过；若全有勾 → 可能登记过（也许是别人占了格子），需要去档案室核对。</text>
+  <text x="120" y="692" text-anchor="start" font-size="14" fill="#431407">⚠️ 易错点：布隆过滤器只能回答「一定不在」，不能回答「一定在」——别把「可能在」当成命中。</text>
+</svg>

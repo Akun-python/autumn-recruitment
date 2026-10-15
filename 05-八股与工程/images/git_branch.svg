@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="800" fill="url(#bg)"/>
+
+  <text x="700" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#0f172a">Git 分支：快照 + 指针，合并 = 移动指针</text>
+
+  <!-- 顶部：快照模型 -->
+  <rect x="70" y="80" width="1260" height="210" rx="14" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+  <text x="700" y="112" text-anchor="middle" font-size="18" font-weight="bold" fill="#14532d">① 每个 commit 是一次快照，分支只是指向 commit 的指针</text>
+
+  <!-- commit 链 -->
+  <rect x="110" y="150" width="130" height="70" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="175" y="178" text-anchor="middle" font-size="14" fill="#14532d">C1</text>
+  <text x="175" y="200" text-anchor="middle" font-size="12" fill="#166534">初始提交</text>
+
+  <line x1="240" y1="185" x2="280" y2="185" stroke="#16a34a" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="280" y="150" width="130" height="70" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="345" y="178" text-anchor="middle" font-size="14" fill="#14532d">C2</text>
+  <text x="345" y="200" text-anchor="middle" font-size="12" fill="#166534">指向 C1</text>
+
+  <line x1="410" y1="185" x2="450" y2="185" stroke="#16a34a" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="450" y="150" width="130" height="70" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="515" y="178" text-anchor="middle" font-size="14" fill="#14532d">C3</text>
+  <text x="515" y="200" text-anchor="middle" font-size="12" fill="#166534">指向 C2</text>
+
+  <line x1="580" y1="185" x2="620" y2="185" stroke="#16a34a" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="620" y="150" width="130" height="70" rx="8" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.5"/>
+  <text x="685" y="178" text-anchor="middle" font-size="14" fill="#713f12">C4</text>
+  <text x="685" y="200" text-anchor="middle" font-size="12" fill="#854d0e">HEAD / main</text>
+  <text x="685" y="218" text-anchor="middle" font-size="11" fill="#854d0e">指针指向这里</text>
+
+  <rect x="820" y="130" width="190" height="110" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="915" y="160" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e3a8a">快照 = 全量文件？</text>
+  <text x="840" y="186" text-anchor="start" font-size="12" fill="#1e40af">不！只存「与上个版本</text>
+  <text x="840" y="206" text-anchor="start" font-size="12" fill="#1e40af">不同的文件」+ 指针，</text>
+  <text x="840" y="226" text-anchor="start" font-size="12" fill="#1e40af">所以仓库很小</text>
+
+  <!-- 中：分支与合并 -->
+  <rect x="70" y="320" width="1260" height="240" rx="14" fill="#ffffff" stroke="#0284c7" stroke-width="2.5"/>
+  <text x="700" y="352" text-anchor="middle" font-size="18" font-weight="bold" fill="#0c4a6e">② 分支 = 指针，合并 = 找共同祖先做三路合并</text>
+
+  <rect x="110" y="390" width="120" height="60" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="170" y="418" text-anchor="middle" font-size="13" fill="#0c4a6e">C2</text>
+
+  <line x1="230" y1="420" x2="270" y2="420" stroke="#0284c7" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="270" y="390" width="120" height="60" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="330" y="418" text-anchor="middle" font-size="13" fill="#0c4a6e">C3</text>
+
+  <line x1="390" y1="420" x2="430" y2="420" stroke="#0284c7" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="430" y="350" width="120" height="60" rx="8" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.5"/>
+  <text x="490" y="378" text-anchor="middle" font-size="13" fill="#713f12">C4</text>
+  <text x="490" y="398" text-anchor="middle" font-size="11" fill="#854d0e">main 分支</text>
+
+  <line x1="490" y1="410" x2="490" y2="435" stroke="#ca8a04" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="430" y="435" width="120" height="60" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="490" y="463" text-anchor="middle" font-size="13" fill="#7f1d1d">C5</text>
+  <text x="490" y="483" text-anchor="middle" font-size="11" fill="#b91c1c">feature 分支</text>
+
+  <line x1="550" y1="465" x2="610" y2="465" stroke="#ef4444" stroke-width="2" marker-end="url(#arr)"/>
+
+  <rect x="610" y="435" width="120" height="60" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="670" y="463" text-anchor="middle" font-size="13" fill="#7f1d1d">C6</text>
+
+  <!-- 合并 -->
+  <rect x="790" y="370" width="200" height="90" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="890" y="400" text-anchor="middle" font-size="14" fill="#14532d">git merge feature</text>
+  <text x="890" y="424" text-anchor="middle" font-size="12" fill="#166534">C4 与 C6 的共同祖先</text>
+  <text x="890" y="444" text-anchor="middle" font-size="12" fill="#166534">是 C3 → 三路合并</text>
+
+  <rect x="1030" y="370" width="260" height="90" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="1160" y="400" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e3a8a">冲突怎么办？</text>
+  <text x="1050" y="424" text-anchor="start" font-size="12" fill="#1e40af">两边都改了同一处 → 手工解决，</text>
+  <text x="1050" y="444" text-anchor="start" font-size="12" fill="#1e40af">再 git add + git commit 完成合并</text>
+
+  <text x="700" y="545" text-anchor="middle" font-size="14" fill="#0c4a6e">rebase 则是「把分支提交重新接到主分支顶端」，历史线性更干净，但会改写历史</text>
+
+  <!-- 底：概念类比 -->
+  <rect x="70" y="590" width="1260" height="160" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="700" y="626" text-anchor="middle" font-size="17" font-weight="bold" fill="#9a3412">小概念类比</text>
+  <text x="120" y="658" text-anchor="start" font-size="14" fill="#431407">• 分支 = 便利贴：贴在某个 commit 上的标签，随时可以新贴、移动、撕掉——commit 本身不变</text>
+  <text x="120" y="686" text-anchor="start" font-size="14" fill="#431407">• HEAD = 当前在哪：告诉 Git「现在站在哪个分支哪个提交」</text>
+  <text x="120" y="714" text-anchor="start" font-size="14" fill="#431407">• 工作区/暂存区/仓库：草稿纸 → 桌面清单（add 之后）→ 归档盒（commit 之后）</text>
+  <text x="120" y="738" text-anchor="start" font-size="13" fill="#92400e">⚠️ 易错点：分支不是「代码的副本」——它是移动的指针，新建分支瞬间几乎零成本。</text>
+</svg>

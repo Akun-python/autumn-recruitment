@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="800" fill="url(#bg)"/>
+
+  <text x="700" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#0f172a">令牌桶限流：先攒令牌，有令牌才放行</text>
+
+  <!-- 左：令牌桶模型 -->
+  <rect x="70" y="80" width="620" height="400" rx="14" fill="#ffffff" stroke="#16a34a" stroke-width="2.5"/>
+  <text x="380" y="112" text-anchor="middle" font-size="18" font-weight="bold" fill="#14532d">① 令牌桶模型</text>
+
+  <!-- 桶 -->
+  <rect x="200" y="160" width="360" height="230" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="380" y="190" text-anchor="middle" font-size="14" fill="#14532d">令牌桶（容量 = burst 突发上限）</text>
+  <rect x="240" y="215" width="120" height="30" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1"/>
+  <text x="300" y="236" text-anchor="middle" font-size="13" fill="#14532d">令牌</text>
+  <rect x="240" y="252" width="120" height="30" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1"/>
+  <text x="300" y="273" text-anchor="middle" font-size="13" fill="#14532d">令牌</text>
+  <rect x="240" y="289" width="120" height="30" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1"/>
+  <text x="300" y="310" text-anchor="middle" font-size="13" fill="#14532d">令牌</text>
+
+  <text x="380" y="365" text-anchor="middle" font-size="13" fill="#166534">每 1/R 秒生成 1 个令牌，桶满则丢弃（不累积无限）</text>
+
+  <!-- 流入 -->
+  <rect x="110" y="330" width="70" height="50" rx="6" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="145" y="360" text-anchor="middle" font-size="12" fill="#14532d">生成器</text>
+  <line x1="180" y1="355" x2="200" y2="355" stroke="#16a34a" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- 流出 -->
+  <line x1="560" y1="330" x2="600" y2="330" stroke="#16a34a" stroke-width="2" marker-end="url(#arr)"/>
+  <rect x="600" y="305" width="70" height="50" rx="6" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+  <text x="635" y="335" text-anchor="middle" font-size="12" fill="#14532d">请求消耗</text>
+
+  <text x="380" y="440" text-anchor="middle" font-size="13" fill="#166534">请求到达：从桶里取 1 个令牌；有 → 放行，没有 → 拒绝/排队</text>
+
+  <!-- 右：与漏桶对比 -->
+  <rect x="740" y="80" width="590" height="400" rx="14" fill="#ffffff" stroke="#0284c7" stroke-width="2.5"/>
+  <text x="1035" y="112" text-anchor="middle" font-size="18" font-weight="bold" fill="#0c4a6e">② 对比漏桶（Leaky Bucket）</text>
+
+  <rect x="790" y="150" width="240" height="280" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="910" y="180" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e3a8a">令牌桶</text>
+  <text x="810" y="210" text-anchor="start" font-size="13" fill="#1e40af">• 允许突发（桶越大</text>
+  <text x="810" y="230" text-anchor="start" font-size="13" fill="#1e40af">  瞬时放行越多）</text>
+  <text x="810" y="256" text-anchor="start" font-size="13" fill="#1e40af">• 平滑 + 突发兼顾</text>
+  <text x="810" y="282" text-anchor="start" font-size="13" fill="#1e40af">• Guava RateLimiter、</text>
+  <text x="810" y="302" text-anchor="start" font-size="13" fill="#1e40af">  Redis 实现多用它</text>
+  <text x="810" y="334" text-anchor="start" font-size="13" fill="#1e40af">• 长期平均速率 = R</text>
+
+  <rect x="1070" y="150" width="220" height="280" rx="10" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="1180" y="180" text-anchor="middle" font-size="15" font-weight="bold" fill="#7f1d1d">漏桶</text>
+  <text x="1090" y="210" text-anchor="start" font-size="13" fill="#991b1b">• 请求先进桶排队，</text>
+  <text x="1090" y="230" text-anchor="start" font-size="13" fill="#991b1b">  恒定速率流出</text>
+  <text x="1090" y="256" text-anchor="start" font-size="13" fill="#991b1b">• 输出绝对平滑，</text>
+  <text x="1090" y="276" text-anchor="start" font-size="13" fill="#991b1b">  但完全不支持突发</text>
+  <text x="1090" y="308" text-anchor="start" font-size="13" fill="#991b1b">• 桶满新请求直接丢</text>
+  <text x="1090" y="334" text-anchor="start" font-size="13" fill="#991b1b">• 适合保护下游系统</text>
+
+  <!-- 底：细节 -->
+  <rect x="70" y="510" width="1260" height="240" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="700" y="546" text-anchor="middle" font-size="17" font-weight="bold" fill="#9a3412">关键细节与面试追问</text>
+  <text x="120" y="578" text-anchor="start" font-size="14" fill="#431407">① 参数：速率 R（每秒补充令牌数）+ 桶容量 burst（最大积攒量）→ 平均 R、瞬时可到 burst</text>
+  <text x="120" y="606" text-anchor="start" font-size="14" fill="#431407">② 实现：单机可用带时间戳的计数（Guava 平滑突发模式）；分布式可用 Redis Lua 脚本原子取令牌</text>
+  <text x="120" y="634" text-anchor="start" font-size="14" fill="#431407">③ 与固定窗口/滑动窗口对比：固定窗口在窗口边界会双倍放行；滑动窗口平滑；令牌桶最灵活</text>
+  <text x="120" y="662" text-anchor="start" font-size="14" fill="#431407">④ 应用：秒杀限流、API 网关、保护下游数据库不被突发流量打崩</text>
+  <text x="120" y="690" text-anchor="start" font-size="14" fill="#431407">💡 类比：自助餐餐厅每小时补 10 份甜点（R=10），甜品台最多摆 30 份（burst=30）。客人来取一份；</text>
+  <text x="120" y="714" text-anchor="start" font-size="14" fill="#431407">刚补货时能一口气拿走很多（突发），平时只能按补货速度慢慢拿（平均速率）。</text>
+  <text x="120" y="738" text-anchor="start" font-size="13" fill="#92400e">⚠️ 易错点：令牌桶的「令牌生成」是匀速的，但「消费」可以突袭——所以它允许突发，这正是与漏桶的本质区别。</text>
+</svg>

@@ -9,16 +9,16 @@
 | Notebook | 主题 | 配图 | cells | 优先级 |
 |----------|------|------|-------|--------|
 | [01-Python语言.ipynb](01-Python语言.ipynb) | GIL / 装饰器 / 生成器 / GC / asyncio / 内存管理 | GIL 执行示意 | 94 | 🔴 必背 |
-| [02-操作系统.ipynb](02-操作系统.ipynb) | 进程线程协程 / 死锁 / IPC / 虚拟内存 / 调度 | 进程五状态、分页示意 | 76 | 🔴 必背 |
-| [03-计算机网络.ipynb](03-计算机网络.ipynb) | TCP 握手挥手 / 可靠传输 / HTTP 演进 / TLS / DNS | 握手时序、挥手时序、拥塞控制曲线、HTTP2 多路复用 | 42 | 🔴 必背 |
-| [04-数据库.ipynb](04-数据库.ipynb) | B+ 树 / 聚簇索引 / ACID / 隔离级别 / MVCC / 锁 / **SQL 语言实战** | B+ 树结构、MVCC 版本链 | 65 | 🔴 必背 |
-| [05-Redis.ipynb](05-Redis.ipynb) | 数据结构 / 穿透击穿雪崩 / 一致性 / 持久化 / 分布式锁 | 缓存三问题、布隆过滤器 | 41 | 🔴 必背 |
-| [06-分布式.ipynb](06-分布式.ipynb) | CAP / 一致性 / MQ / 分布式事务 / 限流熔断 | CAP 三角、一致性哈希环、令牌桶 vs 漏桶 | 64 | 🟡 掌握 |
-| [07-工程工具.ipynb](07-工程工具.ipynb) | Git / Linux / pytest / 设计模式 / 性能分析 | Git 分支合并示意 | 59 | 🟡 掌握 |
-| [08-高频手撕代码.ipynb](08-高频手撕代码.ipynb) | 装饰器 / 生成器 / 单例 / 线程进程 / LRU / 排序 / Trie / 并查集 / 拓扑 / Dijkstra | LRU 结构示意 | 76 | 🔴 必背 |
+| [02-操作系统.ipynb](02-操作系统.ipynb) | 进程线程协程 / 死锁 / IPC / 虚拟内存 / 调度 | 进程五状态、分页示意 | 80 | 🔴 必背 |
+| [03-计算机网络.ipynb](03-计算机网络.ipynb) | TCP 握手挥手 / 可靠传输 / HTTP 演进 / TLS / DNS | 握手时序、挥手时序、拥塞控制曲线、HTTP2 多路复用 | 43 | 🔴 必背 |
+| [04-数据库.ipynb](04-数据库.ipynb) | B+ 树 / 聚簇索引 / ACID / 隔离级别 / MVCC / 锁 / **SQL 语言实战** | B+ 树结构、MVCC 版本链 | 66 | 🔴 必背 |
+| [05-Redis.ipynb](05-Redis.ipynb) | 数据结构 / 穿透击穿雪崩 / 一致性 / 持久化 / 分布式锁 | 缓存三问题、布隆过滤器 | 51 | 🔴 必背 |
+| [06-分布式.ipynb](06-分布式.ipynb) | CAP / 一致性 / MQ / 分布式事务 / 限流熔断 | CAP 三角、一致性哈希环、令牌桶 vs 漏桶 | 65 | 🟡 掌握 |
+| [07-工程工具.ipynb](07-工程工具.ipynb) | Git / Linux / pytest / 设计模式 / 性能分析 | Git 分支合并示意 | 60 | 🟡 掌握 |
+| [08-高频手撕代码.ipynb](08-高频手撕代码.ipynb) | 装饰器 / 生成器 / 单例 / 线程进程 / LRU / 排序 / Trie / 并查集 / 拓扑 / Dijkstra | LRU 结构示意 | 91 | 🔴 必背 |
 
-> 💡 **配图说明**：`images/` 目录下 16 张示意图均由本仓库用 matplotlib 自绘（中文标注、可复现），避免版权问题；notebook 用相对路径 `images/xxx.png` 引用。
-> ⚠️ 互联网图源（Wikimedia/CDN）在当前网络环境不可达，已用自绘示意替代；如需补充真实截图/照片，可自行添加至 `images/` 并在对应 cell 引用。
+> 💡 **配图说明**：`images/` 目录下 16 张示意图均为手绘 SVG（1400×800 画布、中文标注、文本无重叠），notebook 用相对路径 `images/xxx.svg` 引用，浏览器/编辑器可直接渲染。
+> 💡 **小白友好设计**：8 个 notebook 已全面小白化改造——每个核心概念标题下都有 `> 💡 定义（小白版）：`（一句话人话定义）+ `> 🏷️ 类比：`（生活类比），面试追问小节附 `答法提示`，零基础可直接通读。
 
 ## 📄 Markdown 速查索引（冲刺盲测用）
 
@@ -38,14 +38,14 @@
 
 | 图 | 对应主题 | 图 | 对应主题 |
 |----|----------|----|----------|
-| python_gil.png | GIL 多线程 | dist_cap.png | CAP 三角 |
-| os_process_states.png | 进程五状态 | dist_consistent_hash.png | 一致性哈希环 |
-| os_paging.png | 虚拟内存分页 | dist_token_bucket.png | 令牌桶 vs 漏桶 |
-| net_tcp_handshake.png | TCP 三次握手 | git_branch.png | Git 分支合并 |
-| net_tcp_fourwave.png | TCP 四次挥手 | hand_lru.png | LRU 结构 |
-| net_congestion.png | 拥塞控制 cwnd | redis_cache.png | 缓存穿透/击穿/雪崩 |
-| net_http2.png | HTTP/2 多路复用 | redis_bloom.png | 布隆过滤器 |
-| db_bplus.png | B+ 树 | db_mvcc.png | MVCC 版本链 |
+| python_gil.svg | GIL 多线程 | dist_cap.svg | CAP 三角 |
+| os_process_states.svg | 进程五状态 | dist_consistent_hash.svg | 一致性哈希环 |
+| os_paging.svg | 虚拟内存分页 | dist_token_bucket.svg | 令牌桶 vs 漏桶 |
+| net_tcp_handshake.svg | TCP 三次握手 | git_branch.svg | Git 分支合并 |
+| net_tcp_fourwave.svg | TCP 四次挥手 | hand_lru.svg | LRU 结构 |
+| net_congestion.svg | 拥塞控制 cwnd | redis_cache.svg | 缓存穿透/击穿/雪崩 |
+| net_http2.svg | HTTP/2 多路复用 | redis_bloom.svg | 布隆过滤器 |
+| db_bplus.svg | B+ 树 | db_mvcc.svg | MVCC 版本链 |
 
 ## 复习节奏建议
 

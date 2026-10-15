@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="800" viewBox="0 0 1400 800" font-family="Microsoft YaHei, PingFang SC, Noto Sans SC, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <marker id="arr" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="800" fill="url(#bg)"/>
+
+  <text x="700" y="48" text-anchor="middle" font-size="28" font-weight="bold" fill="#0f172a">GIL 全局解释器锁：同一时刻只有一个线程执行字节码</text>
+
+  <!-- 左：CPU 密集多线程 -->
+  <rect x="60" y="90" width="600" height="320" rx="14" fill="#ffffff" stroke="#f87171" stroke-width="2.5"/>
+  <text x="360" y="122" text-anchor="middle" font-size="19" font-weight="bold" fill="#b91c1c">CPU 密集型：GIL 串行化 → 无加速</text>
+
+  <rect x="110" y="150" width="130" height="90" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="175" y="180" text-anchor="middle" font-size="15" fill="#7f1d1d">线程 A</text>
+  <text x="175" y="205" text-anchor="middle" font-size="13" fill="#991b1b">纯计算任务</text>
+
+  <rect x="295" y="150" width="130" height="90" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="360" y="180" text-anchor="middle" font-size="15" fill="#7f1d1d">线程 B</text>
+  <text x="360" y="205" text-anchor="middle" font-size="13" fill="#991b1b">纯计算任务</text>
+
+  <rect x="480" y="150" width="130" height="90" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="545" y="180" text-anchor="middle" font-size="15" fill="#7f1d1d">线程 C</text>
+  <text x="545" y="205" text-anchor="middle" font-size="13" fill="#991b1b">纯计算任务</text>
+
+  <!-- GIL 门闩 -->
+  <rect x="250" y="290" width="220" height="70" rx="10" fill="#0f172a"/>
+  <text x="360" y="318" text-anchor="middle" font-size="17" font-weight="bold" fill="#ffffff">GIL 门闩</text>
+  <text x="360" y="344" text-anchor="middle" font-size="13" fill="#cbd5e1">一次只放一个线程进来</text>
+
+  <line x1="175" y1="240" x2="310" y2="300" stroke="#ef4444" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="360" y1="240" x2="360" y2="290" stroke="#ef4444" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="545" y1="240" x2="410" y2="300" stroke="#ef4444" stroke-width="2" marker-end="url(#arr)"/>
+
+  <text x="360" y="392" text-anchor="middle" font-size="14" fill="#b91c1c">结论：3 个线程轮流执行，总耗时 ≈ 单线程 × 线程数（无并行）</text>
+
+  <!-- 右：I/O 密集多线程 -->
+  <rect x="740" y="90" width="600" height="320" rx="14" fill="#ffffff" stroke="#22c55e" stroke-width="2.5"/>
+  <text x="1040" y="122" text-anchor="middle" font-size="19" font-weight="bold" fill="#15803d">I/O 密集型：等待时释放 GIL → 可并发</text>
+
+  <rect x="790" y="150" width="150" height="90" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="865" y="180" text-anchor="middle" font-size="15" fill="#166534">线程 A</text>
+  <text x="865" y="205" text-anchor="middle" font-size="13" fill="#166534">读网络</text>
+  <text x="865" y="226" text-anchor="middle" font-size="12" fill="#166534">（等待中释放 GIL）</text>
+
+  <rect x="965" y="150" width="150" height="90" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="1040" y="180" text-anchor="middle" font-size="15" fill="#166534">线程 B</text>
+  <text x="1040" y="205" text-anchor="middle" font-size="13" fill="#166534">读磁盘</text>
+  <text x="1040" y="226" text-anchor="middle" font-size="12" fill="#166534">（等待中释放 GIL）</text>
+
+  <rect x="1140" y="150" width="150" height="90" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text x="1215" y="180" text-anchor="middle" font-size="15" fill="#166534">线程 C</text>
+  <text x="1215" y="205" text-anchor="middle" font-size="13" fill="#166534">写日志</text>
+  <text x="1215" y="226" text-anchor="middle" font-size="12" fill="#166534">（等待中释放 GIL）</text>
+
+  <rect x="965" y="290" width="220" height="70" rx="10" fill="#15803d"/>
+  <text x="1075" y="318" text-anchor="middle" font-size="17" font-weight="bold" fill="#ffffff">GIL 空闲即切换</text>
+  <text x="1075" y="344" text-anchor="middle" font-size="13" fill="#dcfce7">等待 I/O 时其他线程接管</text>
+
+  <line x1="865" y1="240" x2="1015" y2="300" stroke="#22c55e" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="1040" y1="240" x2="1075" y2="290" stroke="#22c55e" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="1215" y1="240" x2="1135" y2="300" stroke="#22c55e" stroke-width="2" marker-end="url(#arr)"/>
+
+  <text x="1040" y="392" text-anchor="middle" font-size="14" fill="#15803d">结论：等待 I/O 的时间被其他线程利用 → 多线程显著加速</text>
+
+  <!-- 底部 -->
+  <rect x="60" y="440" width="1280" height="130" rx="14" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="700" y="476" text-anchor="middle" font-size="17" font-weight="bold" fill="#334155">怎么绕开 GIL？</text>
+  <text x="200" y="515" text-anchor="middle" font-size="15" fill="#0f172a">① 多进程</text>
+  <text x="200" y="540" text-anchor="middle" font-size="13" fill="#475569">每进程独立解释器与 GIL</text>
+  <text x="560" y="515" text-anchor="middle" font-size="15" fill="#0f172a">② C 扩展释放 GIL</text>
+  <text x="560" y="540" text-anchor="middle" font-size="13" fill="#475569">Py_BEGIN_ALLOW_THREADS</text>
+  <text x="920" y="515" text-anchor="middle" font-size="15" fill="#0f172a">③ asyncio 协程</text>
+  <text x="920" y="540" text-anchor="middle" font-size="13" fill="#475569">I/O 场景用协程更好</text>
+
+  <rect x="60" y="590" width="1280" height="170" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="700" y="626" text-anchor="middle" font-size="17" font-weight="bold" fill="#9a3412">💡 类比与易错点</text>
+  <text x="120" y="665" text-anchor="start" font-size="14" fill="#431407">💡 类比：GIL 就像单车道收费站的唯一收费员——不管几辆车排队，一次只放行一辆。</text>
+  <text x="120" y="695" text-anchor="start" font-size="14" fill="#431407">⚠️ 易错点 1：不要答「Python 不支持多线程」——I/O 密集多线程完全有效，受限的只是纯 CPU 并行。</text>
+  <text x="120" y="725" text-anchor="start" font-size="14" fill="#431407">⚠️ 易错点 2：并发（concurrency）≠ 并行（parallelism）——GIL 杀死的只是后者。</text>
+</svg>
