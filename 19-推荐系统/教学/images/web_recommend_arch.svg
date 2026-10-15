@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 350" width="900" height="350">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .box { fill: #f8f9fa; stroke: #a2a9b1; stroke-width: 2; rx: 5; }
+      .box-blue { fill: #eaf3ff; stroke: #36c; stroke-width: 2; rx: 5; }
+      .text-main { font-family: sans-serif; font-size: 16px; font-weight: bold; fill: #202122; text-anchor: middle; }
+      .text-sub { font-family: sans-serif; font-size: 12px; fill: #54595d; text-anchor: middle; }
+      .arrow { stroke: #54595d; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .db-cylinder { fill: #f8f9fa; stroke: #a2a9b1; stroke-width: 2; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#54595d"/>
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg"/>
+
+  <path d="M 50 140 A 50 15 0 0 0 150 140 L 150 210 A 50 15 0 0 1 50 210 Z" class="db-cylinder"/>
+  <ellipse cx="100" cy="140" rx="50" ry="15" class="db-cylinder"/>
+  <text x="100" y="175" class="text-main">Content</text>
+  <text x="100" y="195" class="text-sub">Millions of items</text>
+
+  <path d="M 160 175 L 210 175" class="arrow"/>
+
+  <rect x="220" y="125" width="160" height="100" class="box-blue"/>
+  <text x="300" y="158" class="text-main">Candidate</text>
+  <text x="300" y="185" class="text-main">Generation</text>
+  <text x="300" y="214" class="text-sub">Filters to ~1,000 items</text>
+
+  <path d="M 390 175 L 440 175" class="arrow"/>
+
+  <rect x="450" y="125" width="160" height="100" class="box-blue"/>
+  <text x="530" y="158" class="text-main">Scoring Model</text>
+  <text x="530" y="196" class="text-sub">Predicts engagement</text>
+  <text x="530" y="217" class="text-sub">(clicks, watch time)</text>
+
+  <path d="M 620 175 L 670 175" class="arrow"/>
+
+  <rect x="680" y="110" width="140" height="130" class="box"/>
+  <rect x="700" y="140" width="100" height="20" fill="#c8ccd1" rx="2"/>
+  <rect x="700" y="170" width="100" height="20" fill="#eaecf0" rx="2"/>
+  <rect x="700" y="200" width="100" height="20" fill="#f8f9fa" rx="2"/>
+  <text x="750" y="125" class="text-main">Ranked Feed</text>
+
+  <rect x="450" y="30" width="160" height="50" class="box"/>
+  <text x="530" y="52" class="text-main">User Data</text>
+  <text x="530" y="70" class="text-sub">History &amp; Context</text>
+  <path d="M 530 85 L 530 115" class="arrow"/>
+  
+</svg>

@@ -48,6 +48,35 @@
 | 06-冷启动与多目标优化 | 冷启动方案地图、热度兜底 vs 画像匹配、ESMM 乘法演示、MMoE 门控权重 | ✅ |
 | 07-推荐系统面试八股与工业流程 | 流程串讲、16+ 高频题速答、多路召回合并去重、贪心打散、常见坑清单 | ✅ |
 
+## 🖼️ 图库：自绘高清流程图（300dpi · `教学/images/`）
+
+| 图 | 说明 | 用于 Notebook |
+|---|------|------|
+| [`recommend_pipeline.png`](教学/images/recommend_pipeline.png) | 推荐五段链路（召回→粗排→精排→重排→AB）与候选量级 | 00 |
+| [`user_item_cf.png`](教学/images/user_item_cf.png) | UserCF（找相似用户）vs ItemCF（找相似物品） | 01 |
+| [`two_tower_recall.png`](教学/images/two_tower_recall.png) | 双塔召回结构（用户塔/物品塔 + 内积 + ANN） | 03 |
+| [`ctr_models.png`](教学/images/ctr_models.png) | CTR 模型演进（LR→FM→GBDT+LR→Wide&Deep→DeepFM） | 04 |
+| [`negative_sampling.png`](教学/images/negative_sampling.png) | 负样本采样三策略对比 | 05 |
+| [`multi_objective.png`](教学/images/multi_objective.png) | ESMM 乘法模型 + MMoE 门控多目标 | 06 |
+| [`recsys_interview_map.png`](教学/images/recsys_interview_map.png) | 推荐面试知识地图（八块闭环） | 07 |
+
+**📷 真实配图（Wikimedia Commons，已插入对应 notebook）**
+
+| 图 | 说明 | 用于 Notebook |
+|---|------|------|
+| [`web_recommend_flow.png`](教学/images/web_recommend_flow.png) | 推荐系统端到端流程图（采集→召回→排序→Top-N） | 00 |
+| [`web_recommend_arch.svg`](教学/images/web_recommend_arch.svg) | 推荐架构分层总览 | 00 |
+| [`web_cf_network.gif`](教学/images/web_cf_network.gif) | 协同过滤评分矩阵动图（UserCF/ItemCF 补全） | 01 |
+| [`web_matrix_factorization.png`](教学/images/web_matrix_factorization.png) | 矩阵分解 R≈P·Qᵀ 示意 | 02 |
+
+**📄 经典论文原图（arXiv 论文原图，已插入对应 notebook 并标注出处）**
+
+| 图 | 论文出处 | 用于 Notebook |
+|---|------|------|
+| [`paper_widedeep_arch.png`](教学/images/paper_widedeep_arch.png) | Cheng et al., Wide & Deep, DLRS 2016（arXiv:1606.07792）图4：Wide 记忆 + Deep 泛化联合训练 | 04 |
+| [`paper_deepfm_arch.png`](教学/images/paper_deepfm_arch.png) | Guo et al., DeepFM, IJCAI 2017（arXiv:1703.04247）图1：FM 低阶交叉 + DNN 高阶交叉 | 04 |
+| [`paper_esmm_arch.png`](教学/images/paper_esmm_arch.png) | Ma et al., ESMM, SIGIR 2018（arXiv:1804.07931）图2：主任务 pCVR + 辅助 pCTR/pCTCVR 乘法关系 | 06 |
+
 ## 与其他章节衔接
 
 | 本模块主题 | 前置章节 | 衔接说明 |
