@@ -14,7 +14,7 @@
   <img src="assets/badges/license.svg" alt="license MIT"/>
   <img src="assets/badges/python.svg" alt="python 3.9+"/>
   <img src="assets/badges/modules.svg" alt="26 modules"/>
-  <img src="assets/badges/notebooks.svg" alt="273 notebooks"/>
+  <img src="assets/badges/notebooks.svg" alt="277 notebooks"/>
   <img src="assets/badges/numpy.svg" alt="from scratch"/>
   <img src="assets/badges/zh.svg" alt="中文教学"/>
 </p>
@@ -142,7 +142,7 @@
 
 ## 📊 当前规模
 
-当前仓库包含 **26 个主题模块、273 篇教学 Notebook**，并持续增加中。
+当前仓库包含 **26 个主题模块、277 篇教学 Notebook**，并持续增加中。
 
 | 类别 | 内容 |
 |---|---|
@@ -173,10 +173,10 @@ Notebook 数量会随着内容扩充而变化，README 中的统计是阶段性�
 | 09-计算机视觉 | CNN、检测、分割、视觉基础模型、3D 视觉、NeRF、3DGS | [进入模块](09-计算机视觉/README.md) |
 | 10-自然语言处理 | 词向量、序列模型、文本分类、信息抽取、NLP 面试 | [进入模块](10-自然语言处理/README.md) |
 | 11-时间序列 | 预测、异常检测、评估、特征工程和面试题 | [进入模块](11-时间序列/README.md) |
-| 12-智能体开发 | ReAct、记忆、RAG、MCP、Coding Agent、评估、持续进化、多 Agent | [进入模块](12-智能体开发/README.md) |
+| 12-智能体开发 | ReAct、记忆、RAG、MCP、Coding Agent、评估、持续进化、多 Agent、RSI 递归自我改进 | [进入模块](12-智能体开发/README.md) |
 | 13-编程语言 | Python、C++、ROS、Docker、Git、SQL、Linux、Go、Java | [进入模块](13-编程语言/README.md) |
 | 14-具身智能 | 机器人、感知、规划控制、VLA、仿真、数据与 sim2real | [进入模块](14-具身智能/README.md) |
-| 15-AI-Infra | 推理引擎、GEMM、混合精度、并行训练、NCCL、KV Cache、量化、FlashAttention | [进入模块](15-AI-Infra/README.md) |
+| 15-AI-Infra | 推理引擎、GEMM、混合精度、并行训练、NCCL、KV Cache、量化、FlashAttention、MoE 专家分页/卸载/预取 | [进入模块](15-AI-Infra/README.md) |
 | 16-语音 | 信号处理、ASR、TTS、语音增强、声纹、SVC、语音大模型 | [进入模块](16-语音/README.md) |
 | 17-数据科学 | 统计推断、AB 实验、因果推断、实验评估与业务实践 | [进入模块](17-数据科学/README.md) |
 | 18-数据分析 | 业务指标、数据处理、留存漏斗、RFM 分层、数据分析面试 | [进入模块](18-数据分析/README.md) |
