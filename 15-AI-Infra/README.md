@@ -7,10 +7,10 @@
 > 面向秋招画像：**AI Infra / 大模型推理优化 / 训练平台 / 高性能计算（HPC）/ 异构计算 / CUDA 工程师** 岗位。
 > 与 04-LLM大模型（模型结构）、08-优化算法（训练优化器/FP16-ZeRO）、13-编程语言（C++/Linux）、05-八股与工程（OS/网络/分布式）直接衔接。
 
-> 🖼️ 配图与深化：11 篇教学 notebook 均含手写实现 + 数值对照（numpy/torch，无需 GPU 可执行）；
+> 🖼️ 配图与深化：14 篇教学 notebook 均含手写实现 + 数值对照（numpy/torch，无需 GPU 可执行）；
 > 模块目录会随产出持续扩充，内容以当前目录和下方索引为准。
 
-## 知识地图（面试考察的九大块）
+## 知识地图（面试考察的十大块）
 
 ```
 AI Infra 考点
@@ -22,7 +22,8 @@ AI Infra 考点
 ├── 6. 通信            NCCL · 集合通信（allreduce/broadcast）· Ring AllReduce 通信量 · 拓扑
 ├── 7. 推理优化        KV Cache · 连续批处理（vLLM/PagedAttention）· 投机解码 · 并行采样
 ├── 8. 量化压缩        PTQ/QAT · INT8/INT4 · GPTQ/AWQ/SmoothQuant · 误差分析与校准
-└── 9. 部署与监控      QPS/TTOT/TPOT 指标 · 推理服务架构 · profiler 定位瓶颈 · 成本估算
+├── 9. 部署与监控      QPS/TTOT/TPOT 指标 · 推理服务架构 · profiler 定位瓶颈 · 成本估算
+└── 🔟 稀疏与卸载      MoE 专家分页（Expert Paging）· 专家卸载（Expert Offloading / CPU-GPU 流水）· 预测式专家预取（Predictive Expert Prefetch）
 ```
 
 ## 学习路线（推荐顺序）
@@ -30,7 +31,8 @@ AI Infra 考点
 1. **打底（00-01）**：先懂"系统怎么算"——计算图与自动微分引擎（手写 autograd），GEMM 与算子优化（手写分块乘法 + roofline）✅
 2. **训练侧（02-04）**：混合精度与显存账本 → 分布式并行四件套（DP/FSDP/TP/PP + ZeRO）→ 集合通信与 NCCL（手写 Ring AllReduce）✅
 3. **推理侧（05-07）**：KV Cache 与内存计算 → 推理引擎 vLLM 连续批处理/投机解码 → 量化与压缩（PTQ/GPTQ/AWQ/SmoothQuant）✅
-4. **工程与冲刺（08-09）**：性能分析与优化（profiler/算子融合/成本估算）→ AI-Infra 面试八股速查（30 连问 + 手算题）✅
+4. **工程与冲刺（08-10）**：性能分析与优化（profiler/算子融合/成本估算）→ AI-Infra 面试八股速查（30 连问 + 手算题）→ FlashAttention 与 CUDA 线程模型 ✅
+5. **MoE 推理系统（11-13）**：专家分页（页表/替换策略/命中率账本）→ 专家卸载与 CPU-GPU 双缓冲流水（重叠率/stall/tokens-s）→ 预测式专家预取（上层/马尔可夫/logistic 三种预测器 + 命中率-浪费率权衡）✅
 
 ## 教学 Notebook 索引
 
@@ -47,6 +49,9 @@ AI Infra 考点
 | 08 | [性能分析与优化](教学/08-性能分析与优化.ipynb) | 手写简易 profiler 时间拆解 / roofline 实测判定算力-带宽受限 / 算子融合收益实测 / 6ND 训练成本与推理成本估算 | ✅ |
 | 09 | [AI-Infra 面试八股与高频题](教学/09-AI-Infra面试八股与高频题.ipynb) | 八大块知识地图 + 30 连问（30 秒答案）+ 5 道手算题自动判分 + 一句话串联全章 | ✅ |
 | 10 | [FlashAttention 与 CUDA 线程模型](教学/10-FlashAttention与CUDA线程模型.ipynb) | 显存层级与 roofline 回顾 / 标准注意力 IO 瓶颈定量 / 手写分块 softmax（online softmax）数值对照 / flash attn 前向模拟（tiling 循环）/ CUDA 线程模型（grid-block-thread）与 block reduce 演示 / 面试考点 | ✅ |
+| 11 | [专家分页（Expert Paging）与显存池化](教学/11-专家分页与显存池化.ipynb) | Mixtral 8x7B 专家参数账本（352 MB/专家 @BF16 · 45.1 G 参数 ≈90 GB · PCIe 单专家 ≈14 ms）/ 手写 ExpertPager（逻辑页表 → GPU 槽位 · LRU/LFU/FIFO 淘汰 · 命中率与 stall 统计）/ Zipf 热度轨迹模拟 / 槽位数与命中率扫描 / 与 PagedAttention 的页生命周期对照 | ✅ |
+| 12 | [专家卸载（Expert Offloading）与 CPU-GPU 协同](教学/12-专家卸载与CPU-GPU协同.ipynb) | 卸载比例 `r = 1 - (B-P_dense)/P_exp` 手算（24 GB 卡跑 45 G 参数专家 · 专家 FP8 口径，BF16 则 ×2）/ 手写双缓冲流水模拟器（compute 与 transfer 重叠）/ 逐层同步 vs 静态预取 vs 动态触发三调度对比 / 带宽-驻留比例扫描（tokens/s、stall 占比）/ Fiddler·DeepSpeed-MoE·KTransformers 工程对照 | ✅ |
+| 13 | [预测式专家预取（Predictive Expert Prefetch）](教学/13-预测式专家预取.ipynb) | 为什么必须预测（router 数据相关）/ 三种预测器手写：上层直取 · 马尔可夫转移矩阵 · numpy logistic regression / precision@k、recall@k、浪费率、有效加速比定义与实测 / 强/弱层间相关两组轨迹对比 / 预取提前层数 k 的命中率-浪费率权衡曲线 | ✅ |
 
 ## 🖼️ 图库：自绘高清流程图 + 官方高清配图
 
@@ -80,6 +85,9 @@ AI Infra 考点
 | [`08_profiler_fusion_timeline.svg`](教学/images/08_profiler_fusion_timeline.svg) | 融合 vs 未融合 kernel 时间线与 HBM 流量 | 08 |
 | [`10_flashattention_tiling_hbm_sram.svg`](教学/images/10_flashattention_tiling_hbm_sram.svg) | 标准 vs tiled FlashAttention（HBM/SRAM/在线 softmax） | 10 |
 | [`10_cuda_grid_block_thread.svg`](教学/images/10_cuda_grid_block_thread.svg) | Grid→Block→Warp→Thread 层级与 GEMM 索引 | 10 |
+| [`11_expert_paging.svg`](教学/images/11_expert_paging.svg) | 逻辑专家页表 → GPU 槽位（LRU 淘汰）→ 缺页经 PCIe 从 CPU/DRAM 搬入 | 11 |
+| [`12_offload_pipeline.svg`](教学/images/12_offload_pipeline.svg) | Layer i 计算 ‖ Layer i+1 专家搬运：双缓冲时间线上的 compute/transfer/stall | 12 |
+| [`13_prefetch_timeline.svg`](教学/images/13_prefetch_timeline.svg) | router 输出 → 预测 → 后台 DMA 搬运 → 命中/未命中，"预取了但没用"的浪费区间 | 13 |
 
 ### 官方高清配图（论文/官方文档原图，点击直达）
 
@@ -96,7 +104,7 @@ AI Infra 考点
 | KV Cache 机制图解 | [HuggingFace KV Cache 指南](https://huggingface.co/docs/transformers/kv_cache) | 官方图示 | 05 |
 | NCCL 集合通信原语/拓扑 | [NCCL 用户指南](https://docs.nvidia.com/deeplearning/nccl/user-guide/) | 原语与拓扑说明 | 04 |
 
-> 说明：自绘图包含两类——11 张门面流程图（PNG 300dpi，可放大打印）与 8 张机制图（SVG 矢量，公式可缩放），均已内嵌到对应 Notebook 的「深入原理」处；官方链接来自论文与官方文档（稳定可达），可作为高清原图对照学习，不建议直接嵌入 Notebook（保持离线自包含）。
+> 说明：自绘图包含两类——11 张门面流程图（PNG 300dpi，可放大打印）与 11 张机制图（SVG 矢量，公式可缩放），均已内嵌到对应 Notebook 的「深入原理」处；官方链接来自论文与官方文档（稳定可达），可作为高清原图对照学习，不建议直接嵌入 Notebook（保持离线自包含）。
 
 ## 与其他章节衔接
 
@@ -108,6 +116,7 @@ AI Infra 考点
 | 混合精度 / 显存 / ZeRO | [08-优化算法 07-大模型训练优化实践](../08-优化算法/教学/07-大模型训练优化实践.ipynb) | 那边讲数值与内存，这边补系统实现 |
 | 量化 | [04-LLM大模型 14/22](../04-LLM大模型/教学/14-量化入门PTQ与QAT.ipynb) | 04 讲算法，本模块补工程部署视角 |
 | KV Cache / 推理 | [04-LLM大模型 19-KV缓存](../04-LLM大模型/教学/19-KV缓存.ipynb) | 04 讲原理与内存账本，本模块补引擎调度 |
+| MoE 专家分页 / 卸载 / 预取 | [04-LLM大模型 16-MoE混合专家](../04-LLM大模型/教学/16-MoE混合专家.ipynb) | 04 讲路由、top-k 与负载均衡，本模块补"专家放不下"之后的显存墙、页表、卸载调度与预取预测 |
 | C++ / Linux / 分布式 | [13-编程语言](../13-编程语言/README.md) · [05-八股与工程](../05-八股与工程/README.md) | 工程表达与 OS/网络基础 |
 
 ## 面试高频题型（详见 [高频面试题.md](高频面试题.md)）
@@ -119,7 +128,7 @@ AI Infra 考点
 
 ## 验收标准
 
-- [x] 全模块 11 篇 notebook 设计为可执行：00 计算图与自动微分 / 01 GEMM 算子优化 / 02 混合精度与显存 / 03 分布式并行 / 04 集合通信与 NCCL / 05 KV Cache 与推理内存 / 06 推理引擎 vLLM / 07 量化与压缩 / 08 性能分析 / 09 面试八股 / 10 FlashAttention 与 CUDA 线程模型（全部 numpy/torch 自包含，无需 GPU、无需联网；当前环境无法跑 nbclient 全量回归，已在本地按单元手工核对数值与公式一致性，建议在 Jupyter 环境跑一遍验证）
+- [x] 全模块 14 篇 notebook 设计为可执行：00 计算图与自动微分 / 01 GEMM 算子优化 / 02 混合精度与显存 / 03 分布式并行 / 04 集合通信与 NCCL / 05 KV Cache 与推理内存 / 06 推理引擎 vLLM / 07 量化与压缩 / 08 性能分析 / 09 面试八股 / 10 FlashAttention 与 CUDA 线程模型 / 11 专家分页 / 12 专家卸载与 CPU-GPU 协同 / 13 预测式专家预取（全部 numpy/torch 自包含，无需 GPU、无需联网；11-13 已用脚本顺序执行全部 code cell 验证通过，其余各篇已在本地按单元手工核对数值与公式一致性，建议在 Jupyter 环境跑一遍验证）
 - [x] 每篇含：问题表 → 直觉 → 公式/原理 → 手写实现 → 数值对照 → 面试考点 → 自测清单
 - [x] 全部代码 numpy/torch 自包含，随机种子固定，可复现
 - [ ] 可进一步扩充：训练/推理端到端案例（如从零训一个 1B 的显存与耗时预算表）、框架源码导读（vLLM/FSDP 关键类）
