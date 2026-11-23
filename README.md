@@ -14,7 +14,7 @@
   <img src="assets/badges/license.svg" alt="license MIT"/>
   <img src="assets/badges/python.svg" alt="python 3.9+"/>
   <img src="assets/badges/modules.svg" alt="26 modules"/>
-  <img src="assets/badges/notebooks.svg" alt="277 notebooks"/>
+  <img src="assets/badges/notebooks.svg" alt="279 notebooks"/>
   <img src="assets/badges/numpy.svg" alt="from scratch"/>
   <img src="assets/badges/zh.svg" alt="中文教学"/>
 </p>
@@ -142,7 +142,7 @@
 
 ## 📊 当前规模
 
-当前仓库包含 **26 个主题模块、277 篇教学 Notebook**，并持续增加中。
+当前仓库包含 **26 个主题模块、279 篇教学 Notebook**，并持续增加中。
 
 | 类别 | 内容 |
 |---|---|
@@ -176,7 +176,7 @@ Notebook 数量会随着内容扩充而变化，README 中的统计是阶段性�
 | 12-智能体开发 | ReAct、记忆、RAG、MCP、Coding Agent、评估、持续进化、多 Agent、RSI 递归自我改进 | [进入模块](12-智能体开发/README.md) |
 | 13-编程语言 | Python、C++、ROS、Docker、Git、SQL、Linux、Go、Java | [进入模块](13-编程语言/README.md) |
 | 14-具身智能 | 机器人、感知、规划控制、VLA、仿真、数据与 sim2real | [进入模块](14-具身智能/README.md) |
-| 15-AI-Infra | 推理引擎、GEMM、混合精度、并行训练、NCCL、KV Cache、量化、FlashAttention、MoE 专家分页/卸载/预取 | [进入模块](15-AI-Infra/README.md) |
+| 15-AI-Infra | 推理引擎、GEMM、混合精度、并行训练、NCCL、KV Cache、量化、FlashAttention、MoE 专家分页/卸载/预取、KV 分层调度、FP4/2:4 稀疏 | [进入模块](15-AI-Infra/README.md) |
 | 16-语音 | 信号处理、ASR、TTS、语音增强、声纹、SVC、语音大模型 | [进入模块](16-语音/README.md) |
 | 17-数据科学 | 统计推断、AB 实验、因果推断、实验评估与业务实践 | [进入模块](17-数据科学/README.md) |
 | 18-数据分析 | 业务指标、数据处理、留存漏斗、RFM 分层、数据分析面试 | [进入模块](18-数据分析/README.md) |
@@ -344,6 +344,7 @@ python tools/_run_verify.py "15-AI-Infra/教学"
 ## 📚 相关文档
 
 - [学习路线与阶段计划](ROADMAP.md)
+- [前沿技术追踪（月度快照 · 2026-11）](docs/前沿技术追踪-2026-11.md)
 - [项目许可证](LICENSE)
 - 各模块目录下的 `README.md`
 - 各模块目录下的 `高频面试题.md`、`专题笔记.md` 与 `教学/`
