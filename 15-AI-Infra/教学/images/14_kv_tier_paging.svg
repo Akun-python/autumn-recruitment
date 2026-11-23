@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540"
+     font-family="Microsoft YaHei, SimHei, PingFang SC, Noto Sans CJK SC, sans-serif">
+  <defs>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d64545"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2f855a"/>
+    </marker>
+    <marker id="arrowGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+
+  <text x="30" y="32" font-size="19" font-weight="bold" fill="#1a202c">KV Cache 的内存分层与页级调度（Paged / Tiered / Prefetched）</text>
+  <text x="30" y="54" font-size="12" fill="#4a5568">页大小 P = 16 tokens/页 · 单页字节 = 16 × 320 KB ≈ 5 MB · PCIe 有效带宽 25 GB/s</text>
+
+  <!-- ================= ① 逻辑视图：页表 ================= -->
+  <rect x="26" y="70" width="272" height="238" rx="8" fill="#f7fafc" stroke="#a0aec0" stroke-width="1.2"/>
+  <text x="40" y="92" font-size="13" font-weight="bold" fill="#2d3748">① 逻辑视图：请求页表</text>
+
+  <rect x="40" y="102" width="126" height="26" rx="4" fill="#bee3f8" stroke="#2b6cb0"/>
+  <text x="52" y="120" font-size="11" fill="#1a365d">请求 r0 · 32 tokens</text>
+
+  <g font-size="10.5" fill="#2d3748">
+    <rect x="40" y="140" width="52" height="24" rx="3" fill="#ffffff" stroke="#718096"/>
+    <text x="52" y="156">逻辑页 0</text>
+    <path d="M 92 152 L 132 152" stroke="#555" stroke-width="1.4" marker-end="url(#arrowGray)"/>
+    <rect x="136" y="140" width="52" height="24" rx="3" fill="#c6f6d5" stroke="#2f855a"/>
+    <text x="148" y="156">槽位 S1</text>
+
+    <rect x="40" y="170" width="52" height="24" rx="3" fill="#ffffff" stroke="#718096"/>
+    <text x="52" y="186">逻辑页 1</text>
+    <path d="M 92 182 L 132 182" stroke="#555" stroke-width="1.4" marker-end="url(#arrowGray)"/>
+    <rect x="136" y="170" width="52" height="24" rx="3" fill="#c6f6d5" stroke="#2f855a"/>
+    <text x="148" y="186">槽位 S2</text>
+
+    <rect x="40" y="200" width="52" height="24" rx="3" fill="#ffffff" stroke="#718096"/>
+    <text x="52" y="216">逻辑页 2</text>
+    <path d="M 92 212 L 132 212" stroke="#555" stroke-width="1.4" marker-end="url(#arrowGray)"/>
+    <rect x="136" y="200" width="52" height="24" rx="3" fill="#fefcbf" stroke="#b7791f"/>
+    <text x="148" y="216">槽位 S5</text>
+
+    <rect x="40" y="230" width="52" height="24" rx="3" fill="#ffffff" stroke="#718096"/>
+    <text x="52" y="246">逻辑页 3</text>
+    <path d="M 92 242 L 132 242" stroke="#d64545" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#arrowRed)"/>
+    <rect x="136" y="230" width="64" height="24" rx="3" fill="#fed7d7" stroke="#d64545"/>
+    <text x="142" y="246">缺页 → DRAM</text>
+
+    <rect x="40" y="266" width="126" height="26" rx="4" fill="#e9d8fd" stroke="#6b46c1"/>
+    <text x="52" y="284" font-size="11" fill="#44337a">请求 r1（共享前缀）</text>
+    <text x="176" y="284" font-size="10" fill="#6b46c1">↳ 复用 r0 页 0~1</text>
+  </g>
+  <text x="40" y="302" font-size="10" fill="#718096">页表：request → [page_id] → slot（O(1) 命中查询）</text>
+
+  <!-- ================= ② HBM 槽位池 ================= -->
+  <rect x="316" y="70" width="330" height="238" rx="8" fill="#ebf8ff" stroke="#4299e1" stroke-width="1.4"/>
+  <text x="332" y="92" font-size="13" font-weight="bold" fill="#2a4365">② HBM 槽位池（容量 8 页 ≈ 40 MB）</text>
+
+  <g stroke="#2b6cb0" stroke-width="1">
+    <rect x="332" y="104" width="68" height="52" rx="4" fill="#bee3f8"/><text x="350" y="135" font-size="11" fill="#1a365d">S0 空闲</text>
+    <rect x="410" y="104" width="68" height="52" rx="4" fill="#c6f6d5"/><text x="428" y="128" font-size="11" fill="#22543d">S1</text><text x="420" y="144" font-size="10" fill="#22543d">r0·页0</text>
+    <rect x="488" y="104" width="68" height="52" rx="4" fill="#c6f6d5"/><text x="506" y="128" font-size="11" fill="#22543d">S2</text><text x="498" y="144" font-size="10" fill="#22543d">r0·页1</text>
+    <rect x="566" y="104" width="68" height="52" rx="4" fill="#e2e8f0"/><text x="580" y="135" font-size="11" fill="#4a5568">S3 淘汰页</text>
+
+    <rect x="332" y="166" width="68" height="52" rx="4" fill="#fefcbf"/><text x="350" y="190" font-size="11" fill="#744210">S4 热页</text><text x="342" y="206" font-size="10" fill="#744210">r1·前缀</text>
+    <rect x="410" y="166" width="68" height="52" rx="4" fill="#c6f6d5"/><text x="428" y="190" font-size="11" fill="#22543d">S5</text><text x="420" y="206" font-size="10" fill="#22543d">r0·页2</text>
+    <rect x="488" y="166" width="68" height="52" rx="4" fill="#e2e8f0"/><text x="508" y="197" font-size="11" fill="#4a5568">S6 空闲</text>
+    <rect x="566" y="166" width="68" height="52" rx="4" fill="#e2e8f0"/><text x="594" y="197" font-size="11" fill="#4a5568">S7 预留</text>
+  </g>
+  <text x="332" y="238" font-size="10.5" fill="#2a4365">命中：页已在槽位 → 直接读 K/V（搬运字节 = 0）</text>
+  <text x="332" y="256" font-size="10.5" fill="#c53030">缺页：页不在槽位 → 淘汰 LRU（S3）→ 从 DRAM 搬入</text>
+  <text x="332" y="274" font-size="10.5" fill="#2f855a">容量 8 页 × 5 MB = 40 MB：只装得下 128 个 token 的 KV</text>
+  <text x="332" y="292" font-size="10" fill="#718096">（真实系统 HBM 可放数万页，这里缩到 8 页便于观察）</text>
+
+  <!-- ================= ③ 分级存储 ================= -->
+  <rect x="662" y="70" width="272" height="238" rx="8" fill="#f0fff4" stroke="#38a169" stroke-width="1.4"/>
+  <text x="676" y="92" font-size="13" font-weight="bold" fill="#22543d">③ 分级存储（容量↑ 带宽↓）</text>
+
+  <rect x="676" y="102" width="244" height="86" rx="6" fill="#c6f6d5" stroke="#2f855a"/>
+  <text x="688" y="122" font-size="12" font-weight="bold" fill="#22543d">DRAM（CPU 内存）</text>
+  <text x="688" y="140" font-size="10.5" fill="#276749">容量 TB 级 · 带宽 ~200 GB/s</text>
+  <text x="688" y="158" font-size="10.5" fill="#276749">存全部冷页：r0·页3、旧请求页…</text>
+  <text x="688" y="176" font-size="10.5" fill="#276749">host↔device 走 PCIe 25 GB/s</text>
+
+  <rect x="676" y="198" width="244" height="62" rx="6" fill="#e6fffa" stroke="#319795"/>
+  <text x="688" y="218" font-size="12" font-weight="bold" fill="#234e52">NVMe SSD</text>
+  <text x="688" y="236" font-size="10.5" fill="#285e61">容量更大 · 3~7 GB/s · 延迟 μs 级</text>
+  <text x="688" y="252" font-size="10.5" fill="#285e61">放超长上下文的归档页</text>
+
+  <text x="676" y="282" font-size="10.5" fill="#4a5568">层级越低：容量↑ 带宽↓ 延迟↑</text>
+  <text x="676" y="298" font-size="10.5" fill="#4a5568">所以分层必须配合预取才划算</text>
+
+  <!-- ================= 搬运通道（面板下方两条轨道） ================= -->
+  <text x="26" y="330" font-size="10.5" fill="#c53030">① 缺页搬运（同步）：DRAM/NVMe → HBM，stall = 页字节 ÷ 25 GB/s</text>
+  <path d="M 876 330 H 700" stroke="#d64545" stroke-width="2.2" fill="none" marker-end="url(#arrowRed)"/>
+  <text x="26" y="346" font-size="10.5" fill="#2f855a">② 投机预取（异步）：提前把下一批页搬进槽位，与计算重叠（预测错了就白搬）</text>
+  <path d="M 876 346 H 700" stroke="#2f855a" stroke-width="2" fill="none" stroke-dasharray="6 4" marker-end="url(#arrowGreen)"/>
+
+  <!-- ================= 底部：公式与图例 ================= -->
+  <rect x="26" y="356" width="908" height="76" rx="8" fill="#fffaf0" stroke="#dd6b20" stroke-width="1.2"/>
+  <text x="40" y="378" font-size="12" font-weight="bold" fill="#7b341e">关键账本（现场可验算）</text>
+  <text x="40" y="398" font-size="11" fill="#744210">单页字节 = P × KV/token = 16 × 320 KB ≈ 5 MB　|　缺页停顿 = 5 MB ÷ 25 GB/s ≈ 0.2 ms/页　|　命中率 = 命中页次数 ÷ 总页访问次数</text>
+  <text x="40" y="418" font-size="11" fill="#744210">优化三件套：① 分页消除碎片　② 前缀缓存复用共享页　③ 预取把同步搬运变成重叠（代价：浪费率）</text>
+
+  <g font-size="11" fill="#2d3748">
+    <rect x="26" y="444" width="908" height="34" rx="6" fill="#f7fafc" stroke="#cbd5e0"/>
+    <rect x="40" y="454" width="26" height="14" fill="#c6f6d5" stroke="#2f855a"/>
+    <text x="72" y="466">命中（页在 HBM）</text>
+    <rect x="206" y="454" width="26" height="14" fill="#fed7d7" stroke="#d64545"/>
+    <text x="238" y="466">缺页（需搬运）</text>
+    <rect x="368" y="454" width="26" height="14" fill="#fefcbf" stroke="#b7791f"/>
+    <text x="400" y="466">热页 / 被 pin 保护</text>
+    <path d="M 540 461 L 586 461" stroke="#d64545" stroke-width="2.2" marker-end="url(#arrowRed)"/>
+    <text x="594" y="465">同步缺页搬运</text>
+    <path d="M 716 461 L 762 461" stroke="#2f855a" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrowGreen)"/>
+    <text x="770" y="465">异步投机预取</text>
+  </g>
+
+  <text x="26" y="500" font-size="10.5" fill="#718096">读图顺序：逻辑页 → 查页表 →（命中）读 HBM 槽位 /（缺页）淘汰 + 从 DRAM 搬入 →（可选）预测下一批页提前搬运</text>
+  <text x="26" y="518" font-size="10.5" fill="#718096">前沿对应：TripleKV≈预测预取 · Twindex≈稀疏索引 offload · Aggron≈拥塞时压缩 · TideCache≈分层流式 · AscMLA≈存储精度 · MoBA≈访问模式变稀疏</text>
+  <text x="26" y="534" font-size="10" fill="#a0aec0">15-AI-Infra · 14 KV Cache 内存分层与页级调度（示意图，数字为教学口径）</text>
+</svg>

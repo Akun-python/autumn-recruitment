@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="FP4 量化与 2:4 稀疏机制图">
+<title>FP4/NVFP4 量化与 2:4 结构化稀疏机制</title>
+<rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+<text x="24.0" y="34.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="20.0" fill="#0f172a" text-anchor="start" font-weight="bold">FP4 / NVFP4 量化与 2:4 结构化稀疏：三重机制</text>
+<text x="24.0" y="58.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="12.0" fill="#475569" text-anchor="start" font-weight="normal">NVFP4 = 4-bit 浮点（1+2+1） + 每 16 个权重一个 FP8 scale    ｜    2:4 = 每 4 个权重只保留 2 个（Tensor Core 原生）</text>
+<rect x="20.0" y="78.0" width="290.0" height="352.0" rx="10.0" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+<text x="34.0" y="104.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="14.0" fill="#0f172a" text-anchor="start" font-weight="bold">① FP4 = 1 + 2 + 1 位</text>
+<text x="34.0" y="124.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#475569" text-anchor="start" font-weight="normal">符号 / 指数(bias=1) / 尾数</text>
+<rect x="46.0" y="148.0" width="44.0" height="40.0" rx="4.0" fill="#fecaca" stroke="#64748b" stroke-width="1.2"/>
+<text x="68.0" y="174.0" font-family="'Consolas', 'Courier New', monospace" font-size="14.0" fill="#0f172a" text-anchor="middle" font-weight="bold">S</text>
+<rect x="90.0" y="148.0" width="44.0" height="40.0" rx="4.0" fill="#bfdbfe" stroke="#64748b" stroke-width="1.2"/>
+<text x="112.0" y="174.0" font-family="'Consolas', 'Courier New', monospace" font-size="14.0" fill="#0f172a" text-anchor="middle" font-weight="bold">e1</text>
+<rect x="134.0" y="148.0" width="44.0" height="40.0" rx="4.0" fill="#bfdbfe" stroke="#64748b" stroke-width="1.2"/>
+<text x="156.0" y="174.0" font-family="'Consolas', 'Courier New', monospace" font-size="14.0" fill="#0f172a" text-anchor="middle" font-weight="bold">e0</text>
+<rect x="178.0" y="148.0" width="44.0" height="40.0" rx="4.0" fill="#bbf7d0" stroke="#64748b" stroke-width="1.2"/>
+<text x="200.0" y="174.0" font-family="'Consolas', 'Courier New', monospace" font-size="14.0" fill="#0f172a" text-anchor="middle" font-weight="bold">m</text>
+<text x="46.0" y="206.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">符号 1 位 ｜ 指数 2 位（bias = 1）</text>
+<text x="46.0" y="224.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">尾数 1 位 → 相对分辨率只有 1/2</text>
+<line x1="44.0" y1="292.0" x2="286.0" y2="292.0" stroke="#0f172a" stroke-width="2.0"/>
+<line x1="52.0" y1="285.0" x2="52.0" y2="299.0" stroke="#0f172a" stroke-width="1.6"/>
+<text x="52.0" y="314.0" font-family="'Consolas', 'Courier New', monospace" font-size="11.0" fill="#0f172a" text-anchor="middle" font-weight="normal">0</text>
+<line x1="81.7" y1="285.0" x2="81.7" y2="299.0" stroke="#0f172a" stroke-width="1.6"/>
+<text x="81.7" y="314.0" font-family="'Consolas', 'Courier New', monospace" font-size="11.0" fill="#0f172a" text-anchor="middle" font-weight="normal">0.5</text>
+<line x1="111.4" y1="285.0" x2="111.4" y2="299.0" stroke="#0f172a" stroke-width="1.6"/>
+<text x="111.4" y="314.0" font-family="'Consolas', 'Courier New', monospace" font-size="11.0" fill="#0f172a" text-anchor="middle" font-weight="normal">1</text>
+<line x1="141.1" y1="285.0" x2="141.1" y2="299.0" stroke="#0f172a" stroke-width="1.6"/>
+<text x="141.1" y="314.0" font-family="'Consolas', 'Courier New', monospace" font-size="11.0" fill="#0f172a" text-anchor="middle" font-weight="normal">1.5</text>
+<line x1="170.9" y1="285.0" x2="170.9" y2="299.0" stroke="#0f172a" stroke-width="1.6"/>
+<text x="170.9" y="314.0" font-family="'Consolas', 'Courier New', monospace" font-size="11.0" fill="#0f172a" text-anchor="middle" font-weight="normal">2</text>
+<line x1="200.6" y1="285.0" x2="200.6" y2="299.0" stroke="#0f172a" stroke-width="1.6"/>
+<text x="200.6" y="314.0" font-family="'Consolas', 'Courier New', monospace" font-size="11.0" fill="#0f172a" text-anchor="middle" font-weight="normal">3</text>
+<line x1="230.3" y1="285.0" x2="230.3" y2="299.0" stroke="#0f172a" stroke-width="1.6"/>
+<text x="230.3" y="314.0" font-family="'Consolas', 'Courier New', monospace" font-size="11.0" fill="#0f172a" text-anchor="middle" font-weight="normal">4</text>
+<line x1="260.0" y1="285.0" x2="260.0" y2="299.0" stroke="#0f172a" stroke-width="1.6"/>
+<text x="260.0" y="314.0" font-family="'Consolas', 'Courier New', monospace" font-size="11.0" fill="#0f172a" text-anchor="middle" font-weight="normal">6</text>
+<text x="44.0" y="336.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">只有 7 个正刻度：量 5.2 → 记成 4 或 6</text>
+<text x="44.0" y="354.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">相对误差 15%~23% —— 这就是 4 bit 的上限</text>
+<text x="44.0" y="376.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">FP4 是浮点：指数管范围，尾数管精度</text>
+<text x="44.0" y="396.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#0369a1" text-anchor="start" font-weight="bold">→ 所以需要 block scale（见 ②）</text>
+<rect x="330.0" y="78.0" width="290.0" height="352.0" rx="10.0" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+<text x="344.0" y="104.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="14.0" fill="#0f172a" text-anchor="start" font-weight="bold">② 每 16 个权重共用一把尺</text>
+<text x="344.0" y="124.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#475569" text-anchor="start" font-weight="normal">per-block scale（绝对值最大者定标）</text>
+<rect x="352.0" y="224.0" width="9" height="26.0" fill="#0369a1" opacity="0.9"/>
+<rect x="367.0" y="206.0" width="9" height="44.0" fill="#38bdf8" opacity="0.9"/>
+<rect x="382.0" y="238.0" width="9" height="12.0" fill="#38bdf8" opacity="0.9"/>
+<rect x="397.0" y="212.0" width="9" height="38.0" fill="#38bdf8" opacity="0.9"/>
+<rect x="412.0" y="230.0" width="9" height="20.0" fill="#38bdf8" opacity="0.9"/>
+<rect x="427.0" y="198.0" width="9" height="52.0" fill="#0369a1" opacity="0.9"/>
+<rect x="442.0" y="220.0" width="9" height="30.0" fill="#38bdf8" opacity="0.9"/>
+<rect x="457.0" y="234.0" width="9" height="16.0" fill="#38bdf8" opacity="0.9"/>
+<rect x="472.0" y="210.0" width="9" height="40.0" fill="#38bdf8" opacity="0.9"/>
+<rect x="487.0" y="226.0" width="9" height="24.0" fill="#38bdf8" opacity="0.9"/>
+<rect x="502.0" y="216.0" width="9" height="34.0" fill="#0369a1" opacity="0.9"/>
+<rect x="517.0" y="240.0" width="9" height="10.0" fill="#38bdf8" opacity="0.9"/>
+<rect x="532.0" y="204.0" width="9" height="46.0" fill="#38bdf8" opacity="0.9"/>
+<rect x="547.0" y="222.0" width="9" height="28.0" fill="#38bdf8" opacity="0.9"/>
+<rect x="562.0" y="232.0" width="9" height="18.0" fill="#38bdf8" opacity="0.9"/>
+<rect x="577.0" y="214.0" width="9" height="36.0" fill="#0369a1" opacity="0.9"/>
+<line x1="350.0" y1="256.0" x2="604.0" y2="256.0" stroke="#475569" stroke-width="1.4"/>
+<text x="477.0" y="272.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="middle" font-weight="normal">一个 block：16 个权重 → 共用同一个 scale</text>
+<rect x="352.0" y="292.0" width="132.0" height="30.0" rx="5.0" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.2"/>
+<text x="418.0" y="312.0" font-family="'Consolas', 'Courier New', monospace" font-size="12.0" fill="#0c4a6e" text-anchor="middle" font-weight="normal">scale = absmax / 6</text>
+<text x="494.0" y="312.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="14.0" fill="#475569" text-anchor="middle" font-weight="normal">→</text>
+<rect x="508.0" y="292.0" width="108.0" height="30.0" rx="5.0" fill="#fee2e2" stroke="#dc2626" stroke-width="1.2"/>
+<text x="562.0" y="312.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#7f1d1d" text-anchor="middle" font-weight="normal">FP8 E4M3（8 bit）</text>
+<text x="352.0" y="344.0" font-family="'Consolas', 'Courier New', monospace" font-size="11.0" fill="#0f172a" text-anchor="start" font-weight="normal">w_q = round_FP4(w / scale) × scale</text>
+<text x="352.0" y="364.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">scale 自己也量化 → 第三条误差来源</text>
+<text x="352.0" y="384.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">元数据：1 B / 16 权重 = +12.5% 字节</text>
+<text x="352.0" y="404.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#0369a1" text-anchor="start" font-weight="bold">块内自适应：小值不会被整体压成 0</text>
+<rect x="640.0" y="78.0" width="300.0" height="352.0" rx="10.0" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+<text x="654.0" y="104.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="14.0" fill="#0f172a" text-anchor="start" font-weight="bold">③ 2:4 稀疏 → MAC 减半</text>
+<text x="654.0" y="124.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#475569" text-anchor="start" font-weight="normal">每 4 个权重保留绝对值最大的 2 个</text>
+<rect x="672.0" y="150.0" width="30.0" height="30.0" rx="3.0" fill="#cbd5e1" stroke="#64748b" stroke-width="1.2"/>
+<text x="687.0" y="171.0" font-family="'Consolas', 'Courier New', monospace" font-size="10.0" fill="#0f172a" text-anchor="middle" font-weight="normal">w1</text>
+<rect x="712.0" y="150.0" width="30.0" height="30.0" rx="3.0" fill="#cbd5e1" stroke="#64748b" stroke-width="1.2"/>
+<text x="727.0" y="171.0" font-family="'Consolas', 'Courier New', monospace" font-size="10.0" fill="#0f172a" text-anchor="middle" font-weight="normal">w2</text>
+<rect x="752.0" y="150.0" width="30.0" height="30.0" rx="3.0" fill="#cbd5e1" stroke="#64748b" stroke-width="1.2"/>
+<text x="767.0" y="171.0" font-family="'Consolas', 'Courier New', monospace" font-size="10.0" fill="#0f172a" text-anchor="middle" font-weight="normal">w3</text>
+<rect x="792.0" y="150.0" width="30.0" height="30.0" rx="3.0" fill="#cbd5e1" stroke="#64748b" stroke-width="1.2"/>
+<text x="807.0" y="171.0" font-family="'Consolas', 'Courier New', monospace" font-size="10.0" fill="#0f172a" text-anchor="middle" font-weight="normal">w4</text>
+<text x="672.0" y="142.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">稠密：4 个数都要参与乘加</text>
+<text x="672.0" y="200.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#475569" text-anchor="start" font-weight="normal">↓ 剪枝（保留 |w| 最大的 2 个）</text>
+<rect x="672.0" y="216.0" width="30.0" height="30.0" rx="3.0" fill="#bbf7d0" stroke="#16a34a" stroke-width="1.2"/>
+<text x="687.0" y="237.0" font-family="'Consolas', 'Courier New', monospace" font-size="10.0" fill="#0f172a" text-anchor="middle" font-weight="normal">w1</text>
+<rect x="712.0" y="216.0" width="30.0" height="30.0" rx="3.0" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="727.0" y="237.0" font-family="'Consolas', 'Courier New', monospace" font-size="10.0" fill="#94a3b8" text-anchor="middle" font-weight="normal">w2</text>
+<rect x="752.0" y="216.0" width="30.0" height="30.0" rx="3.0" fill="#bbf7d0" stroke="#16a34a" stroke-width="1.2"/>
+<text x="767.0" y="237.0" font-family="'Consolas', 'Courier New', monospace" font-size="10.0" fill="#0f172a" text-anchor="middle" font-weight="normal">w3</text>
+<rect x="792.0" y="216.0" width="30.0" height="30.0" rx="3.0" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="807.0" y="237.0" font-family="'Consolas', 'Courier New', monospace" font-size="10.0" fill="#94a3b8" text-anchor="middle" font-weight="normal">w4</text>
+<text x="672.0" y="268.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#166534" text-anchor="start" font-weight="bold">2:4：只取 2 个有效值 → 2 次乘加</text>
+<rect x="838.0" y="214.0" width="88.0" height="34.0" rx="5.0" fill="#dcfce7" stroke="#16a34a" stroke-width="1.2"/>
+<text x="882.0" y="229.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="10.0" fill="#14532d" text-anchor="middle" font-weight="normal">Tensor Core</text>
+<text x="882.0" y="243.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="10.0" fill="#14532d" text-anchor="middle" font-weight="normal">2:4 通路</text>
+<text x="672.0" y="300.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">字节账本（每组 4 个）：</text>
+<text x="672.0" y="320.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">· 免索引格式：0.25 B/参数（减半）</text>
+<text x="672.0" y="338.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">· 带 2-bit 索引：0.5 B/参数（不省带宽）</text>
+<text x="672.0" y="362.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#0369a1" text-anchor="start" font-weight="bold">省的是乘加次数；带宽要靠稀疏格式</text>
+<text x="672.0" y="382.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">稀疏与量化正交：FP4 + 2:4 可叠加</text>
+<text x="672.0" y="404.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#64748b" text-anchor="start" font-weight="normal">（顺序有影响，见正文实验 ③）</text>
+<rect x="20.0" y="436.0" width="920.0" height="52.0" rx="8.0" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.2"/>
+<rect x="40.0" y="446.0" width="14.0" height="14.0" rx="3.0" fill="#bfdbfe" stroke="#94a3b8" stroke-width="1.2"/>
+<text x="60.0" y="458.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">FP4 指数位</text>
+<rect x="240.0" y="446.0" width="14.0" height="14.0" rx="3.0" fill="#bbf7d0" stroke="#94a3b8" stroke-width="1.2"/>
+<text x="260.0" y="458.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">FP4 尾数 / 保留值</text>
+<rect x="440.0" y="446.0" width="14.0" height="14.0" rx="3.0" fill="#fee2e2" stroke="#94a3b8" stroke-width="1.2"/>
+<text x="460.0" y="458.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">per-block scale（FP8）</text>
+<rect x="640.0" y="446.0" width="14.0" height="14.0" rx="3.0" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.2"/>
+<text x="660.0" y="458.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#334155" text-anchor="start" font-weight="normal">被剪掉的零</text>
+<text x="24.0" y="516.0" font-family="'Microsoft YaHei', 'SimHei', 'Songti SC', 'Arial Unicode MS', sans-serif" font-size="11.0" fill="#64748b" text-anchor="start" font-weight="normal">教学示意：图中数值为机制演示（本节代码现场计算），不代表具体硬件的实测加速比。</text>
+</svg>
