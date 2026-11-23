@@ -76,3 +76,7 @@
 - [x] 全部 notebook 代码经批量执行验证（numpy/sklearn/torch 对照断言通过）
 
 > 💡 手推优先级建议：双线性上采样 → 卷积输出尺寸 → 卷积反向三条梯度 → IoU/GIoU/DIoU/CIoU → YOLOv1 损失五项 → anchor 编解码 → Dice/mIoU → 三元组 → ArcFace logit → NMS。
+
+---
+
+> 📡 2026-11 前沿补充：[空间重建、动作条件预测和时序缓存是三个不同问题](../docs/前沿技术补充-其他模块-2026-11.md)（含可执行练习与来源核对）
