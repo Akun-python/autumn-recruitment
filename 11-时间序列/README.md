@@ -62,3 +62,7 @@
 - [x] 全部 notebook 代码经批量执行验证（numpy/sklearn/torch 对照断言通过）
 
 > 💡 手推优先级建议：ACF 公式 → ADF t 统计量 → AR 的 OLS → AIC → SES/Holt 两步 → HW 季节项 → 滑窗特征 → ExpandingCV → z-score 异常检测 → sMAPE。
+
+---
+
+> 📡 2026-11 前沿补充：[时序基础模型评测：随机划分 + 居中窗口会一起骗你](../docs/前沿技术补充-其他模块-2026-11.md)（含可执行练习与来源核对）
